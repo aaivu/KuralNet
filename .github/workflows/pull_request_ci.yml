@@ -1,0 +1,35 @@
+name: Pull Request CI
+
+on:
+  pull_request:
+    branches:
+      - main
+      - dev
+      - master
+
+jobs:
+  pull_request_checks:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.11'
+
+      - name: Install Poetry
+        run: |
+          pip install poetry
+
+      - name: Install dependencies
+        run: |
+          poetry install
+
+      - name: Check code formatting
+        run: poetry run make format-check
+
+      - name: Lint code
+        run: poetry run make lint
