@@ -1,0 +1,15 @@
+repos:
+  - repo: local
+    hooks:
+      - id: prevent-direct-commits
+        name: Prevent direct commits to protected branches
+        entry: bash -c 'PROTECTED_BRANCHES=("main" "master" "dev"); CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD); for branch in "${PROTECTED_BRANCHES[@]}"; do if [ "$CURRENT_BRANCH" = "$branch" ]; then echo "Direct commits to the $CURRENT_BRANCH branch are not allowed. Please create a pull request to merge your changes."; exit 1; fi; done; exit 0;'
+        language: system
+        verbose: false
+        stages: [commit]
+
+      - id: check-before-push
+        name: Check before push
+        entry: bash -c 'make format-check && make lint'
+        language: system
+        stages: [push]
