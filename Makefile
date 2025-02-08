@@ -28,10 +28,10 @@ lint:
 	poetry run flake8 py/ src/
 
 format-check:
-	poetry run black --check py/ src/ && poetry run isort --check py/ src/
+	poetry run black --check py/ && poetry run isort --check py/
 
 format:
-	poetry run black py/ src/ && poetry run isort py/ src/
+	poetry run black py/ && poetry run isort py/
 
 clear:
 	@echo "Cleaning up..."
