@@ -1,6 +1,6 @@
 <div align="center">
     <h1>🔊 Multilingual Speech Emotion Recognition (SER) Model</h1>
-<p>Multilingual Speech Emotion Recognition model trained primarily focused on <strong>Indian languages</strong>, designed to detect <strong>emotions</strong> from speech, enhancing <strong>call centers, sentiment analysis, and accessibility tools</strong>.</p>
+    <p>Multilingual Speech Emotion Recognition model trained primarily focused on <strong>Indian languages</strong>, designed to detect <strong>emotions</strong> from speech, enhancing <strong>call centers, sentiment analysis, and accessibility tools</strong>.</p>
     <a href="LICENSE" style="text-decoration: none;"><img src="https://img.shields.io/github/license/your-repo/multilingual-ser" alt="License"></a>
     <a href="#" style="text-decoration: none;"><img src="https://img.shields.io/badge/version-1.0-blue" alt="Version"></a>
     <a href="https://arxiv.org/abs/xxxxx" style="text-decoration: none;"><img src="https://img.shields.io/badge/Research-Paper-red" alt="Paper"></a>
@@ -9,67 +9,125 @@
     <a href="https://hub.docker.com/r/your-repo/multilingual-ser" style="text-decoration: none;"><img src="https://img.shields.io/badge/Docker-Ready-blue?logo=docker" alt="Docker"></a>
 </div>
 
----
+## Key Features
+- <strong>Emotion Detection</strong>: Capable of detecting emotions from speech in multiple Indian languages.
+- <strong>Use Cases</strong>: Call centers, sentiment analysis, and accessibility tools.
+- <strong>Optimized Performance</strong>: Designed for real-time emotion analysis.
 
-## 🛠 **Installation**
-### Using `pip`
-```sh
-pip install multilingual-ser
+## Purpose
+This model aims to enhance user experiences by detecting emotions from speech across multilingual datasets. The focus is to apply it in industries like customer service, where emotional tone plays a crucial role.
+
+## Project Structure
+```
+multilingual-ser/
+│── py/                    # PyPI package (managed with Poetry)
+│   ├── multilingual_ser/  # Package source code
+│   │   ├── __init__.py
+│   │   ├── main.py
+│   ├── pyproject.toml     # Poetry configuration
+│   ├── README.md          # Package description
+│
+│── data/                  # Datasets (organized by language)
+│   ├── processed/         # Preprocessed data (features, embeddings, etc.)
+│
+│── src/                   # Main source code for the project
+│   ├── models/            # Model architectures
+│   │   ├── model.py
+│   │   ├── attention.py
+│   │   ├── encoder.py 
+│   │
+│   ├── preprocessing/     # Audio and text preprocessing scripts
+│   │   ├── feature_extraction.py
+│   │   ├── augmentation.py
+│   │
+│   ├── training/          # Model training pipelines
+│   │   ├── train.py       # Main training script
+│   │   ├── evaluate.py    # Evaluation script
+│   │   ├── inference.py   # Running inference on new audio
+│   │
+│   ├── utils/             # Helper functions
+│   │   ├── dataset_loader.py
+│   │   ├── logger.py
+│
+│── configs/               # Configuration files
+│   ├── train_config.yaml  # Training hyperparameters
+│   ├── model_config.yaml  # Model architecture details
+│
+│── scripts/               # Standalone scripts for automation
+│   ├── preprocess_data.py # Preprocess all datasets
+│   ├── train_model.sh     # Training automation
+│
+│── docs/                  # Documentation (README, research papers, API docs)
+│   ├── README.md          # Overview of the project
+│   ├── dataset_guidelines.md
+│   ├── model_architecture.md
+│
+│── deployment/            # Deployment setup (API, web interface)
+│   ├── api/               # Flask/FastAPI for inference
+│   ├── frontend/          # Web UI (if applicable)
+│   ├── docker/            # Docker setup for deployment
+│
+│── .gitignore             # Ignore unnecessary files
+│── project.toml           # Project Setup and Dependencies
+│── LICENSE                # License details
+│── CODE_OF_CONDUCT.md     # Community guidelines
+│── CONTRIBUTING.md        # Contribution guidelines
 ```
 
----
-
-## 🔥 **Quick Start**
-### **Run Emotion Detection on an Audio File**
-```python
-from multilingual_ser.inference import predict_emotion
-emotion = predict_emotion("example.wav")
-print("Predicted Emotion:", emotion)
+## Citation
+If you are using this model or research findings, please cite the following paper:
+```
+@article{placeholder2024,
+  author    = {Author(s)},
+  title     = {Paper Title},
+  journal   = {Conference/Journal},
+  year      = {2024},
+  volume    = {X},
+  number    = {Y},
+  pages     = {ZZ-ZZ},
+  doi       = {10.XXXX/placeholder},
+}
 ```
 
----
+## Contact
+<div style="width: 100%; overflow-x: auto;">
+    <table style="width: 100%; text-align: left; border-collapse: collapse; margin-top: 20px;">
+        <thead>
+            <tr>
+                <th style="padding: 10px; border: 1px solid #ddd; background-color: #f4f4f4;">🏷️ <strong>Name</strong></th>
+                <th style="padding: 10px; border: 1px solid #ddd; background-color: #f4f4f4;">📧 <strong>Email</strong></th>
+                <th style="padding: 10px; border: 1px solid #ddd; background-color: #f4f4f4;">🔗 <strong>LinkedIn</strong></th>
+                <th style="padding: 10px; border: 1px solid #ddd; background-color: #f4f4f4;">📚 <strong>Google Scholar</strong></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd;"><strong>Luxshan Thavarasa</strong></td>
+                <td style="padding: 10px; border: 1px solid #ddd;"><a href="mailto:luxshan.20@cse.mrt.ac.lk">luxshan.20@cse.mrt.ac.lk</a></td>
+                <td style="padding: 10px; border: 1px solid #ddd;"><a href="https://linkedin.com/in/lux-thavarasa">LinkedIn</a></td>
+                <td style="padding: 10px; border: 1px solid #ddd;"><a href="https://scholar.google.com/citations?user=your-profile-link">Google Scholar</a></td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd;"><strong>Jubeerathan Thevakumar</strong></td>
+                <td style="padding: 10px; border: 1px solid #ddd;"><a href="mailto:jubeerathan.20@cse.mrt.ac.lk">jubeerathan.20@cse.mrt.ac.lk</a></td>
+                <td style="padding: 10px; border: 1px solid #ddd;"><a href="https://lk.linkedin.com/in/jubeerathan-thevakumar-87b9b8255">LinkedIn</a></td>
+                <td style="padding: 10px; border: 1px solid #ddd;"><a href="https://scholar.google.com/citations?user=your-profile-link">Google Scholar</a></td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd;"><strong>Thanikan Sivatheepan</strong></td>
+                <td style="padding: 10px; border: 1px solid #ddd;"><a href="mailto:thanikan.20@cse.mrt.ac.lk">thanikan.20@cse.mrt.ac.lk</a></td>
+                <td style="padding: 10px; border: 1px solid #ddd;"><a href="https://lk.linkedin.com/in/sthanikan2000">LinkedIn</a></td>
+                <td style="padding: 10px; border: 1px solid #ddd;"><a href="https://scholar.google.com/citations?user=your-profile-link">Google Scholar</a></td>
+            </tr>
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ddd;"><strong>Uthayasanker Thayasivam</strong></td>
+                <td style="padding: 10px; border: 1px solid #ddd;"><a href="mailto:rtuthaya@cse.mrt.ac.lk">rtuthaya@cse.mrt.ac.lk</a></td>
+                <td style="padding: 10px; border: 1px solid #ddd;"><a href="https://lk.linkedin.com/in/rtuthaya">LinkedIn</a></td>
+                <td style="padding: 10px; border: 1px solid #ddd;"><a href="https://scholar.google.com/citations?user=your-profile-link">Google Scholar</a></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 
-## 🎯 **Training Your Own Model**
-### **1️⃣ Preprocess Data**
-```sh
-python scripts/preprocess_data.py --dataset data/raw/
-```
-
-### **2️⃣ Train the Model**
-```sh
-python src/training/train.py --config configs/train_config.yaml
-```
-
-### **3️⃣ Evaluate the Model**
-```sh
-python src/training/evaluate.py --checkpoint models/checkpoints/best_model.pth
-```
-
----
-
-## 📡 **Deployment**
-### **Run as an API**
-```sh
-uvicorn deployment.api:app --host 0.0.0.0 --port 8000
-```
-Access API at: [`http://localhost:8000/docs`](http://localhost:8000/docs)  
-
----
-
-## 🤝 **Contributing**
-We welcome contributions! Please check our [CONTRIBUTING.md](CONTRIBUTING.md) for details.  
-
----
-
-## 📜 **License**
-This project is licensed under the **MIT License** – see the [LICENSE](LICENSE) file for details.  
-
----
-
-## 📖 **References**
-- 🔗 **Research Paper:** [arXiv:xxxxx](https://arxiv.org/abs/xxxxx)  
-- 🤗 **Hugging Face Model:** [Hugging Face Link](https://huggingface.co/your-model)  
-- 📦 **PyPI Package:** [PyPI](https://pypi.org/project/multilingual-ser/)  
-- 📑 **Dataset Documentation:** [docs/dataset_guidelines.md](docs/dataset_guidelines.md)  
-
----
+## Acknowledgment  
+I would like to thank Dr. Uthayasanker Thayasivam for his guidance as my supervisor, Braveenan Sritharan for his mentorship, and all the dataset owners for making their datasets available for us through open access or upon request. Your support has been invaluable.
