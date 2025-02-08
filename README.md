@@ -1,60 +1,75 @@
-# Multilingual Speech Emotion Recognition (SER)
-
-![project](https://img.shields.io/badge/-Project-blue) ![research](https://img.shields.io/badge/-Research-yellowgreen) ![SER](https://img.shields.io/badge/-SER-orange)
-
-- **Project Lead(s) / Mentor(s)**
-    1. Dr. Uthayasanker Thayasivam ([LinkedIn](mentor-link))
-    <!-- 2. Mrs. Braveenan Sritharan ([LinkedIn](mentor-link)) -->
-
-- **Contributor(s)**
-    1. Jubeerathan Thevakumar ([GitHub](https://github.com/Jubeerathan), [LinkedIn](https://www.linkedin.com/in/jubeerathan-thevakumar-87b9b8255))
-
-    2.  Luxshan Thavarasa ([GitHub](https://github.com/Luxshan2000), [LinkedIn](https://www.linkedin.com/in/lux-thavarasa))
-    
-    3. Thanikan Sivatheepan ([GitHub](https://github.com/sthanikan2000), [LinkedIn](https://www.linkedin.com/in/sthanikan2000))
-
-**Useful Links**
-
-- GitHub: [Project Repository](https://github.com/aaivu/Multilingual-Speech-Emotion-Recognition)
-- Talk Forum: [Discussion Forum](https://github.com/aaivu/Multilingual-Speech-Emotion-Recognition/discussions/19)
+<div align="center">
+    <h1>🔊 Multilingual Speech Emotion Recognition (SER) Model</h1>
+<p>Multilingual Speech Emotion Recognition model trained primarily focused on <strong>Indian languages</strong>, designed to detect <strong>emotions</strong> from speech, enhancing <strong>call centers, sentiment analysis, and accessibility tools</strong>.</p>
+    <a href="LICENSE" style="text-decoration: none;"><img src="https://img.shields.io/github/license/your-repo/multilingual-ser" alt="License"></a>
+    <a href="#" style="text-decoration: none;"><img src="https://img.shields.io/badge/version-1.0-blue" alt="Version"></a>
+    <a href="https://arxiv.org/abs/xxxxx" style="text-decoration: none;"><img src="https://img.shields.io/badge/Research-Paper-red" alt="Paper"></a>
+    <a href="https://huggingface.co/your-model" style="text-decoration: none;"><img src="https://img.shields.io/badge/HuggingFace-Model-yellow?logo=huggingface" alt="Hugging Face"></a>
+    <a href="https://pypi.org/project/multilingual-ser/" style="text-decoration: none;"><img src="https://img.shields.io/pypi/v/multilingual-ser?color=green&label=PyPI" alt="PyPI"></a>
+    <a href="https://hub.docker.com/r/your-repo/multilingual-ser" style="text-decoration: none;"><img src="https://img.shields.io/badge/Docker-Ready-blue?logo=docker" alt="Docker"></a>
+</div>
 
 ---
 
-## Summary
-
-This project focuses on Multilingual Speech Emotion Recognition (SER), covering languages such as English, Chinese, German, French, and Italian. By leveraging diverse linguistic datasets, the goal is to develop a robust SER model capable of accurately detecting and classifying emotions across these languages.
-
-## Description
-
-The project involves implementing advanced machine learning techniques to achieve Multilingual SER. It includes data collection from diverse sources, preprocessing for language-specific nuances, and training models that can generalize across multiple languages. 
-
-<!-- 
-### Project Phases
-
-- **Data Collection**: Gather speech datasets in English, Chinese, German, French, and Italian.
-- **Preprocessing**: Normalize and preprocess data to account for linguistic variations.
-- **Model Training**: Implement and fine-tune SER models using multilingual techniques.
-- **Evaluation**: Assess model performance across different languages using standard metrics.
-
-### Diagrams
-
-Include architectural diagrams depicting data flow, preprocessing steps, and model architecture.
-
-### Approaches
-
-Utilize transfer learning, deep learning architectures tailored for multilingual applications, and ensemble methods for improved SER performance.
-
-## More References
-
-1. [Example Reference 1](https://example.com/reference1)
-2. [Example Reference 2](https://example.com/reference2) -->
+## 🛠 **Installation**
+### Using `pip`
+```sh
+pip install multilingual-ser
+```
 
 ---
 
-### License
+## 🔥 **Quick Start**
+### **Run Emotion Detection on an Audio File**
+```python
+from multilingual_ser.inference import predict_emotion
+emotion = predict_emotion("example.wav")
+print("Predicted Emotion:", emotion)
+```
 
-This project is licensed under the Apache License 2.0.
+---
 
-### Code of Conduct
+## 🎯 **Training Your Own Model**
+### **1️⃣ Preprocess Data**
+```sh
+python scripts/preprocess_data.py --dataset data/raw/
+```
 
-Please read our [code of conduct document here](https://github.com/your-project/code_of_conduct.md).
+### **2️⃣ Train the Model**
+```sh
+python src/training/train.py --config configs/train_config.yaml
+```
+
+### **3️⃣ Evaluate the Model**
+```sh
+python src/training/evaluate.py --checkpoint models/checkpoints/best_model.pth
+```
+
+---
+
+## 📡 **Deployment**
+### **Run as an API**
+```sh
+uvicorn deployment.api:app --host 0.0.0.0 --port 8000
+```
+Access API at: [`http://localhost:8000/docs`](http://localhost:8000/docs)  
+
+---
+
+## 🤝 **Contributing**
+We welcome contributions! Please check our [CONTRIBUTING.md](CONTRIBUTING.md) for details.  
+
+---
+
+## 📜 **License**
+This project is licensed under the **MIT License** – see the [LICENSE](LICENSE) file for details.  
+
+---
+
+## 📖 **References**
+- 🔗 **Research Paper:** [arXiv:xxxxx](https://arxiv.org/abs/xxxxx)  
+- 🤗 **Hugging Face Model:** [Hugging Face Link](https://huggingface.co/your-model)  
+- 📦 **PyPI Package:** [PyPI](https://pypi.org/project/multilingual-ser/)  
+- 📑 **Dataset Documentation:** [docs/dataset_guidelines.md](docs/dataset_guidelines.md)  
+
+---
