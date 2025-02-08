@@ -4,8 +4,8 @@ on:
   pull_request:
     branches:
       - main
-      - dev
       - master
+  workflow_dispatch:
 
 jobs:
   pull_request_checks:
@@ -28,8 +28,8 @@ jobs:
         run: |
           poetry install
 
-      - name: Check code formatting
-        run: poetry run make format-check
+      - name: Check code formatting (py/ and src/)
+        run: poetry run black --check py/ src/
 
-      - name: Lint code
-        run: poetry run make lint
+      - name: Lint code (py/ and src/)
+        run: poetry run flake8 py/ src/
