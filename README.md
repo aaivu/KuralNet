@@ -9,15 +9,15 @@
     <a href="https://hub.docker.com/r/your-repo/multilingual-ser" style="text-decoration: none;"><img src="https://img.shields.io/badge/Docker-Ready-blue?logo=docker" alt="Docker"></a>
 </div>
 
-## Key Features
+## 🚀 Key Features
 - <strong>Emotion Detection</strong>: Capable of detecting emotions from speech in multiple Indian languages.
 - <strong>Use Cases</strong>: Call centers, sentiment analysis, and accessibility tools.
 - <strong>Optimized Performance</strong>: Designed for real-time emotion analysis.
 
-## Purpose
+## 🎯 Purpose
 This model aims to enhance user experiences by detecting emotions from speech across multilingual datasets. The focus is to apply it in industries like customer service, where emotional tone plays a crucial role.
 
-## Project Structure
+## 📂 Project Structure
 ```
 multilingual-ser/
 │── py/                    # PyPI package (managed with Poetry)
@@ -74,7 +74,7 @@ multilingual-ser/
 │── CONTRIBUTING.md        # Contribution guidelines
 ```
 
-## Citation
+## 📜 Citation
 If you are using this model or research findings, please cite the following paper:
 ```
 @article{placeholder2024,
@@ -89,7 +89,7 @@ If you are using this model or research findings, please cite the following pape
 }
 ```
 
-## Contact
+## 📬 Contact
 <div style="width: 100%; overflow-x: auto;">
     <table style="width: 100%; text-align: left; border-collapse: collapse; margin-top: 20px;">
         <thead>
@@ -129,5 +129,5 @@ If you are using this model or research findings, please cite the following pape
     </table>
 </div>
 
-## Acknowledgment  
+## 🙏 Acknowledgment  
 I would like to thank Dr. Uthayasanker Thayasivam for his guidance as my supervisor, Braveenan Sritharan for his mentorship, and all the dataset owners for making their datasets available for us through open access or upon request. Your support has been invaluable.
