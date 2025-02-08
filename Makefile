@@ -1,4 +1,4 @@
-.PHONY: venv setup sync test lint format-check format add remove
+.PHONY: venv setup sync test lint format-check format add remove clear
 
 venv:
 	poetry shell
@@ -13,14 +13,13 @@ test:
 	poetry run pytest
 
 lint:
-	poetry run flake8
+	poetry run flake8 py/ src/
 
 format-check:
-	poetry run black --check . && poetry run isort --check .
+	poetry run black --check py/ src/ && poetry run isort --check py/ src/
 
 format:
-	poetry run black . && poetry run isort .
-
+	poetry run black py/ src/ && poetry run isort py/ src/
 
 clear:
 	@echo "Cleaning up..."
