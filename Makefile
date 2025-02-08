@@ -4,6 +4,7 @@ venv:
 	poetry shell
 
 setup:
+	pip install poetry
 	poetry install
 
 sync:
