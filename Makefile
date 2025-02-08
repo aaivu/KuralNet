@@ -1,4 +1,15 @@
-.PHONY: venv setup sync test lint format-check format add remove clear
+.PHONY: venv setup sync test lint format-check format add remove clear help
+
+help:
+	@echo "Available targets:"
+	@echo "  venv           - Activate the poetry virtual environment"
+	@echo "  setup          - Install poetry and dependencies"
+	@echo "  sync           - Install project dependencies"
+	@echo "  test           - Run tests using pytest"
+	@echo "  lint           - Run flake8 for linting"
+	@echo "  format-check   - Check code formatting using black and isort"
+	@echo "  format         - Format code using black and isort"
+	@echo "  clear          - Clean up temporary files like __pycache__ and .pytest_cache"
 
 venv:
 	poetry shell
