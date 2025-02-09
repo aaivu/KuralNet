@@ -20,17 +20,10 @@ This model aims to enhance user experiences by detecting emotions from speech ac
 ## 📂 Project Structure
 ```
 multilingual-ser/
-│── py/                    # PyPI package (managed with Poetry)
-│   ├── multilingual_ser/  # Package source code
-│   │   ├── __init__.py
-│   │   ├── main.py
-│   ├── pyproject.toml     # Poetry configuration
-│   ├── README.md          # Package description
-│
 │── data/                  # Datasets (organized by language)
 │   ├── processed/         # Preprocessed data (features, embeddings, etc.)
 │
-│── src/                   # Main source code for the project
+│── multilingual_speech_emotion_recognition/ # Main source code for the project
 │   ├── models/            # Model architectures
 │   │   ├── model.py
 │   │   ├── attention.py
@@ -64,7 +57,7 @@ multilingual-ser/
 │
 │── deployment/            # Deployment setup (API, web interface)
 │   ├── api/               # Flask/FastAPI for inference
-│   ├── frontend/          # Web UI (if applicable)
+│   ├── frontend/          # Web UI
 │   ├── docker/            # Docker setup for deployment
 │
 │── .gitignore             # Ignore unnecessary files
