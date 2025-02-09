@@ -4,28 +4,8 @@ setup(
     name='multilingual-speech-emotion-recognition',
     version='0.1.0',
     description='Multilingual Speech Emotion Recognition model...',
-    authors=[
-        {
-            "name": "Luxshan Thavarasa",
-            "email": "luxshan.20@cse.mrt.ac.lk",
-            "url": "https://www.linkedin.com/in/luxshan-thavarasa",  # Add LinkedIn URL
-        },
-        {
-            "name": "Jubeerathan Thevakumar",
-            "email": "jubeerathan.20@cse.mrt.ac.lk",
-            "url": "https://www.linkedin.com/in/jubeerathan-thevakumar",  # Add LinkedIn URL
-        },
-        {
-            "name": "Thanikan Sivatheepan",
-            "email": "thanikan.20@cse.mrt.ac.lk",
-            "url": "https://www.linkedin.com/in/thanikan-sivatheepan",  # Add LinkedIn URL
-        },
-        {
-            "name": "Uthayasanker Thayasivam",
-            "email": "uthayasanker.20@cse.mrt.ac.lk",
-            "url": "https://www.linkedin.com/in/uthayasanker-thayasivam",  # Add LinkedIn URL
-        },
-    ],
+    author='Luxshan Thavarasa, Jubeerathan Thevakumar, Thanikan Sivatheepan, Uthayasanker Thayasivam',
+    author_email='luxshan.20@cse.mrt.ac.lk, jubeerathan.20@cse.mrt.ac.lk, thanikan.20@cse.mrt.ac.lk, uthayasanker.20@cse.mrt.ac.lk',
     license='Apache-2.0',
     packages=find_packages(exclude=['tests*']),
     python_requires='>=3.10',
