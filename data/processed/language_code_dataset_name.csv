@@ -1,0 +1,11 @@
+filepath,emotion,gender,transcript
+audio_001.wav,happy,male,I'm feeling great today!
+audio_002.wav,sad,female,I just want to be alone.
+audio_003.wav,angry,male,Why did you do that?
+audio_004.wav,neutral,female,Let's meet at 5 PM.
+audio_005.wav,surprised,male,Wow! I didn't expect that!
+audio_006.wav,happy,female,This is the best day ever!
+audio_007.wav,sad,male,I miss my family so much.
+audio_008.wav,angry,female,This is completely unfair!
+audio_009.wav,neutral,male,I think we should wait and see.
+audio_010.wav,surprised,female,Oh my god! This is amazing!
