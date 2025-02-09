@@ -1,4 +1,4 @@
-name: Pull Request CI
+name: CI/CD
 
 on:
   pull_request:
@@ -21,18 +21,12 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v3
         with:
-          python-version: '3.12'
+          python-version: '3.11'
 
-      - name: Install Poetry
+      - name: Set up environment
         run: |
-          pip install poetry
+          sudo apt-get update && sudo apt-get install -y make
+          make setup
 
-      - name: Install dependencies
-        run: |
-          poetry install
-
-      - name: Check code formatting (py/ and src/)
-        run: poetry run black --check py/ src/
-
-      - name: Lint code (py/ and src/)
-        run: poetry run flake8 py/ src/
+      - name: Run lint checks
+        run: make lint
