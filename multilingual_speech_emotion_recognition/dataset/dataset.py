@@ -31,10 +31,10 @@ class _SpeechEmotionDataset(Dataset):
         self,
         audio_paths: Optional[List[str]] = None,
         emotions: List[int] = None,
-        gender: Optional[List[str]] = None,
+        gender: Optional[List[int]] = None,
         max_length: int = 16000,
         filepath: Optional[str] = None,
-        language: Optional[str] = None,
+        language: Optional[int] = None,
         dataset: Optional[str] = None,
     ) -> None:
         """
@@ -45,9 +45,9 @@ class _SpeechEmotionDataset(Dataset):
             emotions (List[int]): A list of emotion labels corresponding to the audio files.
             max_length (int): The maximum length of audio input, typically in number of samples.
             filepath (Optional[str]): Path to the directory where audio files are stored.
-            language (Optional[str]): The language of the audio data.
+            language (Optional[int]): The language ID of the audio data.
             dataset (Optional[str]): The name of the dataset.
-            gender (Optional[List[str]]): Gender of the speaker.
+            gender (Optional[List[int]]): Gender of the speaker.
         """
         self.audio_paths = audio_paths
         self.emotions = emotions
@@ -80,7 +80,6 @@ class _SpeechEmotionDataset(Dataset):
 
         metadata = {
             "filepath": self.filepath,
-            "language": self.language,
             "dataset": self.dataset,
         }
 
@@ -88,5 +87,9 @@ class _SpeechEmotionDataset(Dataset):
             self.emotions[idx], dtype=torch.long
         )
         features["gender"] = torch.tensor(self.gender[idx], dtype=torch.long)
+        features["language"] = torch.tensor(
+            [self.language] * len(self.emotions), dtype=torch.long
+        )
         features["metadata"] = metadata
+
         return features
