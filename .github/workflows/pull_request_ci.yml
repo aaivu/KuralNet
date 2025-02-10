@@ -13,6 +13,8 @@ on:
 jobs:
   pull_request_checks:
     runs-on: ubuntu-latest
+    if: contains(github.event.pull_request.labels.*.name, 'package_development')
+
 
     steps:
       - name: Checkout code
