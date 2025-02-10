@@ -41,6 +41,9 @@ format-check:
 format:
 	. .venv/bin/activate && black --line-length 79 multilingual_speech_emotion_recognition/ && isort multilingual_speech_emotion_recognition/
 
+test:
+	. .venv/bin/activate && pytest .
+
 build:
 	python setup.py sdist bdist_wheel
 	@echo "Package built."
