@@ -9,6 +9,7 @@ def test_dataset_initialization(sample_dataset: _SpeechEmotionDataset):
     assert isinstance(sample_dataset.gender, list), "Gender should be a list"
     assert len(sample_dataset.audio_paths) == len(sample_dataset.emotions), "Mismatch in audio paths and emotions"
 
+
 def test_getitem(sample_dataset: _SpeechEmotionDataset):
     
     sample = sample_dataset[0]
@@ -20,6 +21,7 @@ def test_getitem(sample_dataset: _SpeechEmotionDataset):
     assert isinstance(sample["emotion"], torch.Tensor), "Emotion should be a tensor"
     assert isinstance(sample["gender"], torch.Tensor), "Gender should be a tensor"
     assert isinstance(sample["language"], torch.Tensor), "Language should be a tensor"
+
 
 def test_sample_tensors(sample_dataset:_SpeechEmotionDataset):
 
