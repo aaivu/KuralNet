@@ -22,7 +22,7 @@ def test_getitem(sample_dataset: _SpeechEmotionDataset):
     assert isinstance(sample["language"], torch.Tensor), "Language should be a tensor"
 
 def test_sample_tensors(sample_dataset:_SpeechEmotionDataset):
-    """Test if the tensors have the correct data type."""
+
     sample = sample_dataset[0]
     assert sample["emotion"].dtype == torch.long, "Emotion tensor dtype should be torch.long"
     assert sample["gender"].dtype == torch.long, "Gender tensor dtype should be torch.long"
