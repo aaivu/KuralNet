@@ -29,7 +29,7 @@ def extract_mfcc(audio: np.ndarray, sr: int = 16000, n_mfcc: int = 13):
     Returns:
         np.ndarray: MFCC features.
     """
-    mfcc = librosa.feature.mfcc(y=audio, sr=sr, n_mfcc=n_mfcc)
+    mfcc = np.mean(librosa.feature.mfcc(y=audio, sr=sr, n_mfcc=n_mfcc).T, axis=0)
     return mfcc
 
 
