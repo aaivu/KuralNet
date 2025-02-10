@@ -1,6 +1,6 @@
 import numpy as np
-import torch
-from transformers import WhisperProcessor, WhisperForConditionalGeneration
+# import torch
+# from transformers import WhisperProcessor, WhisperForConditionalGeneration
 import librosa
 
 
