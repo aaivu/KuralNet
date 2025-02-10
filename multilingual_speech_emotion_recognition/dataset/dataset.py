@@ -1,92 +1,84 @@
-from typing import List, Optional
+import os
 
+import pandas as pd
 import torch
 from torch.utils.data import Dataset
+
+from multilingual_speech_emotion_recognition.dataset.encoder import (
+    emotion_encoder, gender_encoder, language_encoder)
 
 
 class _SpeechEmotionDataset(Dataset):
     """
     A custom dataset class for speech emotion recognition.
 
+    This class dynamically loads dataset metadata and extracts necessary attributes
+    such as gender and emotion labels.
+
     Args:
-        audio_paths (Optional[List[str]]): A list of file paths to the audio files.
-        emotions (List[int]): A list of emotion labels corresponding to the audio files.
-        max_length (int): The maximum length of audio input, typically in number of samples.
-        filepath (Optional[str]): Path to the directory where the audio files are stored.
-        language (Optional[str]): The language of the audio data.
-        dataset (Optional[str]): The name of the dataset (e.g., 'EmoDB', 'RAVDESS').
-        gender (Optional[str]): The gender of the speaker in the audio files.
+        dataset (str): The name of the dataset (e.g., 'EmoDB', 'RAVDESS').
+        language (str): The language of the dataset.
+        dataset_path (str): The directory where the meta is stored.
+        max_length (int, optional): Maximum length of the audio input in samples (default: 16000).
 
     Attributes:
-        audio_paths (Optional[List[str]]): List of file paths for the audio samples.
-        emotions (List[int]): Emotion labels for the audio samples.
-        max_length (int): Maximum length for audio samples.
-        filepath (Optional[str]): Path to the audio files.
-        language (Optional[str]): Language in which the audio is spoken.
-        dataset (Optional[str]): Dataset name.
-        gender (Optional[List[str]]): Gender of the speaker.
+        audio_paths (List[str]): List of audio file paths.
+        emotions (List[int]): Emotion labels.
+        gender (List[int]): Gender labels.
+        metadata (pd.DataFrame): Loaded dataset metadata.
     """
 
     def __init__(
         self,
-        audio_paths: Optional[List[str]] = None,
-        emotions: List[int] = None,
-        gender: Optional[List[str]] = None,
+        dataset: str,
+        language: str,
+        dataset_path: str,
         max_length: int = 16000,
-        filepath: Optional[str] = None,
-        language: Optional[str] = None,
-        dataset: Optional[str] = None,
     ) -> None:
         """
-        Initializes the _SpeechEmotionDataset class.
+        Initializes the dataset by loading metadata and extracting attributes.
 
         Args:
-            audio_paths (Optional[List[str]]): A list of paths to the audio files.
-            emotions (List[int]): A list of emotion labels corresponding to the audio files.
-            max_length (int): The maximum length of audio input, typically in number of samples.
-            filepath (Optional[str]): Path to the directory where audio files are stored.
-            language (Optional[str]): The language of the audio data.
-            dataset (Optional[str]): The name of the dataset.
-            gender (Optional[List[str]]): Gender of the speaker.
+            dataset (str): Dataset name.
+            language (str): Language of the dataset.
+            dataset_path (str): The directory where the meta is stored.
+            max_length (int): Maximum audio sample length.
         """
-        self.audio_paths = audio_paths
-        self.emotions = emotions
-        self.max_length = max_length
-        self.filepath = filepath
-        self.language = language
         self.dataset = dataset
-        self.gender = gender
+        self.language = language_encoder(language=language)
+        self.dataset_path = dataset_path
+        self.max_length = max_length
+
+        if not os.path.exists(dataset_path):
+            raise FileNotFoundError(f"Metadata file not found: {dataset_path}")
+
+        # load dataset
+        self.metadata = pd.read_csv(dataset_path)
+
+        # encode dataset
+        self.metadata["emotion"] = self.metadata["emotion"].apply(
+            emotion_encoder
+        )
+        self.metadata["gender"] = self.metadata["gender"].apply(gender_encoder)
+
+        self.audio_paths = self.metadata["audio_path"].tolist()
+        self.emotions = self.metadata["emotion"].tolist()
+        self.gender = self.metadata["gender"].tolist()
 
     def __len__(self) -> int:
-        """
-        Returns the number of samples in the dataset.
-
-        Returns:
-            int: The number of emotion labels in the dataset.
-        """
+        """Returns the number of samples in the dataset."""
         return len(self.emotions)
 
     def __getitem__(self, idx: int) -> dict:
-        """
-        Retrieves a sample from the dataset at the specified index.
-
-        Args:
-            idx (int): The index of the sample to retrieve.
-
-        Returns:
-            dict: A dictionary containing the emotion label and metadata.
-        """
-        features = {}
-
-        metadata = {
-            "filepath": self.filepath,
-            "language": self.language,
-            "dataset": self.dataset,
+        """Retrieves a sample from the dataset."""
+        features = {
+            "emotion": torch.tensor(self.emotions[idx], dtype=torch.long),
+            "gender": torch.tensor(self.gender[idx], dtype=torch.long),
+            "language": torch.tensor(self.language, dtype=torch.long),
+            "metadata": {
+                "dataset": self.dataset,
+                "language": self.language,
+                "dataset_path": self.dataset_path,
+            },
         }
-
-        features["emotion"] = torch.tensor(
-            self.emotions[idx], dtype=torch.long
-        )
-        features["gender"] = torch.tensor(self.gender[idx], dtype=torch.long)
-        features["metadata"] = metadata
         return features
