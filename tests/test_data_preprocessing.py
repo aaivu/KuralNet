@@ -5,7 +5,7 @@ from multilingual_speech_emotion_recognition.preprocessing.data_preprocessing im
     # extract_whisper_features
 
 # Test data: You can use a small audio file for testing
-TEST_AUDIO_FILE = "./test_audio_files/test_audio.wav"
+TEST_AUDIO_FILE = "test_audio.wav"
 
 
 def test_load_audio():
