@@ -2,6 +2,7 @@ import pytest
 import numpy as np
 from multilingual_speech_emotion_recognition.preprocessing.data_preprocessing import load_audio, extract_mfcc, \
     extract_melspectrogram, extract_chroma_stft, extract_rmse, extract_zcr, preprocess_data
+    # extract_whisper_features
 
 # Test data: You can use a small audio file for testing
 TEST_AUDIO_FILE = "./test_audio_files/test_audio.wav"
@@ -69,6 +70,17 @@ def test_extract_zcr():
     # Check if ZCR features are extracted correctly
     assert isinstance(zcr, np.ndarray)
     assert zcr.shape[0] == 1
+
+
+# def test_extract_whisper_features():
+#     # Test Whisper feature extraction
+#     sr = 16000
+#     audio = load_audio(TEST_AUDIO_FILE, sr=sr)
+#     whisper_features = extract_whisper_features(audio, sr=sr)
+#
+#     # Check if Whisper features are extracted correctly
+#     assert isinstance(whisper_features, np.ndarray)
+#     assert whisper_features.shape[0] > 0  # Check that the features are not empty
 
 
 def test_preprocess_data():
