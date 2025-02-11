@@ -9,7 +9,7 @@ from data_preprocessing import load_audio
 def validate_parameters(pitch_factor: float, speed_factor: float, noise_factor: float, silence_duration: float):
     """Validate augmentation parameters."""
     if not -2 <= pitch_factor <= 2:
-        raise ValueError("Pitch factor should be between -2 and 2 semitones") 
+        raise ValueError("Pitch factor should be between -2 and 2 semitones")
     if not 0.1 <= speed_factor <= 0.5:
         raise ValueError("Speed factor should be between 0.1 and 0.5")
     if not 0 <= noise_factor <= 0.1:
@@ -63,7 +63,6 @@ def add_noise(data, noise_factor=0.003):
     noise_data = data + noise_factor * noise
     return noise_data
 
-
 def add_pink_noise(data, noise_factor=0.003):
     """
     Add pink noise to an audio signal.
@@ -77,7 +76,7 @@ def add_pink_noise(data, noise_factor=0.003):
     """
 
     def pink_noise(length):
-        """	Generate pink noise.
+        """ Generate pink noise.
         Args:
             length (int): Length of the noise signal.
         Returns:
@@ -96,18 +95,18 @@ def add_pink_noise(data, noise_factor=0.003):
     return noise_data
 
 def add_silence(data, sample_rate, silence_duration=0.3):
-        """	Add silence to an audio signal.
-        Args:
-            data (np.ndarray): Audio signal.
-            sample_rate (int): Sampling rate.
-            silence_duration (float): Duration of the silence.
-        Returns:
-            np.ndarray: Audio signal with added silence.
-        """
+    """ Add silence to an audio signal.
+    Args:
+        data (np.ndarray): Audio signal.
+        sample_rate (int): Sampling rate.
+        silence_duration (float): Duration of the silence.
+    Returns:
+        np.ndarray: Audio signal with added silence.
+    """
 
-        silence = np.zeros(int(silence_duration * sample_rate))
-        start = np.random.randint(0, len(data))
-        return np.concatenate((data[:start], silence, data[start:]))
+    silence = np.zeros(int(silence_duration * sample_rate))
+    start = np.random.randint(0, len(data))
+    return np.concatenate((data[:start], silence, data[start:]))
 
 def combine_pitch_speed(data, sampling_rate, speed_factor, pitch_factor=0.2):
     """
@@ -268,7 +267,7 @@ def augment_data(
                 augmented_files.append(str(out_path))
                 
             except Exception as e:
-                print(f"Warning: Failed to apply {augmentation} for audio in {audio_path}: {e} ")
+                print(f"Warning: Failed to apply {augmentation} for audio in {audio_path}: {e}")
                 continue
         
         if not augmented_files:
