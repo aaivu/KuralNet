@@ -1,17 +1,18 @@
-import pytest
 import numpy as np
-from multilingual_speech_emotion_recognition.preprocessing.data_preprocessing import load_audio, extract_mfcc, \
-    extract_melspectrogram, extract_chroma_stft, extract_rmse, extract_zcr, preprocess_data
-    # extract_whisper_features
 
-# Test data: You can use a small audio file for testing
-TEST_AUDIO_FILE = "./test_data/test_audio.wav"
+from multilingual_speech_emotion_recognition.preprocessing.data_preprocessing import (
+    extract_chroma_stft, extract_melspectrogram, extract_mfcc, extract_rmse,
+    extract_zcr, load_audio, preprocess_data)
+from tests.conftest import TEST_AUDIO
+
+
+# extract_whisper_features
 
 
 def test_load_audio():
     # Test loading an audio file
     sr = 16000
-    audio = load_audio(TEST_AUDIO_FILE, sr=sr)
+    audio = load_audio(TEST_AUDIO, sr=sr)
 
     # Check if the audio is loaded correctly
     assert isinstance(audio, np.ndarray)
@@ -22,7 +23,7 @@ def test_load_audio():
 def test_extract_mfcc():
     # Test MFCC extraction
     sr = 16000
-    audio = load_audio(TEST_AUDIO_FILE, sr=sr)
+    audio = load_audio(TEST_AUDIO, sr=sr)
     mfcc = extract_mfcc(audio, sr=sr, n_mfcc=13)
 
     # Check if MFCC features are extracted correctly
@@ -33,7 +34,7 @@ def test_extract_mfcc():
 def test_extract_melspectrogram():
     # Test Mel-spectrogram extraction
     sr = 16000
-    audio = load_audio(TEST_AUDIO_FILE, sr=sr)
+    audio = load_audio(TEST_AUDIO, sr=sr)
     mel_spectrogram = extract_melspectrogram(audio, sr=sr)
 
     # Check if Mel-spectrogram features are extracted correctly
@@ -44,7 +45,7 @@ def test_extract_melspectrogram():
 def test_extract_chroma_stft():
     # Test Chroma STFT extraction
     sr = 16000
-    audio = load_audio(TEST_AUDIO_FILE, sr=sr)
+    audio = load_audio(TEST_AUDIO, sr=sr)
     chroma_stft = extract_chroma_stft(audio, sr=sr)
 
     # Check if Chroma STFT features are extracted correctly
@@ -54,7 +55,7 @@ def test_extract_chroma_stft():
 
 def test_extract_rmse():
     # Test RMSE extraction
-    audio = load_audio(TEST_AUDIO_FILE)
+    audio = load_audio(TEST_AUDIO)
     rmse = extract_rmse(audio)
 
     # Check if RMSE features are extracted correctly
@@ -64,7 +65,7 @@ def test_extract_rmse():
 
 def test_extract_zcr():
     # Test ZCR extraction
-    audio = load_audio(TEST_AUDIO_FILE)
+    audio = load_audio(TEST_AUDIO)
     zcr = extract_zcr(audio)
 
     # Check if ZCR features are extracted correctly
@@ -86,7 +87,7 @@ def test_extract_zcr():
 def test_preprocess_data():
     # Test preprocessing with all features
     required_features = ["mfcc", "mel_spectrogram", "chroma_stft", "rmse", "zcr"]
-    features = preprocess_data(TEST_AUDIO_FILE, required_features=required_features)
+    features = preprocess_data(TEST_AUDIO, required_features=required_features)
 
     # Check if the features are concatenated correctly
     assert isinstance(features, np.ndarray)
@@ -94,13 +95,8 @@ def test_preprocess_data():
 
     # Test preprocessing with a subset of features
     required_features = ["mfcc", "zcr"]
-    features = preprocess_data(TEST_AUDIO_FILE, required_features=required_features)
+    features = preprocess_data(TEST_AUDIO, required_features=required_features)
 
     # Check if only the specified features are extracted
     assert isinstance(features, np.ndarray)
     assert features.shape[0] == 13 + 1  # 13 MFCC + 1 ZCR
-
-
-# Run the tests
-if __name__ == "__main__":
-    pytest.main()

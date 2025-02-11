@@ -1,8 +1,7 @@
-import numpy as np
 # import torch
 # from transformers import WhisperProcessor, WhisperForConditionalGeneration
 import librosa
-
+import numpy as np
 
 # def extract_whisper_features(audio: np.ndarray, sr: int = 16000):
 #     """
@@ -121,9 +120,11 @@ def extract_zcr(audio: np.ndarray):
     return zcr
 
 
-def preprocess_data(file_path: str,
-                    sr: int = 16000,
-                    required_features: list = ["mfcc", "mel_spectrogram", "chroma_stft", "rmse", "zcr"]):
+def preprocess_data(
+    file_path: str,
+    sr: int = 16000,
+    required_features: list = ["mfcc", "mel_spectrogram", "chroma_stft", "rmse", "zcr"],
+):
     """
     Preprocess an audio file to extract features.
 

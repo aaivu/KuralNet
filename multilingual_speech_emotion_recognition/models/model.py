@@ -11,9 +11,7 @@ class SpeechEmotionModel(nn.Module):
         output_dim (int): Number of emotion classes.
     """
 
-    def __init__(
-        self, input_dim: int = 13, hidden_dim: int = 64, output_dim: int = 7
-    ):
+    def __init__(self, input_dim: int = 13, hidden_dim: int = 64, output_dim: int = 7):
         super(SpeechEmotionModel, self).__init__()
 
         self.lstm = nn.LSTM(input_dim, hidden_dim, batch_first=True)
