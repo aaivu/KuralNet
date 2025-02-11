@@ -2,21 +2,6 @@ import librosa
 import numpy as np
 
 
-def load_audio(file_path: str, sr: int = 16000):
-    """
-    Load an audio file and resample to the target sample rate.
-
-    Args:
-        file_path (str): Path to the audio file.
-        sr (int): Target sample rate.
-
-    Returns:
-        np.ndarray: Loaded audio waveform.
-    """
-    audio, _ = librosa.load(file_path, sr=sr)
-    return audio
-
-
 def extract_mfcc(audio: np.ndarray, sr: int = 16000, n_mfcc: int = 13):
     """
     Extract MFCC features from an audio signal.
