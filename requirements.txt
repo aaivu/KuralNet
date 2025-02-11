@@ -2,3 +2,6 @@ torch>=2.6.0,<3.0.0
 librosa==0.10.2.post1
 pandas
 pydub
+numpy~=2.1.3
+scikit-learn~=1.6.1
+transformers~=4.48.3

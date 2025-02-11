@@ -1,8 +1,10 @@
 import pytest
-import pandas as pd
-from multilingual_speech_emotion_recognition.dataset.dataset import _SpeechEmotionDataset
 
-TEST_CSV = "tests/en_iemocap.csv"
+from multilingual_speech_emotion_recognition.dataset.dataset import \
+    _SpeechEmotionDataset
+
+TEST_CSV = "tests/test_data/en_iemocap.csv"
+TEST_AUDIO = "tests/test_data/test_audio.wav"
 
 
 @pytest.fixture
