@@ -1,99 +1,13 @@
 import logging
-from typing import List, Optional
+import os
 
-import torch
-from torch.utils.data import Dataset
-
-
-class _SpeechEmotionDataset(Dataset):
-    """
-    A custom dataset class for speech emotion recognition.
-
-    Args:
-        audio_paths (Optional[List[str]]): A list of file paths to the audio files.
-        emotions (List[int]): A list of emotion labels corresponding to the audio files.
-        max_length (int): The maximum length of audio input, typically in number of samples.
-        filepath (Optional[str]): Path to the directory where the audio files are stored.
-        language (Optional[str]): The language of the audio data.
-        dataset (Optional[str]): The name of the dataset (e.g., 'EmoDB', 'RAVDESS').
-        gender (Optional[str]): The gender of the speaker in the audio files.
-
-    Attributes:
-        audio_paths (Optional[List[str]]): List of file paths for the audio samples.
-        emotions (List[int]): Emotion labels for the audio samples.
-        max_length (int): Maximum length for audio samples.
-        filepath (Optional[str]): Path to the audio files.
-        language (Optional[str]): Language in which the audio is spoken.
-        dataset (Optional[str]): Dataset name.
-        gender (Optional[List[str]]): Gender of the speaker.
-    """
-
-    def __init__(
-        self,
-        audio_paths: Optional[List[str]] = None,
-        emotions: List[int] = None,
-        gender: Optional[List[str]] = None,
-        max_length: int = 16000,
-        filepath: Optional[str] = None,
-        language: Optional[str] = None,
-        dataset: Optional[str] = None,
-    ) -> None:
-        """
-        Initializes the _SpeechEmotionDataset class.
-
-        Args:
-            audio_paths (Optional[List[str]]): A list of paths to the audio files.
-            emotions (List[int]): A list of emotion labels corresponding to the audio files.
-            max_length (int): The maximum length of audio input, typically in number of samples.
-            filepath (Optional[str]): Path to the directory where audio files are stored.
-            language (Optional[str]): The language of the audio data.
-            dataset (Optional[str]): The name of the dataset.
-            gender (Optional[List[str]]): Gender of the speaker.
-        """
-        self.audio_paths = audio_paths
-        self.emotions = emotions
-        self.max_length = max_length
-        self.filepath = filepath
-        self.language = language
-        self.dataset = dataset
-        self.gender = gender
-
-    def __len__(self) -> int:
-        """
-        Returns the number of samples in the dataset.
-
-        Returns:
-            int: The number of emotion labels in the dataset.
-        """
-        return len(self.emotions)
-
-    def __getitem__(self, idx: int) -> dict:
-        """
-        Retrieves a sample from the dataset at the specified index.
-
-        Args:
-            idx (int): The index of the sample to retrieve.
-
-        Returns:
-            dict: A dictionary containing the emotion label and metadata.
-        """
-        features = {}
-
-        metadata = {
-            "filepath": self.filepath,
-            "language": self.language,
-            "dataset": self.dataset,
-        }
-
-        features["emotion"] = torch.tensor(
-            self.emotions[idx], dtype=torch.long
-        )
-        features["gender"] = torch.tensor(self.gender[idx], dtype=torch.long)
-        features["metadata"] = metadata
-        return features
+import librosa
+import pandas as pd
 
 
-def _get_logger(name: str, level: int = logging.INFO) -> logging.Logger:
+def _get_logger(
+    name: str = __name__, level: int = logging.INFO
+) -> logging.Logger:
     """
     Returns a configured logger.
 
@@ -114,5 +28,48 @@ def _get_logger(name: str, level: int = logging.INFO) -> logging.Logger:
         "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
     )
     ch.setFormatter(formatter)
-    logger.addHandler(ch)
+
+    if not logger.handlers:
+        logger.addHandler(ch)
+
     return logger
+
+
+def load_csv(path: str) -> pd.DataFrame:
+    """
+    Loads a CSV file into a pandas DataFrame.
+
+    Args:
+        path (str): The path to the CSV file.
+
+    Returns:
+        pd.DataFrame: The loaded DataFrame.
+
+    Raises:
+        ValueError: If the file is not found.
+    """
+    if not os.path.exists(path):
+        raise ValueError(f"{path} not found")
+
+    return pd.read_csv(path)
+
+
+def load_audio(path: str, sr: float = 22050) -> tuple:
+    """
+    Loads an audio file using librosa.
+
+    Args:
+        path (str): The path to the audio file.
+        sr (float, optional): The target sampling rate. Defaults to 22050.
+
+    Returns:
+        tuple: A tuple containing the audio time series and the sampling rate.
+
+    Raises:
+        ValueError: If the file is not found.
+    """
+    if not os.path.exists(path):
+        raise ValueError(f"{path} not found")
+
+    audio, sample_rate = librosa.load(path, sr=sr)
+    return audio, sample_rate
