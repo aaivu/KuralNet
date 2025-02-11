@@ -3,8 +3,6 @@ from multilingual_speech_emotion_recognition.utils.dataset_loader import get_dat
 import pytest
 from multilingual_speech_emotion_recognition.utils.utils import _get_logger,load_audio,load_csv
 import librosa
-import os
-from io import StringIO
 import logging
 import pandas as pd
 
