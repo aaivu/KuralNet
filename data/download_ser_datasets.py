@@ -14,14 +14,16 @@ logger = _get_logger(name=__name__)
 datasets = {dataset.value.name: dataset.value.path for dataset in DATASET}
 
 
-def download_and_extract(name, dataset):
+def download_and_extract(name: str, dataset: str):
     """Downloads and extracts a single dataset."""
     logger.info(f"Downloading {name} dataset...")
-    dataset_zip = f"SER_Datasets/{name}.zip"
 
     kaggle.api.dataset_download_files(
         dataset, path="SER_Datasets", unzip=False
     )
+
+    dataset_name = dataset.split("/")[-1]
+    dataset_zip = f"SER_Datasets/{dataset_name}.zip"
 
     with zipfile.ZipFile(dataset_zip, "r") as zip_ref:
         zip_ref.extractall(f"SER_Datasets/{name}")

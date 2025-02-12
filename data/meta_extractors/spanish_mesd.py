@@ -1,7 +1,7 @@
 import logging
 import os
 
-from dataset_processor import process_dataset
+from data.meta_extractors.dataset_processor import process_dataset
 
 from data.constant import DATASET, EMOTION, SELECTED_EMOTIONS
 
@@ -31,9 +31,9 @@ def process_mesd_files(dataset_path, emotion_map, selected_emotions):
 
 if __name__ == "__main__":
     process_dataset(
-        dataset_path=DATASET.MESD.path,
-        language_code=DATASET.MESD.language,
-        dataset_name=DATASET.MESD.name,
+        dataset_path=DATASET.MESD.value.path,
+        language_code=DATASET.MESD.value.language,
+        dataset_name=DATASET.MESD.value.name,
         emotion_map=EMOTION_MAP,
         selected_emotions=SELECTED_EMOTIONS,
         file_processor=process_mesd_files,

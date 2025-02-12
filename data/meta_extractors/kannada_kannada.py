@@ -1,7 +1,7 @@
 import logging
 import os
 
-from dataset_processor import process_dataset
+from data.meta_extractors.dataset_processor import process_dataset
 
 from data.constant import DATASET, EMOTION, SELECTED_EMOTIONS
 

@@ -1,11 +1,11 @@
 import logging
 import os
 
-from dataset_processor import process_dataset
+from data.meta_extractors.dataset_processor import process_dataset
 
 from data.constant import DATASET, EMOTION, SELECTED_EMOTIONS
 
-URUDU_DATASET = DATASET.URUDU_DATASET.value
+URUDU_DATASET = DATASET.URDU_DATASET.value
 EMOTION_MAP = {
     "Angry": EMOTION.ANGER.value,
     "Happy": EMOTION.HAPPINESS.value,
