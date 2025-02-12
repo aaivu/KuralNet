@@ -20,7 +20,9 @@ EMOTION_MAP = {
 
 
 def process_cafe_files(
-    dataset_path: str, emotion_map: Dict[str, str], selected_emotions: List[str]
+    dataset_path: str,
+    emotion_map: Dict[str, str],
+    selected_emotions: List[str],
 ) -> List[List[str]]:
     data = []
     dataset_path = Path(dataset_path)
@@ -47,7 +49,9 @@ def process_cafe_files(
                             file_path = str(directory_path / filename)
                             data.append([emotion, file_path])
                     except (KeyError, IndexError) as e:
-                        logging.warning(f"Error processing file {filename}: {str(e)}")
+                        logging.warning(
+                            f"Error processing file {filename}: {str(e)}"
+                        )
                         continue
 
     except Exception as e:

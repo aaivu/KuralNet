@@ -39,4 +39,6 @@ def process_dataset(
     df = pd.DataFrame(data, columns=["emotion", "audio_path"])
     output_file = f"{language_code}_{dataset_name}.csv"
     df.to_csv(output_file, index=False)
-    logging.info(f"Successfully processed {len(data)} files and saved to {output_file}")
+    logging.info(
+        f"Successfully processed {len(data)} files and saved to {output_file}"
+    )

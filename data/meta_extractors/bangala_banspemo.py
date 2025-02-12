@@ -26,7 +26,9 @@ def process_bangla_files(dataset_path, emotion_map, selected_emotions):
             try:
                 emotion = emotion_map[emo_code]
             except KeyError:
-                logging.warning(f"Emotion code {emo_code} not found in emotion_map")
+                logging.warning(
+                    f"Emotion code {emo_code} not found in emotion_map"
+                )
                 continue
 
             if emotion in selected_emotions:

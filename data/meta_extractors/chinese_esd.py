@@ -40,7 +40,9 @@ def process_esd_files(dataset_path, emotion_map, selected_emotions):
                 continue
             if emotion not in selected_emotions:
                 continue
-            path = os.path.join(dir_path, dir)  # path: dataset_path + actor + emotion
+            path = os.path.join(
+                dir_path, dir
+            )  # path: dataset_path + actor + emotion
             for filename in os.listdir(path):
                 if filename.endswith(".wav"):
                     file_path = os.path.join(path, filename)

@@ -64,7 +64,9 @@ class DATASET(Enum):
         path="thanikansivatheepan/bangla-lang-ser-dataset/BANSpEmo Dataset/",
     )
     CAFE = Dataset(
-        name="CaFE", language=LANGUAGE.FRENCH.value, path="jubeerathan/cafe-dataset"
+        name="CaFE",
+        language=LANGUAGE.FRENCH.value,
+        path="jubeerathan/cafe-dataset",
     )
     EMODB = Dataset(
         name="EmoDB",

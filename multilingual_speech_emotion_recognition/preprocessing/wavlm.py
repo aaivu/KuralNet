@@ -8,11 +8,15 @@ MODEL_NAME = "microsoft/wavlm-base-plus"
 
 class WavLMModelExtractor:
     def __init__(self, model_name: str = MODEL_NAME):
-        self.feature_extractor = AutoFeatureExtractor.from_pretrained(model_name)
+        self.feature_extractor = AutoFeatureExtractor.from_pretrained(
+            model_name
+        )
         self.model = WavLMModel.from_pretrained(model_name)
         self.model.eval()
 
-    def extract_features(self, audio: np.ndarray, sr: int = 16000) -> np.ndarray:
+    def extract_features(
+        self, audio: np.ndarray, sr: int = 16000
+    ) -> np.ndarray:
         """
         Extracts features from the last hidden layer of the WavLM encoder.
 
@@ -23,7 +27,9 @@ class WavLMModelExtractor:
         Returns:
             np.ndarray: Array of features with shape (SeqLen, HiddenDim).
         """
-        inputs = self.feature_extractor(audio, sampling_rate=sr, return_tensors="pt")
+        inputs = self.feature_extractor(
+            audio, sampling_rate=sr, return_tensors="pt"
+        )
         input_values = inputs.input_values
 
         with torch.no_grad():
