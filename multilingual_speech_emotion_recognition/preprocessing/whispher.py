@@ -1,3 +1,4 @@
+import librosa
 import numpy as np
 import torch
 from transformers import WhisperModel, WhisperProcessor
@@ -30,27 +31,27 @@ class WhisperFeatureExtractor:
         Returns:
             np.ndarray: Features from the last encoder hidden layer (SeqLen, HiddenDim).
         """
-        # Convert audio to log-Mel spectrogram features
+        # convert audio to log-Mel spectrogram features
         input_features = self.processor.feature_extractor(
             audio, sampling_rate=sr, return_tensors="pt"
         ).input_features
 
-        # Forward pass through Whisper encoder (no decoder needed)
         with torch.no_grad():
             encoder_outputs = self.model.encoder(
                 input_features, output_hidden_states=True
             )
 
-        # Extract last hidden layer (Tensor -> NumPy)
         last_hidden_state = (
             encoder_outputs.hidden_states[-1].squeeze(0).cpu().numpy()
-        )  # Shape: (SeqLen, HiddenDim)
+        )
 
-        return last_hidden_state  # (SeqLen, 1280) for whisper-large
+        return last_hidden_state
 
 
-# Example usage:
-# extractor = WhisperFeatureExtractor()
-# audio_path = "test_audio.wav"
-# audio, sr = librosa.load(audio_path, sr=16000)
-# features = extractor.extract_features(audio)
+if __name__ == "__main__":
+    extractor = WhisperFeatureExtractor()
+    audio_path = "./tests/test_data/test_audio.wav"
+    audio, sr = librosa.load(audio_path, sr=16000)
+    features = extractor.extract_features(audio)
+
+    assert features is not None

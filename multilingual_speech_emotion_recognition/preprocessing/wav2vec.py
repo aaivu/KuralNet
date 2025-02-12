@@ -1,9 +1,9 @@
+import librosa
 import numpy as np
 import torch
 from transformers import Wav2Vec2Model, Wav2Vec2Processor
 
-# Load Wav2Vec2 processor and model
-MODEL_NAME = "facebook/wav2vec2-base"  # Can be replaced with another variant
+MODEL_NAME = "facebook/wav2vec2-base"
 
 
 class Wav2Vec2FeatureExtractor:
@@ -25,25 +25,23 @@ class Wav2Vec2FeatureExtractor:
         Returns:
             np.ndarray: Features from the last encoder hidden layer (SeqLen, HiddenDim).
         """
-        # Process audio input
+
         input_values = self.processor(
             audio, sampling_rate=sr, return_tensors="pt"
         ).input_values
 
-        # Forward pass through Wav2Vec2 encoder
         with torch.no_grad():
             outputs = self.model(input_values, output_hidden_states=True)
 
-        # Extract last hidden layer (Tensor -> NumPy)
-        last_hidden_state = (
-            outputs.hidden_states[-1].squeeze(0).cpu().numpy()
-        )  # Shape: (SeqLen, HiddenDim)
+        last_hidden_state = outputs.hidden_states[-1].squeeze(0).cpu().numpy()
 
-        return last_hidden_state  # Expected: (SeqLen, 1024) for wav2vec2-large-960h
+        return last_hidden_state
 
 
-# Example Usage:
-# extractor = Wav2Vec2FeatureExtractor()
-# audio_path = "test_audio.wav"
-# audio, sr = librosa.load(audio_path, sr=16000)
-# features = extractor.extract_features(audio)
+if __name__ == "__main__":
+    extractor = Wav2Vec2FeatureExtractor()
+    audio_path = "./tests/test_data/test_audio.wav"
+    audio, sr = librosa.load(audio_path, sr=16000)
+    features = extractor.extract_features(audio)
+
+    assert features is not None
