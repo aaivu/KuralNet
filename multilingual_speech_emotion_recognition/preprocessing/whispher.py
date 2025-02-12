@@ -1,6 +1,6 @@
-import torch
 import numpy as np
-from transformers import WhisperProcessor, WhisperModel
+import torch
+from transformers import WhisperModel, WhisperProcessor
 
 MODEL_NAME = "openai/whisper-small"
 
@@ -17,7 +17,9 @@ class WhisperFeatureExtractor:
         self.model = WhisperModel.from_pretrained(model_name)
         self.model.eval()
 
-    def extract_features(self, audio: np.ndarray, sr: int = 16000) -> np.ndarray:
+    def extract_features(
+        self, audio: np.ndarray, sr: int = 16000
+    ) -> np.ndarray:
         """
         Extracts last hidden layer features from Whisper encoder.
 
@@ -29,16 +31,23 @@ class WhisperFeatureExtractor:
             np.ndarray: Features from the last encoder hidden layer (SeqLen, HiddenDim).
         """
         # Convert audio to log-Mel spectrogram features
-        input_features = self.processor.feature_extractor(audio, sampling_rate=sr, return_tensors="pt").input_features
+        input_features = self.processor.feature_extractor(
+            audio, sampling_rate=sr, return_tensors="pt"
+        ).input_features
 
         # Forward pass through Whisper encoder (no decoder needed)
         with torch.no_grad():
-            encoder_outputs = self.model.encoder(input_features, output_hidden_states=True)
+            encoder_outputs = self.model.encoder(
+                input_features, output_hidden_states=True
+            )
 
         # Extract last hidden layer (Tensor -> NumPy)
-        last_hidden_state = encoder_outputs.hidden_states[-1].squeeze(0).cpu().numpy()  # Shape: (SeqLen, HiddenDim)
+        last_hidden_state = (
+            encoder_outputs.hidden_states[-1].squeeze(0).cpu().numpy()
+        )  # Shape: (SeqLen, HiddenDim)
 
         return last_hidden_state  # (SeqLen, 1280) for whisper-large
+
 
 # Example usage:
 # extractor = WhisperFeatureExtractor()
