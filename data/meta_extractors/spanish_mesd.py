@@ -1,8 +1,9 @@
-import os
 import logging
-from dataset_processor import process_dataset
-from data.constant import DATASET, EMOTION, SELECTED_EMOTIONS
+import os
 
+from dataset_processor import process_dataset
+
+from data.constant import DATASET, EMOTION, SELECTED_EMOTIONS
 
 MESD = DATASET.MESD.value
 EMOTION_MAP = {
@@ -11,13 +12,14 @@ EMOTION_MAP = {
     "Fear: ": EMOTION.FEAR.value,
     "Happiness: ": EMOTION.HAPPINESS.value,
     "Neutral: ": EMOTION.NEUTRAL.value,
-    "Sadness: ": EMOTION.SADNESS.value
+    "Sadness: ": EMOTION.SADNESS.value,
 }
+
 
 def process_mesd_files(dataset_path, emotion_map, selected_emotions):
     data = []
     for file_name in os.listdir(dataset_path):
-        emotion = emotion_map.get(file_name.split('_')[0])
+        emotion = emotion_map.get(file_name.split("_")[0])
         if not emotion:
             logging.warning(f"Emotion not found for {file_name}")
             continue
@@ -26,13 +28,13 @@ def process_mesd_files(dataset_path, emotion_map, selected_emotions):
             data.append([emotion, dir_path])
     return data
 
-if __name__ == "__main__":     
+
+if __name__ == "__main__":
     process_dataset(
         dataset_path=DATASET.MESD.path,
         language_code=DATASET.MESD.language,
         dataset_name=DATASET.MESD.name,
         emotion_map=EMOTION_MAP,
         selected_emotions=SELECTED_EMOTIONS,
-        file_processor=process_mesd_files
+        file_processor=process_mesd_files,
     )
-

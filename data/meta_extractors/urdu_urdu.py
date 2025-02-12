@@ -1,20 +1,22 @@
-import os
 import logging
-from dataset_processor import process_dataset
-from data.constant import DATASET, EMOTION, SELECTED_EMOTIONS
+import os
 
+from dataset_processor import process_dataset
+
+from data.constant import DATASET, EMOTION, SELECTED_EMOTIONS
 
 URUDU_DATASET = DATASET.URUDU_DATASET.value
 EMOTION_MAP = {
     "Angry": EMOTION.ANGER.value,
     "Happy": EMOTION.HAPPINESS.value,
     "Neutral": EMOTION.NEUTRAL.value,
-    "Sad": EMOTION.SADNESS.value
+    "Sad": EMOTION.SADNESS.value,
 }
+
 
 def process_urudu_files(dataset_path, emotion_map, selected_emotions):
     data = []
-    dir_list = os.listdir(dataset_path) # dir_list: emotion names
+    dir_list = os.listdir(dataset_path)  # dir_list: emotion names
     for dir in dir_list:
         emotion = emotion_map.get(dir)
         if not emotion:
@@ -36,5 +38,5 @@ if __name__ == "__main__":
         dataset_name=URUDU_DATASET.name,
         emotion_map=EMOTION_MAP,
         selected_emotions=SELECTED_EMOTIONS,
-        file_processor=process_urudu_files
+        file_processor=process_urudu_files,
     )

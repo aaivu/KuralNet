@@ -1,8 +1,9 @@
-import os
 import logging
-from dataset_processor import process_dataset
-from data.constant import DATASET, EMOTION, SELECTED_EMOTIONS
+import os
 
+from dataset_processor import process_dataset
+
+from data.constant import DATASET, EMOTION, SELECTED_EMOTIONS
 
 EMOVO = DATASET.EMOVO.value
 EMOTION_MAP = {
@@ -12,8 +13,9 @@ EMOTION_MAP = {
     "pau": EMOTION.FEAR.value,
     "rab": EMOTION.ANGER.value,
     "sor": EMOTION.SURPRISE.value,
-    "tri": EMOTION.SADNESS.value
+    "tri": EMOTION.SADNESS.value,
 }
+
 
 def process_emovo_files(dataset_path, emotion_map, selected_emotions):
     data = []
@@ -22,7 +24,7 @@ def process_emovo_files(dataset_path, emotion_map, selected_emotions):
             continue
         for filename in os.listdir(os.path.join(dataset_path, directory)):
             if filename.endswith(".wav"):
-                emo_abb = filename.split('-')[0]
+                emo_abb = filename.split("-")[0]
                 emotion = emotion_map.get(emo_abb)
                 if not emotion:
                     logging.warning(f"Emotion not found for {filename}")
@@ -32,6 +34,7 @@ def process_emovo_files(dataset_path, emotion_map, selected_emotions):
                     data.append([emotion, file_path])
     return data
 
+
 if __name__ == "__main__":
     process_dataset(
         dataset_path=EMOVO.path,
@@ -39,5 +42,5 @@ if __name__ == "__main__":
         dataset_name=EMOVO.name,
         emotion_map=EMOTION_MAP,
         selected_emotions=SELECTED_EMOTIONS,
-        file_processor=process_emovo_files
+        file_processor=process_emovo_files,
     )
