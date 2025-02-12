@@ -1,46 +1,53 @@
 import logging
 import os
-
 from dataset_processor import process_dataset
+from data.constant import DATASET, EMOTION, SELECTED_EMOTIONS
 
+ESD_CHINESE = DATASET.ESD_CHINESE.value
+EMOTION_MAP = {
+    "Angry": EMOTION.ANGER.value,
+    "Happy": EMOTION.HAPPINESS.value,
+    "Neutral": EMOTION.NEUTRAL.value,
+    "Sad": EMOTION.SADNESS.value,
+    "Surprise": EMOTION.SURPRISE.value
+}
 
 def process_esd_files(dataset_path, emotion_map, selected_emotions):
+    # TODO: Refactor this function according to new format
     data = []
     dir_list = os.listdir(dataset_path)
     if '.DS_Store' in dir_list:
         dir_list.remove('.DS_Store')
     dir_list.sort()
-    dir_list = dir_list[:10]
+    dir_list = dir_list[:10] # Limiting to first 10 folders (chinese actors)
 
-    for directory in dir_list:
-        dir_path = os.path.join(dataset_path, directory)
-        sub_dir = os.listdir(dir_path)
+    for directory in dir_list: # directory: actor
+        dir_path = os.path.join(dataset_path, directory) # dir_path: dataset_path + actor
+        sub_dir = os.listdir(dir_path) # sub_dir: emotions list
         if '.DS_Store' in sub_dir:
             sub_dir.remove('.DS_Store')
-        for dir in sub_dir:
+        for dir in sub_dir: # dir: emotion
             if dir.endswith(".txt"):
                 continue
-            directory_path = os.path.join(dir_path, dir)
-            if os.path.isdir(directory_path):
-                for filename in os.listdir(directory_path):
-                    if filename.endswith(".wav"):
-                        emo_abb = filename.split('_')[1].split('.')[0][-2:]
-                        if (21 <= int(emo_abb) <= 50):
-                            emotion = dir
-                            file_path = os.path.join(directory_path, filename)
-                            if emotion in selected_emotions:
-                                data.append([emotion, file_path])
+            emotion = EMOTION_MAP.get(dir)
+            if not emotion:
+                logging.warning(f"Emotion not found for {dir}")
+                continue
+            if emotion not in selected_emotions:
+                continue
+            path = os.path.join(dir_path, dir) # path: dataset_path + actor + emotion
+            for filename in os.listdir(path):
+                if filename.endswith(".wav"):
+                    file_path = os.path.join(path, filename)
+                    data.append([emotion, file_path])
     return data
 
 if __name__ == "__main__":
-    selected_emotions = ['Fear', 'Sadness', 'Happiness', 'Anger', 'Neutral']
-    dataset_path = "/content/drive/MyDrive/Dataset/Datasets/ESD/Emotion Speech Dataset/"
-
     process_dataset(
-        dataset_path=dataset_path,
-        language_code="zh",
-        dataset_name="esd",
-        emotion_map={},  # ESD doesn't need mapping
-        selected_emotions=selected_emotions,
+        dataset_path=ESD_CHINESE.path,
+        language_code=ESD_CHINESE.language,
+        dataset_name=ESD_CHINESE.name,
+        emotion_map=EMOTION_MAP,
+        selected_emotions=SELECTED_EMOTIONS,
         file_processor=process_esd_files
     )

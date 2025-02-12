@@ -1,8 +1,18 @@
-import logging
 import os
-
+import logging
 from dataset_processor import process_dataset
+from data.constant import DATASET, EMOTION, SELECTED_EMOTIONS
 
+
+KANNADA_DATASET = DATASET.KANNADA_DATASET.value
+EMOTION_MAP = {
+    1: EMOTION.ANGER.value,
+    2: EMOTION.SADNESS.value,
+    3: EMOTION.SURPRISE.value,
+    4: EMOTION.HAPPINESS.value,
+    5: EMOTION.FEAR.value,
+    6: EMOTION.NEUTRAL.value
+}
 
 def process_kannada_files(dataset_path, emotion_map, selected_emotions):
     data = []
@@ -21,23 +31,12 @@ def process_kannada_files(dataset_path, emotion_map, selected_emotions):
     return data
 
 if __name__ == "__main__":
-    selected_emotions = ['Fear', 'Sadness', 'Happiness', 'Anger', 'Neutral']
-    dataset_path = "/kaggle/input/kannada-emo-speech-dataset/"
-    emotion_map = {
-        1: "Anger",
-        2: "Sadness",
-        3: "Surprise",
-        4: "Happiness",
-        5: "Fear",
-        6: "Neutral"
-    }
-
     process_dataset(
-        dataset_path=dataset_path,
-        language_code="kn",
-        dataset_name="kannada",
-        emotion_map=emotion_map,
-        selected_emotions=selected_emotions,
+        dataset_path=KANNADA_DATASET.path,
+        language_code=KANNADA_DATASET.language,
+        dataset_name=KANNADA_DATASET.name,
+        emotion_map=EMOTION_MAP,
+        selected_emotions=SELECTED_EMOTIONS,
         file_processor=process_kannada_files
     )
 

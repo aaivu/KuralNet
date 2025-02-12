@@ -1,9 +1,16 @@
 import logging
 import os
-
 from dataset_processor import process_dataset
+from data.constant import DATASET, EMOTION, SELECTED_EMOTIONS
 
-
+ASED = DATASET.ASED.value
+EMOTION_MAP = {
+    'Fear': EMOTION.FEAR.value,
+    'Sadness': EMOTION.SADNESS.value,
+    'Happiness': EMOTION.HAPPINESS.value,
+    'Anger': EMOTION.ANGER.value,
+    'Neutral': EMOTION.NEUTRAL.value
+}
 def process_ased_files(dataset_path, emotion_map, selected_emotions):
     data = []
     try:
@@ -15,6 +22,7 @@ def process_ased_files(dataset_path, emotion_map, selected_emotions):
             dir_path = os.path.join(dataset_path, directory)
             sub_dir = os.listdir(dir_path)
             emotion = directory[2:]  # Remove 'E_' prefix
+            emotion = emotion_map.get(emotion)
             
             if emotion not in selected_emotions:
                 continue
@@ -29,21 +37,11 @@ def process_ased_files(dataset_path, emotion_map, selected_emotions):
     return data
 
 if __name__ == "__main__":
-    selected_emotions = ['Fear', 'Sadness', 'Happiness', 'Anger', 'Neutral']
-    dataset_path = "/kaggle/input/amharic-speech-emotional-dataset-ased/"
-    emotion_map = {
-        'Fear': 'Fear',
-        'Sadness': 'Sadness',
-        'Happiness': 'Happiness',
-        'Anger': 'Anger',
-        'Neutral': 'Neutral'
-    }
-
     process_dataset(
-        dataset_path=dataset_path,
-        language_code="am",
-        dataset_name="ased",
-        emotion_map=emotion_map,
-        selected_emotions=selected_emotions,
+        dataset_path=ASED.path,
+        language_code=ASED.language,
+        dataset_name=ASED.name,
+        emotion_map=EMOTION_MAP,
+        selected_emotions=SELECTED_EMOTIONS,
         file_processor=process_ased_files
     )

@@ -1,8 +1,20 @@
-import logging
 import os
-
+import logging
 from dataset_processor import process_dataset
+from data.constant import DATASET, EMOTION, SELECTED_EMOTIONS
 
+
+HINDI_DATASET = DATASET.HINDI_DATASET.value
+EMOTION_MAP = {
+    "anger": EMOTION.ANGER.value,
+    "disgust": EMOTION.DISGUST.value,
+    "fear": EMOTION.FEAR.value,
+    "happy": EMOTION.HAPPINESS.value,
+    "neutral": EMOTION.NEUTRAL.value,
+    "sad": EMOTION.SADNESS.value,
+    "sarcastic": EMOTION.SARCASTIC.value,
+    "surprise": EMOTION.SURPRISE.value
+}
 
 def process_emota_files(dataset_path, emotion_map, selected_emotions):
     data = []
@@ -22,24 +34,11 @@ def process_emota_files(dataset_path, emotion_map, selected_emotions):
     return data
 
 if __name__ == "__main__":
-    selected_emotions = ['Fear', 'Sadness', 'Happiness', 'Anger', 'Neutral']
-    dataset_path = "/kaggle/input/speech-emotion-recognition-hindi"
-    emotion_map = {
-        "anger": "Anger",
-        "disgust": "Disgust",
-        "fear": "Fear",
-        "happy": "Happiness",
-        "neutral": "Neutral",
-        "sad": "Sadness",
-        "sarcastic": "Sarcastic",
-        "surprise": "Surprise"
-    }
-
     process_dataset(
-        dataset_path=dataset_path,
-        language_code="hi",
-        dataset_name="hindi",
-        emotion_map=emotion_map,
-        selected_emotions=selected_emotions,
+        dataset_path=HINDI_DATASET.path,
+        language_code=HINDI_DATASET.language,
+        dataset_name=HINDI_DATASET.name,
+        emotion_map=EMOTION_MAP,
+        selected_emotions=SELECTED_EMOTIONS,
         file_processor=process_emota_files
     )

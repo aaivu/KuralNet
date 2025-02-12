@@ -1,8 +1,18 @@
 import logging
 import os
-
 from dataset_processor import process_dataset
+from data.constant import DATASET, EMOTION, SELECTED_EMOTIONS
 
+SUBESCO = DATASET.SUBESCO.value
+EMOTION_MAP = {
+    "ANGRY": EMOTION.ANGER.value,
+    "SAD": EMOTION.SADNESS.value,
+    "SURPRISE": EMOTION.SURPRISE.value,
+    "HAPPY": EMOTION.HAPPINESS.value,
+    "FEAR": EMOTION.FEAR.value,
+    "NEUTRAL": EMOTION.NEUTRAL.value,
+    "DISGUST": EMOTION.DISGUST.value
+}
 
 def process_subesco_files(dataset_path, emotion_map, selected_emotions):
     data = []
@@ -18,24 +28,12 @@ def process_subesco_files(dataset_path, emotion_map, selected_emotions):
     return data
 
 if __name__ == "__main__":
-    selected_emotions = ['Fear', 'Sadness', 'Happiness', 'Anger', 'Neutral']
-    dataset_path = "/kaggle/input/subescobangla-speech-emotion-dataset/SUBESCO/"
-    emotion_map = {
-        "ANGRY": "Anger",
-        "SAD": "Sadness",
-        "SURPRISE": "Surprise",
-        "HAPPY": "Happiness",
-        "FEAR": "Fear",
-        "NEUTRAL": "Neutral",
-        "DISGUST": "Disgust"
-    }
-
     process_dataset(
-        dataset_path=dataset_path,
-        language_code="bn",
-        dataset_name="subesco",
-        emotion_map=emotion_map,
-        selected_emotions=selected_emotions,
+        dataset_path=SUBESCO.path,
+        language_code=SUBESCO.language,
+        dataset_name=SUBESCO.name,
+        emotion_map=EMOTION_MAP,
+        selected_emotions=SELECTED_EMOTIONS,
         file_processor=process_subesco_files
     )
 

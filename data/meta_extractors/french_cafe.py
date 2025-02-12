@@ -1,10 +1,21 @@
 import logging
 import os
 from pathlib import Path
-from typing import Dict, List, Tuple
-
+from typing import Dict, List
 from dataset_processor import process_dataset
+from data.constant import DATASET, EMOTION, SELECTED_EMOTIONS
 
+
+CAFE = DATASET.CAFE.value
+EMOTION_MAP = {
+    "C": EMOTION.ANGER.value,
+    "D": EMOTION.DISGUST.value,
+    "J": EMOTION.HAPPINESS.value,
+    "N": EMOTION.NEUTRAL.value,
+    "P": EMOTION.FEAR.value,
+    "S": EMOTION.SURPRISE.value,
+    "T": EMOTION.SADNESS.value
+}
 
 def process_cafe_files(dataset_path: str, 
                       emotion_map: Dict[str, str], 
@@ -46,24 +57,12 @@ def process_cafe_files(dataset_path: str,
 if __name__ == "__main__":
     # Configure logging
     logging.basicConfig(level=logging.INFO)
-    
-    selected_emotions = ['Fear', 'Sadness', 'Happiness', 'Anger', 'Neutral']
-    dataset_path = "/kaggle/input/cafe-dataset/"
-    emotion_map = {
-        "C": "Anger",
-        "D": "Disgust",
-        "J": "Happiness",
-        "N": "Neutral",
-        "P": "Fear",
-        "S": "Surprise",
-        "T": "Sadness"
-    }
 
     process_dataset(
-        dataset_path=dataset_path,
-        language_code="fr",
-        dataset_name="cafe",
-        emotion_map=emotion_map,
-        selected_emotions=selected_emotions,
+        dataset_path=CAFE.path,
+        language_code=CAFE.language,
+        dataset_name=CAFE.name,
+        emotion_map=EMOTION_MAP,
+        selected_emotions=SELECTED_EMOTIONS,
         file_processor=process_cafe_files
     )

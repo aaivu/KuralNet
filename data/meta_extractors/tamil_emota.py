@@ -1,8 +1,17 @@
-import logging
 import os
-
+import logging
 from dataset_processor import process_dataset
+from data.constant import DATASET, EMOTION, SELECTED_EMOTIONS
 
+
+EMOTA = DATASET.EMOTA.value
+EMOTION_MAP = {
+    "ang": EMOTION.ANGER.value,
+    "hap": EMOTION.HAPPINESS.value,
+    "neu": EMOTION.NEUTRAL.value,
+    "fea": EMOTION.FEAR.value,
+    "sad": EMOTION.SADNESS.value
+}
 
 def process_emota_files(dataset_path, emotion_map, selected_emotions):
     data = []
@@ -19,22 +28,12 @@ def process_emota_files(dataset_path, emotion_map, selected_emotions):
     return data
 
 if __name__ == "__main__":
-    selected_emotions = ['Fear', 'Sadness', 'Happiness', 'Anger', 'Neutral']
-    dataset_path = "/kaggle/input/tamserdb/"
-    emotion_map = {
-        "ang": "Anger",
-        "hap": "Happiness",
-        "neu": "Neutral",
-        "fea": "Fear",
-        "sad": "Sadness"
-    }
-
     process_dataset(
-        dataset_path=dataset_path,
-        language_code="ta",
-        dataset_name="emota",
-        emotion_map=emotion_map,
-        selected_emotions=selected_emotions,
+        dataset_path=EMOTA.path,
+        language_code=EMOTA.language,
+        dataset_name=EMOTA.name,
+        emotion_map=EMOTION_MAP,
+        selected_emotions=SELECTED_EMOTIONS,
         file_processor=process_emota_files
     )
 

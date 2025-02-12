@@ -1,11 +1,18 @@
-import logging
 import os
-from typing import Dict, List
-
+import logging
 from dataset_processor import process_dataset
+from data.constant import DATASET, EMOTION, SELECTED_EMOTIONS
 
+TELUGU_DATASET = DATASET.TELUGU_DATASET.value
+EMOTION_MAP = {
+    'angry': EMOTION.ANGER.value,
+    'sad': EMOTION.SADNESS.value,
+    'happy': EMOTION.HAPPINESS.value,
+    'nuetral': EMOTION.NEUTRAL.value, # Note: Original spelling maintained
+    'suprised': EMOTION.SURPRISE.value
+}
 
-def process_telugu_files(dataset_path: str, emotion_map: Dict[str, str], selected_emotions: List[str]) -> List[List[str]]:
+def process_telugu_files(dataset_path, emotion_map, selected_emotions):
     data = []
     # Known problematic files to skip
     error_files = {
@@ -34,21 +41,11 @@ def process_telugu_files(dataset_path: str, emotion_map: Dict[str, str], selecte
     return data
 
 if __name__ == "__main__":
-    selected_emotions = ['Fear', 'Sadness', 'Happiness', 'Anger', 'Neutral']
-    dataset_path = "/kaggle/input/telugu-emotion-speech/telugu/"
-    emotion_map = {
-        'angry': "Anger",
-        'sad': "Sadness",
-        'suprised': "Surprise",
-        'happy': "Happiness",
-        'nuetral': "Neutral"  # Note: Original spelling maintained
-    }
-
     process_dataset(
-        dataset_path=dataset_path,
-        language_code="te",
-        dataset_name="telugu",
-        emotion_map=emotion_map,
-        selected_emotions=selected_emotions,
+        dataset_path=TELUGU_DATASET.path,
+        language_code=TELUGU_DATASET.language,
+        dataset_name=TELUGU_DATASET.name,
+        emotion_map=EMOTION_MAP,
+        selected_emotions=SELECTED_EMOTIONS,
         file_processor=process_telugu_files
     )

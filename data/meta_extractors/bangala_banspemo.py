@@ -1,7 +1,17 @@
 import logging
 import os
-
 from dataset_processor import process_dataset
+from data.constant import DATASET, EMOTION, SELECTED_EMOTIONS
+
+BANSPEMO = DATASET.BANSPEMO.value
+EMOTION_MAP = {
+    "01": EMOTION.ANGER.value,
+    "02": EMOTION.DISGUST.value,
+    "03": EMOTION.FEAR.value,
+    "04": EMOTION.HAPPINESS.value,
+    "05": EMOTION.SADNESS.value,
+    "06": EMOTION.SURPRISE.value
+}
 
 
 def process_bangla_files(dataset_path, emotion_map, selected_emotions):
@@ -26,22 +36,11 @@ def process_bangla_files(dataset_path, emotion_map, selected_emotions):
     return data
 
 if __name__ == "__main__":
-    selected_emotions = ['Fear', 'Sadness', 'Happiness', 'Anger', 'Neutral']
-    dataset_path = "/kaggle/input/bangla-lang-ser-dataset/BANSpEmo Dataset/"
-    emotion_map = {
-        "01": "Anger",
-        "02": "Disgust",
-        "03": "Fear",
-        "04": "Happiness",
-        "05": "Sadness",
-        "06": "Surprise"
-    }
-
     process_dataset(
-        dataset_path=dataset_path,
-        language_code="bn",
-        dataset_name="bangla",
-        emotion_map=emotion_map,
-        selected_emotions=selected_emotions,
+        dataset_path=BANSPEMO.path,
+        language_code=BANSPEMO.language,
+        dataset_name=BANSPEMO.name,
+        emotion_map=EMOTION_MAP,
+        selected_emotions=SELECTED_EMOTIONS,
         file_processor=process_bangla_files
     )

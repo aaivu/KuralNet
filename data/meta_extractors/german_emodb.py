@@ -1,8 +1,18 @@
-import logging
 import os
-
+import logging
 from dataset_processor import process_dataset
+from data.constant import DATASET, EMOTION, SELECTED_EMOTIONS
 
+EMODB = DATASET.EMODB.value
+EMOTION_MAP = {
+    'W': EMOTION.ANGER.value,
+    'E': EMOTION.DISGUST.value,
+    'F': EMOTION.HAPPINESS.value,
+    'L': EMOTION.BOREDOM.value,
+    'T': EMOTION.SADNESS.value,
+    'A': EMOTION.FEAR.value,
+    'N': EMOTION.NEUTRAL.value
+}
 
 def process_emodb_files(dataset_path, emotion_map, selected_emotions):
     data = []
@@ -30,23 +40,11 @@ def process_emodb_files(dataset_path, emotion_map, selected_emotions):
     return data
 
 if __name__ == "__main__":
-    selected_emotions = ['Fear', 'Sadness', 'Happiness', 'Anger', 'Neutral']
-    dataset_path = "/kaggle/input/berlin-database-of-emotional-speech-emodb/wav/"
-    emotion_map = {
-        'W': 'Anger',
-        'E': 'Disgust',
-        'F': 'Happiness',
-        'L': 'Boredom',
-        'T': 'Sadness',
-        'A': 'Fear',
-        'N': 'Neutral'
-    }
-
     process_dataset(
-        dataset_path=dataset_path,
-        language_code="de",
-        dataset_name="emodb",
-        emotion_map=emotion_map,
-        selected_emotions=selected_emotions,
+        dataset_path=EMODB.path,
+        language_code=EMODB.language,
+        dataset_name=EMODB.name,
+        emotion_map=EMOTION_MAP,
+        selected_emotions=SELECTED_EMOTIONS,
         file_processor=process_emodb_files
     )

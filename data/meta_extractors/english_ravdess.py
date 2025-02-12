@@ -1,8 +1,19 @@
 import logging
 import os
-
 from dataset_processor import process_dataset
+from data.constant import DATASET, EMOTION, SELECTED_EMOTIONS
 
+RAVDESS = DATASET.RAVDESS.value
+EMOTION_MAP = {
+    "01": EMOTION.NEUTRAL.value,
+    "02": EMOTION.CALM.value,
+    "03": EMOTION.HAPPINESS.value,
+    "04": EMOTION.SADNESS.value,
+    "05": EMOTION.ANGER.value,
+    "06": EMOTION.FEAR.value,
+    "07": EMOTION.DISGUST.value,
+    "08": EMOTION.SURPRISE.value
+}
 
 def process_ravdess_files(dataset_path, emotion_map, selected_emotions):
     data = []
@@ -22,24 +33,11 @@ def process_ravdess_files(dataset_path, emotion_map, selected_emotions):
     return data
 
 if __name__ == "__main__":
-    selected_emotions = ['Fear', 'Sadness', 'Happiness', 'Anger', 'Neutral']
-    dataset_path = "/content/drive/MyDrive/Dataset/Datasets/RAVDESS/archive (7)/audio_speech_actors_01-24/"
-    emotion_map = {
-        "01": "Neutral",
-        "02": "Calm",
-        "03": "Happy",
-        "04": "Sad",
-        "05": "Angry",
-        "06": "Fearful",
-        "07": "Disgust",
-        "08": "Surprised"
-    }
-
     process_dataset(
-        dataset_path=dataset_path,
-        language_code="en",
-        dataset_name="ravdess",
-        emotion_map=emotion_map,
-        selected_emotions=selected_emotions,
+        dataset_path=RAVDESS.path,
+        language_code=RAVDESS.language,
+        dataset_name=RAVDESS.name,
+        emotion_map=EMOTION_MAP,
+        selected_emotions=SELECTED_EMOTIONS,
         file_processor=process_ravdess_files
     )
