@@ -4,3 +4,4 @@ black>=25.1.0
 isort>=6.0.0
 wheel>=0.45.1
 pytest
+kaggle~=1.6.17
