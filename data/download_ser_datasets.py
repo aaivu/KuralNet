@@ -11,7 +11,7 @@ from multilingual_speech_emotion_recognition.utils.utils import _get_logger
 
 logger = _get_logger(name=__name__)
 
-datasets = {dataset.value.name: dataset.value.path for dataset in DATASET}
+datasets = {dataset.value.name: dataset.value.url for dataset in DATASET}
 
 
 def download_and_extract(name: str, dataset: str):

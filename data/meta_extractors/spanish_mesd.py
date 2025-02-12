@@ -6,21 +6,22 @@ from data.meta_extractors.dataset_processor import process_dataset
 
 MESD = DATASET.MESD.value
 EMOTION_MAP = {
-    "Anger: ": EMOTION.ANGER.value,
-    "Disgust: ": EMOTION.DISGUST.value,
-    "Fear: ": EMOTION.FEAR.value,
-    "Happiness: ": EMOTION.HAPPINESS.value,
-    "Neutral: ": EMOTION.NEUTRAL.value,
-    "Sadness: ": EMOTION.SADNESS.value,
+    "anger": EMOTION.ANGER.value,
+    "disgust": EMOTION.DISGUST.value,
+    "fear": EMOTION.FEAR.value,
+    "happiness": EMOTION.HAPPINESS.value,
+    "neutral": EMOTION.NEUTRAL.value,
+    "sadness": EMOTION.SADNESS.value,
 }
 
 
 def process_mesd_files(dataset_path, emotion_map, selected_emotions):
     data = []
     for file_name in os.listdir(dataset_path):
-        emotion = emotion_map.get(file_name.split("_")[0])
+        emo_abb = file_name.split("_")[0].strip().lower()
+        emotion = emotion_map.get(emo_abb)
         if not emotion:
-            logging.warning(f"Emotion not found for {file_name}")
+            logging.warning(f"Emotion {emo_abb} not found for {file_name}")
             continue
         if emotion in selected_emotions:
             dir_path = os.path.join(dataset_path, file_name)

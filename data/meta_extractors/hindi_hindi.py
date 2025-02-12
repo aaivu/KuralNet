@@ -10,10 +10,13 @@ EMOTION_MAP = {
     "disgust": EMOTION.DISGUST.value,
     "fear": EMOTION.FEAR.value,
     "happy": EMOTION.HAPPINESS.value,
+    "happpy": EMOTION.HAPPINESS.value,
     "neutral": EMOTION.NEUTRAL.value,
     "sad": EMOTION.SADNESS.value,
     "sarcastic": EMOTION.SARCASTIC.value,
     "surprise": EMOTION.SURPRISE.value,
+    "disgust 07": EMOTION.DISGUST.value,
+    "dusgust": EMOTION.DISGUST.value,
 }
 
 
@@ -24,9 +27,11 @@ def process_emota_files(dataset_path, emotion_map, selected_emotions):
             if file_name.endswith(".wav"):
                 file_path = os.path.join(root, file_name)
                 parts = file_name.split(".")
+
                 if len(parts) > 2:
                     emo_abb = parts[2].split("-")[0]
-                    emotion = emotion_map.get(emo_abb)
+                    emotion = emotion_map.get(emo_abb.strip().lower())
+
                     if emotion is None:
                         logging.warning(
                             f"Emotion {emo_abb} not found in emotion_map, file: {file_path}"

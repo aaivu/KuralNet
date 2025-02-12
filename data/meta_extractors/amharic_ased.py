@@ -49,4 +49,3 @@ if __name__ == "__main__":
         selected_emotions=SELECTED_EMOTIONS,
         file_processor=process_ased_files,
     )
-    print("here")
