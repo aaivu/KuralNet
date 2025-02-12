@@ -36,10 +36,10 @@ lint:
 	. .venv/bin/activate && flake8 multilingual_speech_emotion_recognition/ data/
 
 format-check:
-	. .venv/bin/activate && black --check --line-length 79 multilingual_speech_emotion_recognition/ && isort --check multilingual_speech_emotion_recognition/ data/
+	. .venv/bin/activate && black --check --line-length 79 multilingual_speech_emotion_recognition/ data/ && isort --check multilingual_speech_emotion_recognition/ data/
 
 format:
-	. .venv/bin/activate && black --line-length 79 multilingual_speech_emotion_recognition/ && isort multilingual_speech_emotion_recognition/ data/
+	. .venv/bin/activate && black --line-length 79 multilingual_speech_emotion_recognition/ data/ && isort multilingual_speech_emotion_recognition/ data/
 
 test:
 	. .venv/bin/activate && pytest .
