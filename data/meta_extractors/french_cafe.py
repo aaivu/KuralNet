@@ -3,9 +3,8 @@ import os
 from pathlib import Path
 from typing import Dict, List
 
-from data.meta_extractors.dataset_processor import process_dataset
-
 from data.constant import DATASET, EMOTION, SELECTED_EMOTIONS
+from data.meta_extractors.dataset_processor import process_dataset
 
 CAFE = DATASET.CAFE.value
 EMOTION_MAP = {

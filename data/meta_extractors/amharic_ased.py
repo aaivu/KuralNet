@@ -1,9 +1,8 @@
 import logging
 import os
 
-from data.meta_extractors.dataset_processor import process_dataset
-
 from data.constant import DATASET, EMOTION, SELECTED_EMOTIONS
+from data.meta_extractors.dataset_processor import process_dataset
 
 ASED = DATASET.ASED.value
 EMOTION_MAP = {
