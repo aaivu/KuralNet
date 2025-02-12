@@ -45,80 +45,97 @@ class Dataset:
     name: str
     language: str
     path: str
+    url: str
 
-    def __init__(self, name, language, path):
+    def __init__(self, name, language, path, url):
         self.name = name
         self.language = language
         self.path = path
+        self.url = url
 
 
 class DATASET(Enum):
     ASED = Dataset(
         name="ASED",
         language=LANGUAGE.AMHARIC.value,
-        path="thanikansivatheepan/amharic-speech-emotional-dataset-ased",
+        url="thanikansivatheepan/amharic-speech-emotional-dataset-ased",
+        path="SER_Datasets/ASED",
     )
     BANSPEMO = Dataset(
         name="BANSpEmo",
         language=LANGUAGE.BENGALI.value,
-        path="thanikansivatheepan/bangla-lang-ser-dataset/BANSpEmo Dataset/",
+        url="thanikansivatheepan/bangla-lang-ser-dataset",
+        path="SER_Datasets/BANSpEmo/BANSpEmo Dataset",
     )
     CAFE = Dataset(
         name="CaFE",
         language=LANGUAGE.FRENCH.value,
-        path="jubeerathan/cafe-dataset",
+        url="jubeerathan/cafe-dataset",
+        path="SER_Datasets/CaFE",
     )
     EMODB = Dataset(
         name="EmoDB",
         language=LANGUAGE.GERMAN.value,
-        path="piyushagni5/berlin-database-of-emotional-speech-emodb/wav/",
+        url="piyushagni5/berlin-database-of-emotional-speech-emodb",
+        path="SER_Datasets/EmoDB/wav",
     )
     EMOTA = Dataset(
-        name="EmoTa", language=LANGUAGE.TAMIL.value, path="luxluxshan/tamserdb"
+        name="EmoTa",
+        language=LANGUAGE.TAMIL.value,
+        url="luxluxshan/tamserdb",
+        path="SER_Datasets/EmoTa",
     )
     EMOVO = Dataset(
         name="EMOVO",
         language=LANGUAGE.ITALIAN.value,
-        path="sourabhy/emovo-italian-ser-dataset",
+        url="sourabhy/emovo-italian-ser-dataset",
+        path="SER_Datasets/EMOVO/EMOVO",
     )
     ESD_CHINESE = Dataset(
         name="ESD",
         language=LANGUAGE.CHINESE.value,
-        path="thanikansivatheepan/esd-dataset-fyp",
+        url="thanikansivatheepan/esd-dataset-fyp",
+        path="SER_Datasets/ESD/Emotion Speech Dataset",
     )
     HINDI_DATASET = Dataset(
         name="Hindi-Dataset",
         language=LANGUAGE.HINDI.value,
-        path="vishlb/speech-emotion-recognition-hindi/data",
+        url="vishlb/speech-emotion-recognition-hindi",
+        path="SER_Datasets/Hindi-Dataset/my Dataset",
     )
     KANNADA_DATASET = Dataset(
         name="Kannada-Dataset",
         language=LANGUAGE.KANNADA.value,
-        path="thanikansivatheepan/kannada-emo-speech-dataset",
+        url="thanikansivatheepan/kannada-emo-speech-dataset",
+        path="SER_Datasets/Kannada-Dataset",
     )
     MESD = Dataset(
         name="MESD",
         language=LANGUAGE.SPANISH.value,
-        path="ashfaqsyed/mexican-emotional-speech-databasemesd"
-        + "cy34mh68j9-5/Mexican Emotional Speech Database (MESD)/",
+        url="ashfaqsyed/mexican-emotional-speech-databasemesd",
+        path="SER_Datasets/MESD/cy34mh68j9-5/Mexican Emotional Speech Database (MESD)",
     )
     RAVDESS = Dataset(
         name="RAVDESS",
         language=LANGUAGE.ENGLISH.value,
-        path="uwrfkaggler/ravdess-emotional-speech-audio",
+        url="uwrfkaggler/ravdess-emotional-speech-audio",
+        path="SER_Datasets/RAVDESS",
     )
     SUBESCO = Dataset(
         name="SUBESCO",
         language=LANGUAGE.BENGALI.value,
-        path="sushmit0109/subescobangla-speech-emotion-dataset/SUBESCO/",
+        url="sushmit0109/subescobangla-speech-emotion-dataset",
+        path="SER_Datasets/SUBESCO/SUBESCO",
     )
     TELUGU_DATASET = Dataset(
         name="Telugu-Dataset",
         language=LANGUAGE.TELUGU.value,
-        path="jettysowmith/telugu-emotion-speech/telugu/",
+        url="jettysowmith/telugu-emotion-speech",
+        path="SER_Datasets/Telugu-Dataset/telugu",
     )
     URDU_DATASET = Dataset(
         name="Urdu-Dataset",
         language=LANGUAGE.URDU.value,
-        path="kingabzpro/urdu-emotion-dataset",
+        url="kingabzpro/urdu-emotion-dataset",
+        path="SER_Datasets/Urdu-Dataset",
     )
