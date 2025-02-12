@@ -20,9 +20,7 @@ def validate_parameters(
     if not 0 <= noise_factor <= 0.1:
         raise ValueError("Noise factor should be between 0 and 0.1")
     if not 0.1 <= silence_duration <= 0.3:
-        raise ValueError(
-            "Silence duration should be between 0.1 and 0.3 seconds"
-        )
+        raise ValueError("Silence duration should be between 0.1 and 0.3 seconds")
 
 
 def normalize_audio(audio: np.ndarray) -> np.ndarray:
@@ -42,9 +40,7 @@ def pitch_shift(data, sampling_rate, pitch_factor=0.2):
     Returns:
         np.ndarray: Pitch-shifted audio signal.
     """
-    return librosa.effects.pitch_shift(
-        data, n_steps=pitch_factor, sr=sampling_rate
-    )
+    return librosa.effects.pitch_shift(data, n_steps=pitch_factor, sr=sampling_rate)
 
 
 def speed_tuning(data, speed_factor):
@@ -258,9 +254,7 @@ def augment_data(
                     out_path = output_folder / f"{file_name}_pink_noise.wav"
 
                 elif augmentation == "add_silence":
-                    aug_data = add_silence(
-                        data, sampling_rate, silence_duration
-                    )
+                    aug_data = add_silence(data, sampling_rate, silence_duration)
                     out_path = output_folder / f"{file_name}_silence.wav"
 
                 elif augmentation == "combine_pitch_speed":
@@ -268,17 +262,13 @@ def augment_data(
                     aug_data = combine_pitch_speed(
                         data, sampling_rate, fast_speed_factor, pitch_factor
                     )
-                    out_path = (
-                        output_folder / f"{file_name}_pitch_speed_fast.wav"
-                    )
+                    out_path = output_folder / f"{file_name}_pitch_speed_fast.wav"
 
                     # Slow version
                     aug_data = combine_pitch_speed(
                         data, sampling_rate, slow_speed_factor, pitch_factor
                     )
-                    out_path = (
-                        output_folder / f"{file_name}_pitch_speed_slow.wav"
-                    )
+                    out_path = output_folder / f"{file_name}_pitch_speed_slow.wav"
 
                 elif augmentation == "combine_pitch_silence":
                     aug_data = combine_pitch_silence(
@@ -294,9 +284,7 @@ def augment_data(
                         fast_speed_factor,
                         silence_duration,
                     )
-                    out_path = (
-                        output_folder / f"{file_name}_speed_silence_fast.wav"
-                    )
+                    out_path = output_folder / f"{file_name}_speed_silence_fast.wav"
 
                     # Slow version
                     aug_data = combine_speed_silence(
@@ -305,14 +293,10 @@ def augment_data(
                         slow_speed_factor,
                         silence_duration,
                     )
-                    out_path = (
-                        output_folder / f"{file_name}_speed_silence_slow.wav"
-                    )
+                    out_path = output_folder / f"{file_name}_speed_silence_slow.wav"
 
                 else:
-                    raise ValueError(
-                        f"Unknown augmentation technique: {augmentation}"
-                    )
+                    raise ValueError(f"Unknown augmentation technique: {augmentation}")
 
                 # Normalize and save the augmented audio
                 aug_data = normalize_audio(aug_data)

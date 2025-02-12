@@ -12,9 +12,7 @@ class Wav2Vec2FeatureExtractor:
         self.model = Wav2Vec2Model.from_pretrained(model_name)
         self.model.eval()
 
-    def extract_features(
-        self, audio: np.ndarray, sr: int = 16000
-    ) -> np.ndarray:
+    def extract_features(self, audio: np.ndarray, sr: int = 16000) -> np.ndarray:
         """
         Extracts last hidden layer features from Wav2Vec2 encoder.
 

@@ -17,9 +17,7 @@ class WhisperFeatureExtractor:
         self.model = WhisperModel.from_pretrained(model_name)
         self.model.eval()
 
-    def extract_features(
-        self, audio: np.ndarray, sr: int = 16000
-    ) -> np.ndarray:
+    def extract_features(self, audio: np.ndarray, sr: int = 16000) -> np.ndarray:
         """
         Extracts last hidden layer features from Whisper encoder.
 
