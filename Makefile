@@ -70,6 +70,14 @@ remove-dev:
 	sed -i '/$$package/d' dev-requirements.txt && \
 	echo "$$package removed from dev-requirements.txt."
 
+download_dataset:
+	. .venv/bin/activate && python -m data.download_ser_datasets
+
+meta_extract:
+	. .venv/bin/activate && python -m data.meta_extractor
+
+
+
 clear:
 	@echo "Cleaning up..."
 	rm -rf __pycache__ .pytest_cache dist build *.egg-info
