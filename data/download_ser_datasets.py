@@ -5,6 +5,9 @@ import kaggle
 
 from multilingual_speech_emotion_recognition.utils.utils import _get_logger
 
+# Note: To Run This Script Please Download Kaggle API Key as kaggle.json and put it under ~/.kaggle/
+
+
 logger = _get_logger(name=__name__)
 
 datasets = {
