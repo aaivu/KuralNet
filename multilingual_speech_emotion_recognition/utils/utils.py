@@ -5,7 +5,9 @@ import librosa
 import pandas as pd
 
 
-def _get_logger(name: str = __name__, level: int = logging.INFO) -> logging.Logger:
+def _get_logger(
+    name: str = __name__, level: int = logging.INFO
+) -> logging.Logger:
     """
     Returns a configured logger.
 

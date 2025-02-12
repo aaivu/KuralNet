@@ -1,11 +1,17 @@
+from pathlib import Path
+from typing import List, Union
+
 import librosa
 import numpy as np
 import soundfile as sf
-from typing import List, Union
-from pathlib import Path
 
 
-def validate_parameters(pitch_factor: float, speed_factor: float, noise_factor: float, silence_duration: float):
+def validate_parameters(
+    pitch_factor: float,
+    speed_factor: float,
+    noise_factor: float,
+    silence_duration: float,
+):
     """Validate augmentation parameters."""
     if not -2 <= pitch_factor <= 2:
         raise ValueError("Pitch factor should be between -2 and 2 semitones")
@@ -14,7 +20,9 @@ def validate_parameters(pitch_factor: float, speed_factor: float, noise_factor: 
     if not 0 <= noise_factor <= 0.1:
         raise ValueError("Noise factor should be between 0 and 0.1")
     if not 0.1 <= silence_duration <= 0.3:
-        raise ValueError("Silence duration should be between 0.1 and 0.3 seconds")
+        raise ValueError(
+            "Silence duration should be between 0.1 and 0.3 seconds"
+        )
 
 
 def normalize_audio(audio: np.ndarray) -> np.ndarray:
@@ -34,7 +42,9 @@ def pitch_shift(data, sampling_rate, pitch_factor=0.2):
     Returns:
         np.ndarray: Pitch-shifted audio signal.
     """
-    return librosa.effects.pitch_shift(data, n_steps=pitch_factor, sr=sampling_rate)
+    return librosa.effects.pitch_shift(
+        data, n_steps=pitch_factor, sr=sampling_rate
+    )
 
 
 def speed_tuning(data, speed_factor):
@@ -80,15 +90,17 @@ def add_pink_noise(data, noise_factor=0.003):
     """
 
     def pink_noise(length):
-        """ Generate pink noise.
+        """Generate pink noise.
         Args:
             length (int): Length of the noise signal.
         Returns:
             np.ndarray: Pink noise signal.
         """
         uneven = length % 2
-        X = np.random.randn(length // 2 + 1 + uneven) + 1j * np.random.randn(length // 2 + 1 + uneven)
-        S = np.sqrt(np.arange(len(X)) + 1.)
+        X = np.random.randn(length // 2 + 1 + uneven) + 1j * np.random.randn(
+            length // 2 + 1 + uneven
+        )
+        S = np.sqrt(np.arange(len(X)) + 1.0)
         y = (np.fft.irfft(X / S)).real
         if uneven:
             y = y[:-1]
@@ -100,7 +112,7 @@ def add_pink_noise(data, noise_factor=0.003):
 
 
 def add_silence(data, sample_rate, silence_duration=0.3):
-    """ Add silence to an audio signal.
+    """Add silence to an audio signal.
     Args:
         data (np.ndarray): Audio signal.
         sample_rate (int): Sampling rate.
@@ -173,7 +185,7 @@ def augment_data(
     slow_speed_factor: float = 0.95,
     fast_speed_factor: float = 1.05,
     noise_factor: float = 0.003,
-    silence_duration: float = 0.3
+    silence_duration: float = 0.3,
 ) -> List[str]:
     """
     Augment an audio signal and save the augmented versions as audio files.
@@ -200,8 +212,12 @@ def augment_data(
         output_folder = Path(output_folder)
 
         # Validate input parameters
-        validate_parameters(pitch_factor, slow_speed_factor, noise_factor, silence_duration)
-        validate_parameters(pitch_factor, fast_speed_factor, noise_factor, silence_duration)
+        validate_parameters(
+            pitch_factor, slow_speed_factor, noise_factor, silence_duration
+        )
+        validate_parameters(
+            pitch_factor, fast_speed_factor, noise_factor, silence_duration
+        )
 
         # Validate input file
         if not audio_path.exists():
@@ -242,33 +258,61 @@ def augment_data(
                     out_path = output_folder / f"{file_name}_pink_noise.wav"
 
                 elif augmentation == "add_silence":
-                    aug_data = add_silence(data, sampling_rate, silence_duration)
+                    aug_data = add_silence(
+                        data, sampling_rate, silence_duration
+                    )
                     out_path = output_folder / f"{file_name}_silence.wav"
 
                 elif augmentation == "combine_pitch_speed":
                     # Fast version
-                    aug_data = combine_pitch_speed(data, sampling_rate, fast_speed_factor, pitch_factor)
-                    out_path = output_folder / f"{file_name}_pitch_speed_fast.wav"
+                    aug_data = combine_pitch_speed(
+                        data, sampling_rate, fast_speed_factor, pitch_factor
+                    )
+                    out_path = (
+                        output_folder / f"{file_name}_pitch_speed_fast.wav"
+                    )
 
                     # Slow version
-                    aug_data = combine_pitch_speed(data, sampling_rate, slow_speed_factor, pitch_factor)
-                    out_path = output_folder / f"{file_name}_pitch_speed_slow.wav"
+                    aug_data = combine_pitch_speed(
+                        data, sampling_rate, slow_speed_factor, pitch_factor
+                    )
+                    out_path = (
+                        output_folder / f"{file_name}_pitch_speed_slow.wav"
+                    )
 
                 elif augmentation == "combine_pitch_silence":
-                    aug_data = combine_pitch_silence(data, sampling_rate, pitch_factor, silence_duration)
+                    aug_data = combine_pitch_silence(
+                        data, sampling_rate, pitch_factor, silence_duration
+                    )
                     out_path = output_folder / f"{file_name}_pitch_silence.wav"
 
                 elif augmentation == "combine_speed_silence":
                     # Fast version
-                    aug_data = combine_speed_silence(data, sampling_rate, fast_speed_factor, silence_duration)
-                    out_path = output_folder / f"{file_name}_speed_silence_fast.wav"
+                    aug_data = combine_speed_silence(
+                        data,
+                        sampling_rate,
+                        fast_speed_factor,
+                        silence_duration,
+                    )
+                    out_path = (
+                        output_folder / f"{file_name}_speed_silence_fast.wav"
+                    )
 
                     # Slow version
-                    aug_data = combine_speed_silence(data, sampling_rate, slow_speed_factor, silence_duration)
-                    out_path = output_folder / f"{file_name}_speed_silence_slow.wav"
+                    aug_data = combine_speed_silence(
+                        data,
+                        sampling_rate,
+                        slow_speed_factor,
+                        silence_duration,
+                    )
+                    out_path = (
+                        output_folder / f"{file_name}_speed_silence_slow.wav"
+                    )
 
                 else:
-                    raise ValueError(f"Unknown augmentation technique: {augmentation}")
+                    raise ValueError(
+                        f"Unknown augmentation technique: {augmentation}"
+                    )
 
                 # Normalize and save the augmented audio
                 aug_data = normalize_audio(aug_data)
@@ -276,7 +320,9 @@ def augment_data(
                 augmented_files.append(str(out_path))
 
             except Exception as e:
-                print(f"Warning: Failed to apply {augmentation} for audio in {audio_path}: {e}")
+                print(
+                    f"Warning: Failed to apply {augmentation} for audio in {audio_path}: {e}"
+                )
                 continue
 
         if not augmented_files:
