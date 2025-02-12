@@ -33,9 +33,9 @@ class Wav2Vec2FeatureExtractor:
         with torch.no_grad():
             outputs = self.model(input_values, output_hidden_states=True)
 
-        last_hidden_state = outputs.hidden_states[-1].squeeze(0).cpu().numpy()
+        last_hidden_states = outputs.last_hidden_state
 
-        return last_hidden_state
+        return torch.mean(last_hidden_states, dim=1).numpy().squeeze()
 
 
 if __name__ == "__main__":
@@ -44,4 +44,4 @@ if __name__ == "__main__":
     audio, sr = librosa.load(audio_path, sr=16000)
     features = extractor.extract_features(audio)
 
-    assert features is not None
+    print(features)
