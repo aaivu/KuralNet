@@ -1,6 +1,8 @@
-from dataset_processor import process_dataset
-import os
 import logging
+import os
+
+from dataset_processor import process_dataset
+
 
 def process_ased_files(dataset_path, emotion_map, selected_emotions):
     data = []

@@ -1,7 +1,9 @@
-import os
-import pandas as pd
 import logging
+import os
 from typing import Dict, List, Tuple
+
+import pandas as pd
+
 
 def setup_logging():
     logging.basicConfig(
