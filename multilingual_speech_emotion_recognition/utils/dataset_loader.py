@@ -35,11 +35,15 @@ def get_dataloader(
     else:
         train_size = int(train_ratio * dataset_size)
         test_size = dataset_size - train_size
-        train_dataset, test_dataset = random_split(dataset, [train_size, test_size])
+        train_dataset, test_dataset = random_split(
+            dataset, [train_size, test_size]
+        )
         val_dataset = None
 
     dataloaders = {
-        "train": DataLoader(train_dataset, batch_size=batch_size, shuffle=shuffle),
+        "train": DataLoader(
+            train_dataset, batch_size=batch_size, shuffle=shuffle
+        ),
         "test": DataLoader(test_dataset, batch_size=batch_size, shuffle=False),
     }
 
