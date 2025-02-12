@@ -1,33 +1,5 @@
-# import torch
-# from transformers import WhisperProcessor, WhisperForConditionalGeneration
 import librosa
 import numpy as np
-
-# def extract_whisper_features(audio: np.ndarray, sr: int = 16000):
-#     """
-#     Extract features using the Whisper model.
-#
-#     Args:
-#         sr: Sample rate.
-#         audio (np.ndarray): Audio waveform.
-#
-#     Returns:
-#         torch.Tensor: Encoder hidden
-#     """
-#     # Load the Whisper processor and model
-#     model_name = "openai/whisper-small"  # You can choose other sizes like "tiny", "base", "medium", "large"
-#     processor = WhisperProcessor.from_pretrained(model_name)
-#     model = WhisperForConditionalGeneration.from_pretrained(model_name)
-#
-#     # Preprocess the audio
-#     inputs = processor(audio, sampling_rate=sr, return_tensors="pt")
-#
-#     # Extract features using Whisper's encoder
-#     with torch.no_grad():
-#         encoder_outputs = model.model.encoder(inputs.input_features)
-#
-#     # Return the encoder hidden states
-#     return encoder_outputs.last_hidden_state
 
 
 def load_audio(file_path: str, sr: int = 16000):
