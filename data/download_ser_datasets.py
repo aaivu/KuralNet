@@ -36,6 +36,5 @@ for name, dataset in datasets.items():
 
     with zipfile.ZipFile(dataset_zip, "r") as zip_ref:
         zip_ref.extractall(f"SER_Datasets/{name}")
-    
     os.remove(dataset_zip)
 logger.info("end downloading datasets")
