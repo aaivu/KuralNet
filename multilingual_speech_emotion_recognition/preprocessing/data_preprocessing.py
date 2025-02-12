@@ -29,7 +29,9 @@ def extract_mfcc(audio: np.ndarray, sr: int = 16000, n_mfcc: int = 13):
     Returns:
         np.ndarray: MFCC features.
     """
-    mfcc = np.mean(librosa.feature.mfcc(y=audio, sr=sr, n_mfcc=n_mfcc).T, axis=0)
+    mfcc = np.mean(
+        librosa.feature.mfcc(y=audio, sr=sr, n_mfcc=n_mfcc).T, axis=0
+    )
     return mfcc
 
 
@@ -44,7 +46,9 @@ def extract_melspectrogram(audio: np.ndarray, sr: int = 16000):
     Returns:
         np.ndarray: Mel-spectrogram features.
     """
-    mel_spectrogram = np.mean(librosa.feature.melspectrogram(y=audio, sr=sr).T, axis=0)
+    mel_spectrogram = np.mean(
+        librosa.feature.melspectrogram(y=audio, sr=sr).T, axis=0
+    )
     return mel_spectrogram
 
 
@@ -95,7 +99,13 @@ def extract_zcr(audio: np.ndarray):
 def preprocess_data(
     file_path: str,
     sr: int = 16000,
-    required_features: list = ["mfcc", "mel_spectrogram", "chroma_stft", "rmse", "zcr"],
+    required_features: list = [
+        "mfcc",
+        "mel_spectrogram",
+        "chroma_stft",
+        "rmse",
+        "zcr",
+    ],
 ):
     """
     Preprocess an audio file to extract features.
