@@ -56,7 +56,9 @@ class _SpeechEmotionDataset(Dataset):
         self.metadata = pd.read_csv(dataset_path)
 
         # encode dataset
-        self.metadata["emotion"] = self.metadata["emotion"].apply(emotion_encoder)
+        self.metadata["emotion"] = self.metadata["emotion"].apply(
+            emotion_encoder
+        )
         self.metadata["gender"] = self.metadata["gender"].apply(gender_encoder)
 
         self.audio_paths = self.metadata["audio_path"].tolist()
