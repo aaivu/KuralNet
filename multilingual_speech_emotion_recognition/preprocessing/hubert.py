@@ -1,7 +1,7 @@
 import librosa
-import torch
 import numpy as np
-from transformers import Wav2Vec2FeatureExtractor, HubertModel
+import torch
+from transformers import HubertModel, Wav2Vec2FeatureExtractor
 
 MODEL_NAME = "facebook/hubert-base-ls960"
 
@@ -11,11 +11,15 @@ class HuBERTFeatureExtractor:
         """
         Initializes the HuBERT model and feature extractor.
         """
-        self.feature_extractor = Wav2Vec2FeatureExtractor.from_pretrained(model_name)
+        self.feature_extractor = Wav2Vec2FeatureExtractor.from_pretrained(
+            model_name
+        )
         self.model = HubertModel.from_pretrained(model_name)
         self.model.eval()
 
-    def extract_features(self, audio: np.ndarray, sr: int = 16000) -> np.ndarray:
+    def extract_features(
+        self, audio: np.ndarray, sr: int = 16000
+    ) -> np.ndarray:
         """
         Extracts last hidden layer features from HuBERT encoder.
 
@@ -26,7 +30,9 @@ class HuBERTFeatureExtractor:
         Returns:
             np.ndarray: Features from the last encoder hidden layer (SeqLen, HiddenDim).
         """
-        input_values = self.feature_extractor(audio, sampling_rate=sr, return_tensors="pt").input_values
+        input_values = self.feature_extractor(
+            audio, sampling_rate=sr, return_tensors="pt"
+        ).input_values
 
         with torch.no_grad():
             outputs = self.model(input_values, output_hidden_states=True)
