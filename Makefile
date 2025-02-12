@@ -1,15 +1,5 @@
 .PHONY: venv setup sync test lint format-check format add remove clear build help
 
-# Detect OS and set ACTIVATE accordingly.
-ifeq ($(OS),Windows_NT)
-    # For Windows using a Unix-like shell (e.g., Git Bash), you might still use:
-    ACTIVATE = . .venv/Scripts/activate
-    # If you're using CMD, consider using "call" (and note that Make might require additional tweaks):
-    # ACTIVATE = call .venv\Scripts\activate
-else
-    ACTIVATE = . .venv/bin/activate
-endif
-
 help:
 	@echo "Available targets:"
 	@echo "  venv           - Create and activate a virtual environment"
@@ -26,31 +16,33 @@ help:
 
 venv:
 	python3 -m venv .venv
-	@echo "Virtual environment created. Activate it with:"
-	@echo "    $(ACTIVATE)"
+	@echo "Virtual environment created. Run 'source .venv/bin/activate' to activate it."
 
 setup: venv
-	$(ACTIVATE) && pip install --upgrade pip
-	$(ACTIVATE) && pip install -r requirements.txt
-	$(ACTIVATE) && pip install -r dev-requirements.txt
+	. .venv/bin/activate && pip install --upgrade pip
+	. .venv/bin/activate && pip install -r requirements.txt
+	. .venv/bin/activate && pip install -r dev-requirements.txt
 	@echo "Dependencies installed."
 
 sync:
-	$(ACTIVATE) && pip install -r requirements.txt
-	$(ACTIVATE) && pip install -r dev-requirements.txt
+	. .venv/bin/activate && pip install -r requirements.txt
+	. .venv/bin/activate && pip install -r dev-requirements.txt
 	@echo "Dependencies synchronized."
 
 test:
-	$(ACTIVATE) && pytest
+	. .venv/bin/activate && pytest
 
 lint:
-	$(ACTIVATE) && flake8 multilingual_speech_emotion_recognition/ data/
+	. .venv/bin/activate && flake8 multilingual_speech_emotion_recognition/ data/
 
 format-check:
-	$(ACTIVATE) && black --check --line-length 79 multilingual_speech_emotion_recognition/ data/ && isort --check multilingual_speech_emotion_recognition/ data/
+	. .venv/bin/activate && black --check --line-length 79 multilingual_speech_emotion_recognition/ data/ && isort --check multilingual_speech_emotion_recognition/ data/
 
 format:
-	$(ACTIVATE) && black --line-length 79 multilingual_speech_emotion_recognition/ data/ && isort multilingual_speech_emotion_recognition/ data/
+	. .venv/bin/activate && black --line-length 79 multilingual_speech_emotion_recognition/ data/ && isort multilingual_speech_emotion_recognition/ data/
+
+test:
+	. .venv/bin/activate && pytest .
 
 build:
 	python setup.py sdist bdist_wheel
@@ -58,13 +50,13 @@ build:
 
 add:
 	@read -p "Enter the package name to add: " package; \
-	$(ACTIVATE) && pip install $$package && \
+	. .venv/bin/activate && pip install $$package && \
 	echo $$package >> requirements.txt && \
 	echo "$$package added to requirements.txt."
 
 add-dev:
 	@read -p "Enter the package name to add: " package; \
-	$(ACTIVATE) && pip install $$package && \
+	. .venv/bin/activate && pip install $$package && \
 	echo $$package >> dev-requirements.txt && \
 	echo "$$package added to dev-requirements.txt."
 
