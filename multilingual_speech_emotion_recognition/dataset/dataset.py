@@ -1,5 +1,6 @@
 import os
 
+import numpy as np
 import pandas as pd
 import torch
 from torch.utils.data import Dataset
@@ -54,7 +55,8 @@ class _SpeechEmotionDataset(Dataset):
             dtype=torch.long,
         )
         self.features = torch.tensor(
-            self.dataset.drop(columns=["emotion"]).values, dtype=torch.float
+            self.dataset.drop(columns=["emotion"]).values.astype(np.float32),
+            dtype=torch.float32,
         )
 
     def __len__(self) -> int:
