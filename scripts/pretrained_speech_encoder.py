@@ -6,11 +6,16 @@ import torch
 import torch.nn as nn
 from sklearn.metrics import accuracy_score
 import matplotlib.pyplot as plt 
+from sklearn.metrics import accuracy_score, classification_report
 
-TRAIN_SPLIT = 0.8
 BATCH_SIZE = 64
-NUM_EPOCHS = 100
+NUM_EPOCHS = 10
 LEARNING_RATE = 0.001
+TRAIN_SPLIT=0.7
+TRAIN_SPLIT = 0.7
+VAL_SPLIT = 0.15
+TEST_SPLIT = 0.15
+
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Using device: {device}")
     
@@ -20,12 +25,14 @@ dataset = _SpeechEmotionDataset(
     dataset_path=DATASET.SUBESCO.value.feature_path)
 
 train_size = int(TRAIN_SPLIT * len(dataset))
-test_size = len(dataset) - train_size
+val_size = int(VAL_SPLIT * len(dataset))
+test_size = len(dataset) - train_size - val_size
 
-train_dataset, test_dataset = torch.utils.data.random_split(dataset, [train_size, test_size])
+train_dataset, val_dataset, test_dataset = torch.utils.data.random_split(dataset, [train_size, val_size, test_size])
 
 train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True)
-val_loader = DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=False)
+val_loader = DataLoader(val_dataset, batch_size=BATCH_SIZE, shuffle=False)
+test_loader = DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=False)
 
 
 num_classes = len(torch.unique(dataset.emotions))
@@ -122,3 +129,30 @@ for epoch in range(NUM_EPOCHS):
     plt.legend()
     plt.savefig('training_curves.png')
     plt.close()
+
+
+
+model.eval()
+
+test_preds = []
+test_true = []
+
+with torch.no_grad():
+    for batch in test_loader:
+        features = batch['features'].to(device)
+        labels = batch['emotion'].to(device)
+        
+        if len(features.shape) == 2:
+            features = features.unsqueeze(1)
+        
+        outputs = model(features)
+        _, predicted = torch.max(outputs.data, 1)
+        
+        test_preds.extend(predicted.cpu().numpy())
+        test_true.extend(labels.cpu().numpy())
+
+test_accuracy = accuracy_score(test_true, test_preds)
+print(f'Test Accuracy: {test_accuracy:.4f}')
+
+print("Classification Report:")
+print(classification_report(test_true, test_preds))
