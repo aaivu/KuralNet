@@ -46,12 +46,14 @@ class Dataset:
     language: str
     path: str
     url: str
+    feature_path: str
 
-    def __init__(self, name, language, path, url):
+    def __init__(self, name, language, path, url, feature_path=None):
         self.name = name
         self.language = language
         self.path = path
         self.url = url
+        self.feature_path = feature_path
 
 
 class DATASET(Enum):
@@ -84,6 +86,7 @@ class DATASET(Enum):
         language=LANGUAGE.TAMIL.value,
         url="luxluxshan/tamserdb",
         path="SER_Datasets/EmoTa",
+        feature_path="data/features/ta_EmoTa_whisper_small.csv",
     )
     EMOVO = Dataset(
         name="EMOVO",
