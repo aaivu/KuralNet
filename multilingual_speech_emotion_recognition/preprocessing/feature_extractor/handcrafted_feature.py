@@ -68,7 +68,7 @@ def extract_chroma_stft(audio: np.ndarray, sr: int = 16000):
     return chroma_stft
 
 
-def extract_rmse(audio: np.ndarray):
+def extract_rmse(audio: np.ndarray, _sr):
     """
     Extract Root Mean Square Energy (RMSE) from an audio signal.
 
@@ -82,7 +82,7 @@ def extract_rmse(audio: np.ndarray):
     return rmse
 
 
-def extract_zcr(audio: np.ndarray):
+def extract_zcr(audio: np.ndarray, _sr):
     """
     Extract Zero Crossing Rate (ZCR) from an audio signal.
 
