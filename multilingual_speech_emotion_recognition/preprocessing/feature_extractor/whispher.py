@@ -37,15 +37,12 @@ class WhisperFeatureExtractor:
         ).input_features
 
         with torch.no_grad():
-            encoder_outputs = self.model.encoder(
+            outputs = self.model.encoder(
                 input_features, output_hidden_states=True
             )
 
-        last_hidden_state = (
-            encoder_outputs.hidden_states[-1].squeeze(0).cpu().numpy()
-        )
-
-        return last_hidden_state
+        last_hidden_states = outputs.last_hidden_state
+        return torch.mean(last_hidden_states, dim=1).numpy().squeeze()
 
 
 if __name__ == "__main__":
