@@ -3,9 +3,12 @@ import numpy as np
 import torch
 from transformers import HubertModel, Wav2Vec2FeatureExtractor
 
+from multilingual_speech_emotion_recognition.utils.utils import class_renamer
+
 MODEL_NAME = "facebook/hubert-base-ls960"
 
 
+@class_renamer("hubert", MODEL_NAME.split("/")[1].replace("-", "_"))
 class HuBERTFeatureExtractor:
     def __init__(self, model_name: str = MODEL_NAME, device: str = None):
         """

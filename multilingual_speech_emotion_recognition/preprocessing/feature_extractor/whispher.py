@@ -3,9 +3,12 @@ import numpy as np
 import torch
 from transformers import WhisperModel, WhisperProcessor
 
+from multilingual_speech_emotion_recognition.utils.utils import class_renamer
+
 MODEL_NAME = "openai/whisper-small"
 
 
+@class_renamer("whisper", MODEL_NAME.split("/")[1].split("-")[1])
 class WhisperFeatureExtractor:
     def __init__(self, model_name: str = MODEL_NAME, device: str = None):
         """
@@ -52,7 +55,7 @@ class WhisperFeatureExtractor:
 
 
 if __name__ == "__main__":
-    extractor = WhisperFeatureExtractor()
+    extractor = WhisperFeatureExtractor().__class__
     audio_path = "./tests/test_data/test_audio.wav"
     audio, sr = librosa.load(audio_path, sr=16000)
     features = extractor.extract_features(audio)

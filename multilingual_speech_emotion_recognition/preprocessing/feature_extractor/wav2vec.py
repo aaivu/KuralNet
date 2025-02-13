@@ -3,9 +3,12 @@ import numpy as np
 import torch
 from transformers import Wav2Vec2Model, Wav2Vec2Processor
 
+from multilingual_speech_emotion_recognition.utils.utils import class_renamer
+
 MODEL_NAME = "facebook/wav2vec2-base"
 
 
+@class_renamer("wav2vec2", MODEL_NAME.split("/")[1].split("-")[1])
 class Wav2Vec2FeatureExtractor:
     def __init__(self, model_name: str = MODEL_NAME, device: str = None):
         self.device = (

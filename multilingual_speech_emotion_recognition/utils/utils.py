@@ -73,3 +73,11 @@ def load_audio(path: str, sr: float = 22050) -> tuple:
 
     audio, sample_rate = librosa.load(path, sr=sr)
     return audio, sample_rate
+
+
+def class_renamer(name, type):
+    def decorator(cls):
+        cls.__name__ = f"{name}_{type}"
+        return cls
+
+    return decorator
