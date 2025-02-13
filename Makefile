@@ -76,6 +76,8 @@ download_dataset:
 meta_extract:
 	. .venv/bin/activate && python -m data.meta_extractor
 
+feature_extract:
+	. .venv/bin/activate && python -m multilingual_speech_emotion_recognition.preprocessing.extractor
 
 
 clear:
