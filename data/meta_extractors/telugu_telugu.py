@@ -17,9 +17,9 @@ EMOTION_MAP = {
 def process_telugu_files(dataset_path, emotion_map, selected_emotions):
     data = []
     # Known problematic files to skip
-    error_files = [ # sad directory
+    error_files = [  # sad directory
         "S45_SRI_C01_G2_D04_SPKF21_V1_SA4_MMM.wav",
-        "S45_SRI_C03_G1_D03_SPKF21_V1_SA4_MMM.wav"
+        "S45_SRI_C03_G1_D03_SPKF21_V1_SA4_MMM.wav",
     ]
 
     try:
