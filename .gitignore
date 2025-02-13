@@ -165,3 +165,4 @@ cython_debug/
 # datasets and project related folders
 /SER_Datasets
 /data/meta_csvs/
+/data/features/
