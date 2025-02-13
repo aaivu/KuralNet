@@ -1,14 +1,12 @@
 import os
 
+import numpy as np
 import pandas as pd
 import torch
 from torch.utils.data import Dataset
 
-from multilingual_speech_emotion_recognition.dataset.encoder import (
-    emotion_encoder,
-    gender_encoder,
-    language_encoder,
-)
+from multilingual_speech_emotion_recognition.dataset.encoder import \
+    emotion_encoder
 
 
 class _SpeechEmotionDataset(Dataset):
@@ -16,57 +14,50 @@ class _SpeechEmotionDataset(Dataset):
     A custom dataset class for speech emotion recognition.
 
     This class dynamically loads dataset metadata and extracts necessary attributes
-    such as gender and emotion labels.
+    such as emotion labels and feature columns.
 
     Args:
-        dataset (str): The name of the dataset (e.g., 'EmoDB', 'RAVDESS').
-        language (str): The language of the dataset.
-        dataset_path (str): The directory where the meta is stored.
-        max_length (int, optional): Maximum length of the audio input in samples (default: 16000).
+        dataset_name (str): The name of the dataset.
+        dataset_path (str): Path to the CSV metadata file.
 
     Attributes:
-        audio_paths (List[str]): List of audio file paths.
-        emotions (List[int]): Emotion labels.
-        gender (List[int]): Gender labels.
-        metadata (pd.DataFrame): Loaded dataset metadata.
+        dataset_name (str): Name of the dataset.
+        emotions (torch.Tensor): Tensor containing emotion labels.
+        features (pd.DataFrame): DataFrame containing feature columns.
     """
 
     def __init__(
-        self,
-        dataset: str,
-        language: str,
-        dataset_path: str,
-        max_length: int = 16000,
+        self, dataset_name: str, dataset_path: str, language: str
     ) -> None:
         """
         Initializes the dataset by loading metadata and extracting attributes.
 
         Args:
-            dataset (str): Dataset name.
-            language (str): Language of the dataset.
-            dataset_path (str): The directory where the meta is stored.
-            max_length (int): Maximum audio sample length.
+            dataset_name (str): Dataset name.
+            dataset_path (str): Path to the CSV metadata file.
         """
-        self.dataset = dataset
-        self.language = language_encoder(language=language)
-        self.dataset_path = dataset_path
-        self.max_length = max_length
+        self.dataset_name = dataset_name
+        self.language = language
 
         if not os.path.exists(dataset_path):
             raise FileNotFoundError(f"Metadata file not found: {dataset_path}")
 
-        # load dataset
-        self.metadata = pd.read_csv(dataset_path)
+        # Load dataset metadata
+        self.dataset = pd.read_csv(dataset_path)
 
-        # encode dataset
-        self.metadata["emotion"] = self.metadata["emotion"].apply(
-            emotion_encoder
+        # Ensure 'emotion' column exists
+        if "emotion" not in self.dataset.columns:
+            raise ValueError("Metadata file must contain an 'emotion' column.")
+
+        # Extract features and emotion labels
+        self.emotions = torch.tensor(
+            self.dataset["emotion"].apply(emotion_encoder).values,
+            dtype=torch.long,
         )
-        self.metadata["gender"] = self.metadata["gender"].apply(gender_encoder)
-
-        self.audio_paths = self.metadata["audio_path"].tolist()
-        self.emotions = self.metadata["emotion"].tolist()
-        self.gender = self.metadata["gender"].tolist()
+        self.features = torch.tensor(
+            self.dataset.drop(columns=["emotion"]).values.astype(np.float32),
+            dtype=torch.float32,
+        )
 
     def __len__(self) -> int:
         """Returns the number of samples in the dataset."""
@@ -74,14 +65,9 @@ class _SpeechEmotionDataset(Dataset):
 
     def __getitem__(self, idx: int) -> dict:
         """Retrieves a sample from the dataset."""
-        features = {
-            "emotion": torch.tensor(self.emotions[idx], dtype=torch.long),
-            "gender": torch.tensor(self.gender[idx], dtype=torch.long),
-            "language": torch.tensor(self.language, dtype=torch.long),
-            "metadata": {
-                "dataset": self.dataset,
-                "language": self.language,
-                "dataset_path": self.dataset_path,
-            },
+
+        sample = {
+            "emotion": self.emotions[idx],
+            "features": self.features[idx],
         }
-        return features
+        return sample

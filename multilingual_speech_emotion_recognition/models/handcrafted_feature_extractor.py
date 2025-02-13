@@ -33,36 +33,38 @@ class HandcraftedAcousticEncoder(nn.Module):
             in_channels=256, out_channels=256, kernel_size=8, padding="same"
         )
         self.pool = nn.MaxPool1d(kernel_size=2, stride=2)
-        self.batch_norm = nn.BatchNorm1d
         self.dropout = nn.Dropout(0.3)
         self.global_avg_pool = nn.AdaptiveAvgPool1d(1)
         self.fc1 = nn.Linear(256, 128)
         self.fc2 = nn.Linear(128, 64)
         self.fc3 = nn.Linear(64, num_classes)
+        self.batch_norm1 = nn.BatchNorm1d(64)
+        self.batch_norm2 = nn.BatchNorm1d(128)
+        self.batch_norm3 = nn.BatchNorm1d(256)
 
     def forward(self, x):
         x = F.relu(self.conv1(x))
         x = F.relu(self.conv2(x))
         x = self.pool(x)
-        x = self.batch_norm(64)(x)
+        x = self.batch_norm1(x)
         x = self.dropout(x)
 
         x = F.relu(self.conv3(x))
         x = F.relu(self.conv4(x))
         x = self.pool(x)
-        x = self.batch_norm(128)(x)
+        x = self.batch_norm2(x)
         x = self.dropout(x)
 
         x = F.relu(self.conv5(x))
         x = F.relu(self.conv6(x))
         x = self.pool(x)
-        x = self.batch_norm(256)(x)
+        x = self.batch_norm3(x)
         x = self.dropout(x)
 
         x = F.relu(self.conv7(x))
         x = F.relu(self.conv8(x))
         x = self.pool(x)
-        x = self.batch_norm(256)(x)
+        x = self.batch_norm3(x)
         x = self.dropout(x)
 
         x = self.global_avg_pool(x)

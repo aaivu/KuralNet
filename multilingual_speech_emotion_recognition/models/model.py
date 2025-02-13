@@ -12,11 +12,14 @@ from multilingual_speech_emotion_recognition.models.pretrained_speech_encoder im
 
 
 class KuralNet(nn.Module):
-    def __init__(self, handcraft_dim=40, whisper_dim=512, num_emotions=7):
+    def __init__(self, handcraft_dim=40, pretrained_dim=512, num_emotions=7):
         super(KuralNet, self).__init__()
-
-        self.handcraft_net = HandcraftedAcousticEncoder(handcraft_dim)
-        self.whisper_net = PretrainedSpeechEncoder(whisper_dim)
+        self.handcraft_net = HandcraftedAcousticEncoder(
+            input_shape=handcraft_dim, num_classes=num_emotions
+        )
+        self.whisper_net = PretrainedSpeechEncoder(
+            input_shape=pretrained_dim, num_classes=num_emotions
+        )
         self.fusion_net = FusionModel(input_dim=128, num_emotions=num_emotions)
 
         self.train_handcraft = True
