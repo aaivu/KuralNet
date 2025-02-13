@@ -16,7 +16,8 @@ class WhisperFeatureExtractor:
 
         Args:
             model_name (str, optional): Name of the Whisper model to use (default = "openai/whisper-small").
-            device (str, optional): Device to run the model on ("cuda" or "cpu"). If None, automatically selects based on availability.
+            device (str, optional): Device to run the model on ("cuda" or "cpu").
+            If None, automatically selects based on availability.
         """
         self.device = (
             device
