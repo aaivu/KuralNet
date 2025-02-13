@@ -6,10 +6,10 @@ from data.meta_extractors.dataset_processor import process_dataset
 
 ASED = DATASET.ASED.value
 EMOTION_MAP = {
-    "Fear": EMOTION.FEAR.value,
-    "Sadness": EMOTION.SADNESS.value,
-    "Happiness": EMOTION.HAPPINESS.value,
-    "Anger": EMOTION.ANGER.value,
+    "Fearful": EMOTION.FEAR.value,
+    "Sad": EMOTION.SADNESS.value,
+    "Happy": EMOTION.HAPPINESS.value,
+    "Angry": EMOTION.ANGER.value,
     "Neutral": EMOTION.NEUTRAL.value,
 }
 
