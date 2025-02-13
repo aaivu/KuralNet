@@ -96,7 +96,6 @@ def extract_pretrained_feature(
 
 
 if __name__ == "__main__":
-
     extractors = [
         extract_chroma_stft,
         extract_melspectrogram,
@@ -112,13 +111,15 @@ if __name__ == "__main__":
         WhisperFeatureExtractor,
     ]
 
-    for extractor in extractors:
-        feature_name = extractor.__name__.replace("extract_", "")
-        extract_feature(extractor, "data/meta_csvs/am_ASED.csv", feature_name)
+    csv_files = [f for f in os.listdir("data/meta_csvs") if f.endswith(".csv")]
 
-    for extractor_class in pre_trained_extractors:
-        class_name = extractor_class.__name__
+    for csv_file in csv_files:
+        csv_path = os.path.join("data/meta_csvs", csv_file)
 
-        extract_pretrained_feature(
-            extractor_class, "data/meta_csvs/am_ASED.csv", class_name
-        )
+        for extractor in extractors:
+            feature_name = extractor.__name__.replace("extract_", "")
+            extract_feature(extractor, csv_path, feature_name)
+
+        for extractor_class in pre_trained_extractors:
+            class_name = extractor_class.__name__
+            extract_pretrained_feature(extractor_class, csv_path, class_name)
