@@ -7,11 +7,19 @@ MODEL_NAME = "microsoft/wavlm-base-plus"
 
 
 class WavLMModelExtractor:
-    def __init__(self, model_name: str = MODEL_NAME):
+    def __init__(self, model_name: str = MODEL_NAME, device: str = None):
+        """
+        Initializes the WavLM model and feature extractor.
+        """
+        self.device = (
+            device
+            if device
+            else ("cuda" if torch.cuda.is_available() else "cpu")
+        )
         self.feature_extractor = AutoFeatureExtractor.from_pretrained(
             model_name
         )
-        self.model = WavLMModel.from_pretrained(model_name)
+        self.model = WavLMModel.from_pretrained(model_name).to(self.device)
         self.model.eval()
 
     def extract_features(
@@ -30,13 +38,13 @@ class WavLMModelExtractor:
         inputs = self.feature_extractor(
             audio, sampling_rate=sr, return_tensors="pt"
         )
-        input_values = inputs.input_values
+        input_values = inputs.input_values.to(self.device)
 
         with torch.no_grad():
             outputs = self.model(input_values, output_hidden_states=True)
 
         last_hidden_states = outputs.last_hidden_state
-        return torch.mean(last_hidden_states, dim=1).numpy().squeeze()
+        return torch.mean(last_hidden_states, dim=1).cpu().numpy().squeeze()
 
 
 if __name__ == "__main__":

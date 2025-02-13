@@ -7,15 +7,21 @@ MODEL_NAME = "openai/whisper-small"
 
 
 class WhisperFeatureExtractor:
-    def __init__(self, model_name: str = MODEL_NAME):
+    def __init__(self, model_name: str = MODEL_NAME, device: str = None):
         """
         Initializes the WhisperFeatureExtractor with the specified model.
 
         Args:
             model_name (str, optional): Name of the Whisper model to use (default = "openai/whisper-small").
+            device (str, optional): Device to run the model on ("cuda" or "cpu"). If None, automatically selects based on availability.
         """
+        self.device = (
+            device
+            if device
+            else ("cuda" if torch.cuda.is_available() else "cpu")
+        )
         self.processor = WhisperProcessor.from_pretrained(model_name)
-        self.model = WhisperModel.from_pretrained(model_name)
+        self.model = WhisperModel.from_pretrained(model_name).to(self.device)
         self.model.eval()
 
     def extract_features(
@@ -31,10 +37,10 @@ class WhisperFeatureExtractor:
         Returns:
             np.ndarray: Features from the last encoder hidden layer (SeqLen, HiddenDim).
         """
-        # convert audio to log-Mel spectrogram features
+        # Convert audio to log-Mel spectrogram features
         input_features = self.processor.feature_extractor(
             audio, sampling_rate=sr, return_tensors="pt"
-        ).input_features
+        ).input_features.to(self.device)
 
         with torch.no_grad():
             outputs = self.model.encoder(
@@ -42,7 +48,7 @@ class WhisperFeatureExtractor:
             )
 
         last_hidden_states = outputs.last_hidden_state
-        return torch.mean(last_hidden_states, dim=1).numpy().squeeze()
+        return torch.mean(last_hidden_states, dim=1).cpu().numpy().squeeze()
 
 
 if __name__ == "__main__":
