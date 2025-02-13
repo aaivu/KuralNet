@@ -5,10 +5,7 @@ import torch
 from torch.utils.data import Dataset
 
 from multilingual_speech_emotion_recognition.dataset.encoder import (
-    emotion_encoder,
-    gender_encoder,
-    language_encoder,
-)
+    emotion_encoder, gender_encoder, language_encoder)
 
 
 class _SpeechEmotionDataset(Dataset):
