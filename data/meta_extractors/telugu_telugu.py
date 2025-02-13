@@ -17,10 +17,10 @@ EMOTION_MAP = {
 def process_telugu_files(dataset_path, emotion_map, selected_emotions):
     data = []
     # Known problematic files to skip
-    error_files = {
-        "/kaggle/input/telugu-emotion-speech/telugu/sad/S45_SRI_C01_G2_D04_SPKF21_V1_SA4_MMM.wav",
-        "/kaggle/input/telugu-emotion-speech/telugu/sad/S45_SRI_C03_G1_D03_SPKF21_V1_SA4_MMM.wav",
-    }
+    error_files = [ # sad directory
+        "S45_SRI_C01_G2_D04_SPKF21_V1_SA4_MMM.wav",
+        "S45_SRI_C03_G1_D03_SPKF21_V1_SA4_MMM.wav"
+    ]
 
     try:
         for emotion_dir in os.listdir(dataset_path):
@@ -31,8 +31,10 @@ def process_telugu_files(dataset_path, emotion_map, selected_emotions):
             emotion = emotion_map.get(emotion_dir)
             if not emotion or emotion not in selected_emotions:
                 continue
-
-            for file_name in os.listdir(dir_path):
+            files = os.listdir(dir_path)
+            if emotion_dir == "sad":
+                files = [f for f in files if f not in error_files]
+            for file_name in files:
                 file_path = os.path.join(dir_path, file_name)
                 if file_path not in error_files:
                     data.append([emotion, file_path])
