@@ -129,6 +129,7 @@ class DATASET(Enum):
         language=LANGUAGE.BENGALI.value,
         url="sushmit0109/subescobangla-speech-emotion-dataset",
         path="SER_Datasets/SUBESCO/SUBESCO",
+        feature_path="data/features/bn_SUBESCO_wavlm_base.csv",
     )
     TELUGU_DATASET = Dataset(
         name="Telugu-Dataset",

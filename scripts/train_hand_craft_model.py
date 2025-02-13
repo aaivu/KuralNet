@@ -1,6 +1,6 @@
 from multilingual_speech_emotion_recognition.dataset.dataset import _SpeechEmotionDataset
 from multilingual_speech_emotion_recognition.utils.dataset_loader import DataLoader
-from multilingual_speech_emotion_recognition.models.handcrafted_feature_extractor import HandcraftedAcousticEncoder
+from multilingual_speech_emotion_recognition.models.pretrained_speech_encoder import PretrainedSpeechEncoder
 from data.constant import DATASET
 import torch
 import torch.nn as nn
@@ -11,13 +11,13 @@ TRAIN_SPLIT = 0.8
 BATCH_SIZE = 64
 NUM_EPOCHS = 100
 LEARNING_RATE = 0.001
-device = "cpu" # torch.device("cuda" if torch.cuda.is_available() else "cpu")
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Using device: {device}")
     
 dataset = _SpeechEmotionDataset(
-    dataset_name=DATASET.EMOTA.value.name,
-    language=DATASET.EMOTA.value.language,
-    dataset_path=DATASET.EMOTA.value.feature_path)
+    dataset_name=DATASET.SUBESCO.value.name,
+    language=DATASET.SUBESCO.value.language,
+    dataset_path=DATASET.SUBESCO.value.feature_path)
 
 train_size = int(TRAIN_SPLIT * len(dataset))
 test_size = len(dataset) - train_size
@@ -30,7 +30,7 @@ val_loader = DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=False)
 
 num_classes = len(torch.unique(dataset.emotions))
 input_shape = (1, dataset.features.shape[1])
-model = HandcraftedAcousticEncoder(input_shape, num_classes)
+model = PretrainedSpeechEncoder(input_shape, num_classes)
 
 criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=LEARNING_RATE)
@@ -109,7 +109,7 @@ for epoch in range(NUM_EPOCHS):
         }, 'best_model.pth')
     else:
         patience_counter += 1
-        if patience_counter >= 3:
+        if patience_counter >= 100:
             print("Early stopping triggered!")
             break
 
