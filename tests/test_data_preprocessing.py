@@ -6,9 +6,6 @@ from multilingual_speech_emotion_recognition.preprocessing.feature_extractor.han
 from tests.conftest import TEST_AUDIO
 
 
-# extract_whisper_features
-
-
 def test_load_audio():
     # Test loading an audio file
     sr = 16000
