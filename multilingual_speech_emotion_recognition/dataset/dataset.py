@@ -5,9 +5,8 @@ import pandas as pd
 import torch
 from torch.utils.data import Dataset
 
-from multilingual_speech_emotion_recognition.dataset.encoder import (
-    emotion_encoder,
-)
+from multilingual_speech_emotion_recognition.dataset.encoder import \
+    emotion_encoder
 
 
 class _SpeechEmotionDataset(Dataset):

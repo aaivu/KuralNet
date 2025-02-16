@@ -1,14 +1,11 @@
 from torch import nn
 
-from multilingual_speech_emotion_recognition.models.fusion_model import (
-    FusionModel,
-)
-from multilingual_speech_emotion_recognition.models.handcrafted_feature_extractor import (
-    HandcraftedAcousticEncoder,
-)
-from multilingual_speech_emotion_recognition.models.pretrained_speech_encoder import (
-    PretrainedSpeechEncoder,
-)
+from multilingual_speech_emotion_recognition.models.fusion_model import \
+    FusionModel
+from multilingual_speech_emotion_recognition.models.handcrafted_feature_extractor import \
+    HandcraftedAcousticEncoder
+from multilingual_speech_emotion_recognition.models.pretrained_speech_encoder import \
+    PretrainedSpeechEncoder
 
 
 class KuralNet(nn.Module):
