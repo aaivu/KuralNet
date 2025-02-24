@@ -1,20 +1,21 @@
+from data.constant import EMOTION
+
+
 def emotion_encoder(emotion: str):
     EMOTION_MAPPING = {
-        "neutral": 0,
-        "happy": 1,
-        "sad": 2,
-        "angry": 3,
-        "fearful": 4,
-        "disgust": 5,
-        "surprised": 6,
+        EMOTION.ANGER.value: 0,
+        EMOTION.FEAR.value: 1,
+        EMOTION.HAPPINESS.value: 2,
+        EMOTION.SADNESS.value: 3,
+        EMOTION.NEUTRAL.value: 4,
     }
 
-    if emotion.lower() not in EMOTION_MAPPING:
+    if emotion not in EMOTION_MAPPING:
         raise ValueError(
             f"Invalid emotion: {emotion}. Allowed values are {list(EMOTION_MAPPING.keys())}"
         )
 
-    return EMOTION_MAPPING[emotion.lower()]
+    return EMOTION_MAPPING[emotion]
 
 
 def gender_encoder(gender: str):

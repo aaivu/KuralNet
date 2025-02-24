@@ -11,7 +11,7 @@ TEST_AUDIO = "tests/test_data/test_audio.wav"
 def sample_dataset():
     """Fixture to create a test dataset instance."""
     return _SpeechEmotionDataset(
-        dataset="IEMOCAP",
+        dataset_name="IEMOCAP",
         language="English",
         dataset_path=TEST_CSV,
     )

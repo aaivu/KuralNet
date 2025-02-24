@@ -166,3 +166,5 @@ cython_debug/
 /SER_Datasets
 /data/meta_csvs/
 /data/features/
+*.pth
+*.png

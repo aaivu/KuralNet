@@ -1,11 +1,9 @@
-audio_path,emotion,gender,transcript
-file001_male_hap,happy,male,I'm feeling great today!
-file002_female_sad,sad,female,I just want to be alone.
-file003_male_ang,angry,male,Why did you do that?
-file004_female_neu,neutral,female,Let's meet at 5 PM.
-file005_male_sur,surprised,male,Wow! I didn't expect that!
-file006_female_hap,happy,female,This is the best day ever!
-file007_male_sad,sad,male,I miss my family so much.
-file008_female_ang,angry,female,This is completely unfair!
-file009_male_neu,neutral,male,I think we should wait and see.
-file010_female_sur,surprised,female,Oh my god! This is amazing!
+emotion,feature1,feature2,feature3,feature4,feature5
+HAPPINESS,0.72,0.53,0.89,0.45,0.61
+SADNESS,0.34,0.68,0.22,0.57,0.39
+ANGER,0.85,0.49,0.77,0.63,0.58
+NEUTRAL,0.48,0.62,0.33,0.49,0.55
+HAPPINESS,0.79,0.54,0.91,0.47,0.64
+SADNESS,0.32,0.71,0.25,0.56,0.41
+ANGER,0.88,0.52,0.80,0.65,0.60
+NEUTRAL,0.50,0.60,0.36,0.51,0.56

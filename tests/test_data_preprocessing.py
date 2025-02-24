@@ -1,12 +1,9 @@
 import numpy as np
 
-from multilingual_speech_emotion_recognition.preprocessing.data_preprocessing import (
+from multilingual_speech_emotion_recognition.preprocessing.feature_extractor.handcrafted_feature import (
     extract_chroma_stft, extract_melspectrogram, extract_mfcc, extract_rmse,
     extract_zcr, load_audio, preprocess_data)
 from tests.conftest import TEST_AUDIO
-
-
-# extract_whisper_features
 
 
 def test_load_audio():

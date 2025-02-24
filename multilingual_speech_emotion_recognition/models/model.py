@@ -1,31 +1,50 @@
-import torch.nn as nn
+from torch import nn
+
+from multilingual_speech_emotion_recognition.models.fusion_model import \
+    FusionModel
+from multilingual_speech_emotion_recognition.models.handcrafted_feature_extractor import \
+    HandcraftedAcousticEncoder
+from multilingual_speech_emotion_recognition.models.pretrained_speech_encoder import \
+    PretrainedSpeechEncoder
 
 
-class SpeechEmotionModel(nn.Module):
-    """
-    Speech Emotion Recognition Model.
+class KuralNet(nn.Module):
+    def __init__(self, handcraft_dim=40, pretrained_dim=512, num_emotions=7):
+        super(KuralNet, self).__init__()
+        self.handcraft_net = HandcraftedAcousticEncoder(
+            input_shape=handcraft_dim, num_classes=num_emotions
+        )
+        self.whisper_net = PretrainedSpeechEncoder(
+            input_shape=pretrained_dim, num_classes=num_emotions
+        )
+        self.fusion_net = FusionModel(input_dim=128, num_emotions=num_emotions)
 
-    Args:
-        input_dim (int): Input dimension for the model (e.g., number of MFCC coefficients).
-        hidden_dim (int): Number of hidden units in the LSTM layer.
-        output_dim (int): Number of emotion classes.
-    """
+        self.train_handcraft = True
+        self.train_whisper = True
+        self.train_fusion = True
 
-    def __init__(
-        self, input_dim: int = 13, hidden_dim: int = 64, output_dim: int = 7
+    def set_training_mode(
+        self, train_handcraft=True, train_whisper=True, train_fusion=True
     ):
-        super(SpeechEmotionModel, self).__init__()
+        self.train_handcraft = train_handcraft
+        self.train_whisper = train_whisper
+        self.train_fusion = train_fusion
 
-        self.lstm = nn.LSTM(input_dim, hidden_dim, batch_first=True)
-        self.fc = nn.Linear(hidden_dim, output_dim)
-        self.softmax = nn.Softmax(dim=1)
+        for param in self.handcraft_net.parameters():
+            param.requires_grad = train_handcraft
+        for param in self.whisper_net.parameters():
+            param.requires_grad = train_whisper
+        for param in self.fusion_net.parameters():
+            param.requires_grad = train_fusion
 
-    def forward(self, x):
-        """
-        Forward pass through the model.
-        """
-        lstm_out, _ = self.lstm(x)
-        last_hidden_state = lstm_out[:, -1, :]
-        output = self.fc(last_hidden_state)
-        output = self.softmax(output)
+    def forward(self, handcraft_features=None, whisper_features=None):
+        handcraft_out = None
+        whisper_out = None
+
+        if handcraft_features is not None:
+            handcraft_out = self.handcraft_net(handcraft_features)
+        if whisper_features is not None:
+            whisper_out = self.whisper_net(whisper_features)
+
+        output = self.fusion_net(handcraft_out, whisper_out)
         return output
