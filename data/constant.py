@@ -108,7 +108,7 @@ class DATASET(Enum):
     IEMOCAP = Dataset(
         name="IEMOCAP",
         language=LANGUAGE.ENGLISH.value,
-        url="samuelsamsudinng/iemocap-emotion-speech-database",
+        url="thanikansivatheepan/iemocap",
         path="SER_Datasets/IEMOCAP",
     )
     KANNADA_DATASET = Dataset(

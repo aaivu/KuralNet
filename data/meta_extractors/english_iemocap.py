@@ -1,5 +1,6 @@
 import logging
 import os
+import pandas as pd
 
 from data.constant import DATASET, EMOTION, SELECTED_EMOTIONS
 from data.meta_extractors.dataset_processor import process_dataset
@@ -21,19 +22,18 @@ EMOTION_MAP = {
 
 def process_iemocap_files(dataset_path, emotion_map, selected_emotions):
     data = []
+    csv_file = os.path.join(dataset_path, "iemocap_meta_extracted.csv")
     try:
-        for session in os.listdir(dataset_path):
-            session_path = os.path.join(dataset_path, session)
-            for actor in os.listdir(session_path):
-                actor_path = os.path.join(session_path, actor)
-                for file_name in os.listdir(actor_path):
-                    file_path = os.path.join(actor_path, file_name)
-                    emotion = emotion_map.get(file_name.split("_")[2])
-                    if emotion and emotion in selected_emotions:
-                        data.append([emotion, file_path])
-    except Exception as e:
-        logging.error(f"Error processing IEMOCAP files: {str(e)}")
-
+        df = pd.read_csv(csv_file)
+        for index, row in df.iterrows():
+            emotion = emotion_map.get(row["emotion"])
+            if not emotion:
+                logging.warning(f"Emotion {row['emotion']} not found for {row['file_path']}")
+                continue
+            if emotion in selected_emotions:
+                data.append([emotion, row["file_path"]])
+    except FileNotFoundError:
+        logging.error(f"File not found: {csv_file}")
     return data
 
 if __name__ == "__main__":
