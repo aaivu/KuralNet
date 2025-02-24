@@ -77,6 +77,12 @@ class DATASET(Enum):
         url="jubeerathan/cafe-dataset",
         path="SER_Datasets/CaFE",
     )
+    CASIA = Dataset(
+        name="CASIA",
+        language=LANGUAGE.CHINESE.value,
+        url="xiangminjie/casia-ser",
+        path="SER_Datasets/CASIA/CASIA",
+    )
     CREMA_D = Dataset(
         name="CREMA-D",
         language=LANGUAGE.ENGLISH.value,
