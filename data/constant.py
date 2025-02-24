@@ -13,6 +13,8 @@ class EMOTION(Enum):
     BOREDOM = "BOREDOM"
     SARCASTIC = "SARCASTIC"
     JOY = "JOY"
+    FRUSTRATION = "FRUSTRATION"
+    EXCITEMENT = "EXCITEMENT"
 
 
 SELECTED_EMOTIONS = [
@@ -105,6 +107,12 @@ class DATASET(Enum):
         language=LANGUAGE.HINDI.value,
         url="vishlb/speech-emotion-recognition-hindi",
         path="SER_Datasets/Hindi-Dataset/my Dataset",
+    )
+    IEMOCAP = Dataset(
+        name="IEMOCAP",
+        language=LANGUAGE.ENGLISH.value,
+        url="thanikansivatheepan/iemocap",
+        path="SER_Datasets/IEMOCAP",
     )
     KANNADA_DATASET = Dataset(
         name="Kannada-Dataset",
