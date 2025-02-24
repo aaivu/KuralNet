@@ -77,6 +77,12 @@ class DATASET(Enum):
         url="jubeerathan/cafe-dataset",
         path="SER_Datasets/CaFE",
     )
+    CREMA_D = Dataset(
+        name="CREMA-D",
+        language=LANGUAGE.ENGLISH.value,
+        url="ejlok1/cremad",
+        path="SER_Datasets/CREMA-D/AudioWAV",
+    )
     EMODB = Dataset(
         name="EmoDB",
         language=LANGUAGE.GERMAN.value,
