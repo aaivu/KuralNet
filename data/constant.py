@@ -96,6 +96,12 @@ class DATASET(Enum):
         url="sourabhy/emovo-italian-ser-dataset",
         path="SER_Datasets/EMOVO/EMOVO",
     )
+    EMOZIONALMENTE = Dataset(
+        name="Emozionalmente",
+        language=LANGUAGE.ITALIAN.value,
+        url="thanikansivatheepan/emozionalmente",
+        path="SER_Datasets/Emozionalmente/emozionalmente_dataset",
+    )
     ESD_CHINESE = Dataset(
         name="ESD",
         language=LANGUAGE.CHINESE.value,
