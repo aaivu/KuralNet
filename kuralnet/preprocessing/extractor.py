@@ -13,9 +13,7 @@ from kuralnet.preprocessing.feature_extractor.wavlm import \
     WavLMModelFeatureExtractor
 from kuralnet.preprocessing.feature_extractor.whispher import \
     WhisperFeatureExtractor
-from kuralnet.utils.utils import (_get_logger,
-                                                                 load_audio,
-                                                                 load_csv)
+from kuralnet.utils.utils import _get_logger, load_audio, load_csv
 
 logger = _get_logger(__name__)
 

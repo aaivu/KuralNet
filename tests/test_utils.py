@@ -5,12 +5,12 @@ import pandas as pd
 import pytest
 
 from kuralnet.dataset.dataset import \
-    _SpeechEmotionDataset
+    SpeechEmotionDataset
 from kuralnet.utils.dataset_loader import \
     get_dataloader
 from kuralnet.utils.utils import (_get_logger,
-                                                                 load_audio,
-                                                                 load_csv)
+                                  load_audio,
+                                  load_csv)
 from tests.conftest import TEST_AUDIO, TEST_CSV
 
 
@@ -22,7 +22,7 @@ def test_get_dataloader(
     batch_size: int,
     shuffle: bool,
     val_split: float,
-    sample_dataset: _SpeechEmotionDataset,
+    sample_dataset: SpeechEmotionDataset,
 ):
     dataloaders = get_dataloader(
         sample_dataset, batch_size=batch_size, shuffle=shuffle, val_split=val_split
@@ -48,13 +48,13 @@ def test_get_dataloader(
         assert dataloaders["val"].batch_size == batch_size
 
 
-def test_dataloader_shuffle(sample_dataset: _SpeechEmotionDataset):
+def test_dataloader_shuffle(sample_dataset: SpeechEmotionDataset):
     dataloaders = get_dataloader(sample_dataset, batch_size=5, shuffle=True)
     assert dataloaders["train"].dataset.dataset == sample_dataset
     assert dataloaders["test"].dataset.dataset == sample_dataset
 
 
-def test_dataloader_batch_sizes(sample_dataset: _SpeechEmotionDataset):
+def test_dataloader_batch_sizes(sample_dataset: SpeechEmotionDataset):
     dataloaders = get_dataloader(
         sample_dataset, batch_size=3, shuffle=True, val_split=True
     )
