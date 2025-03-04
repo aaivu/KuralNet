@@ -1,15 +1,24 @@
 import os
 
+import librosa
 import numpy as np
 import pandas as pd
 import torch
 from torch.utils.data import Dataset
 
-from kuralnet.dataset.encoder import \
-    emotion_encoder
+from kuralnet.dataset.encoder import emotion_encoder
 
 
-class _SpeechEmotionDataset(Dataset):
+def pad_or_truncate(audio, desired_length=50000):
+    if len(audio) > desired_length:
+        return audio[:desired_length]
+    elif len(audio) < desired_length:
+        pad_width = desired_length - len(audio)
+        return np.pad(audio, (0, pad_width), mode="constant")
+    return audio
+
+
+class SpeechEmotionDataset(Dataset):
     """
     A custom dataset class for speech emotion recognition.
 
@@ -27,7 +36,11 @@ class _SpeechEmotionDataset(Dataset):
     """
 
     def __init__(
-        self, dataset_name: str, dataset_path: str, language: str
+        self,
+        dataset_name: str,
+        dataset_path: str,
+        language: str,
+        sr: int = 16000,
     ) -> None:
         """
         Initializes the dataset by loading metadata and extracting attributes.
@@ -54,10 +67,12 @@ class _SpeechEmotionDataset(Dataset):
             self.dataset["emotion"].apply(emotion_encoder).values,
             dtype=torch.long,
         )
-        self.features = torch.tensor(
-            self.dataset.drop(columns=["emotion"]).values.astype(np.float32),
-            dtype=torch.float32,
-        )
+        paths = self.dataset["audio_path"].astype(str).tolist()
+        self.audios = []
+        for path in paths:
+            audio, sr = librosa.load(path, sr=sr)
+            audio_fixed = pad_or_truncate(audio, 50000)
+            self.audios.append(audio_fixed)
 
     def __len__(self) -> int:
         """Returns the number of samples in the dataset."""
@@ -66,8 +81,4 @@ class _SpeechEmotionDataset(Dataset):
     def __getitem__(self, idx: int) -> dict:
         """Retrieves a sample from the dataset."""
 
-        sample = {
-            "emotion": self.emotions[idx],
-            "features": self.features[idx],
-        }
-        return sample
+        return {"emotion": self.emotions[idx], "audio": self.audios[idx]}
