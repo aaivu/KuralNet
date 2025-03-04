@@ -33,13 +33,13 @@ test:
 	. .venv/bin/activate && pytest
 
 lint:
-	. .venv/bin/activate && flake8 multilingual_speech_emotion_recognition/ data/
+	. .venv/bin/activate && flake8 kuralnet/ data/
 
 format-check:
-	. .venv/bin/activate && black --check --line-length 79 multilingual_speech_emotion_recognition/ data/ && isort --check multilingual_speech_emotion_recognition/ data/
+	. .venv/bin/activate && black --check --line-length 79 kuralnet/ data/ && isort --check kuralnet/ data/
 
 format:
-	. .venv/bin/activate && black --line-length 79 multilingual_speech_emotion_recognition/ data/ && isort multilingual_speech_emotion_recognition/ data/
+	. .venv/bin/activate && black --line-length 79 kuralnet/ data/ && isort kuralnet/ data/
 
 test:
 	. .venv/bin/activate && pytest .
@@ -77,7 +77,7 @@ meta_extract:
 	. .venv/bin/activate && python -m data.meta_extractor
 
 feature_extract:
-	. .venv/bin/activate && python -m multilingual_speech_emotion_recognition.preprocessing.extractor
+	. .venv/bin/activate && python -m kuralnet.preprocessing.extractor
 
 
 clear:

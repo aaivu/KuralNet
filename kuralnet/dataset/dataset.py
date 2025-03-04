@@ -5,7 +5,7 @@ import pandas as pd
 import torch
 from torch.utils.data import Dataset
 
-from multilingual_speech_emotion_recognition.dataset.encoder import \
+from kuralnet.dataset.encoder import \
     emotion_encoder
 
 

@@ -5,7 +5,7 @@ import zipfile
 import kaggle
 
 from data.constant import DATASET
-from multilingual_speech_emotion_recognition.utils.utils import _get_logger
+from kuralnet.utils.utils import _get_logger
 
 # Note: To Run This Script Please Download Kaggle API Key as kaggle.json and put it under ~/.kaggle/
 

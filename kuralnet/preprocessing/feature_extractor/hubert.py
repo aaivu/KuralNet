@@ -3,7 +3,7 @@ import numpy as np
 import torch
 from transformers import HubertModel, Wav2Vec2FeatureExtractor
 
-from multilingual_speech_emotion_recognition.utils.utils import class_renamer
+from kuralnet.utils.utils import class_renamer
 
 MODEL_NAME = "facebook/hubert-base-ls960"
 

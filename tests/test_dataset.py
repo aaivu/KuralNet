@@ -1,6 +1,6 @@
 import torch
 
-from multilingual_speech_emotion_recognition.dataset.dataset import \
+from kuralnet.dataset.dataset import \
     _SpeechEmotionDataset
 
 

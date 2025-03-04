@@ -23,7 +23,7 @@ multilingual-ser/
 │── data/                  # Datasets (organized by language)
 │   ├── processed/         # Preprocessed data (features, embeddings, etc.)
 │
-│── multilingual_speech_emotion_recognition/ # Main source code for the project
+│── kuralnet/ # Main source code for the project
 │   ├── models/            # Model architectures
 │   │   ├── model.py
 │   │   ├── attention.py

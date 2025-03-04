@@ -1,6 +1,6 @@
 import pytest
 
-from multilingual_speech_emotion_recognition.dataset.dataset import \
+from kuralnet.dataset.dataset import \
     _SpeechEmotionDataset
 
 TEST_CSV = "tests/test_data/en_iemocap.csv"

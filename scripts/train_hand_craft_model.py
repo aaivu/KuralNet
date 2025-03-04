@@ -1,6 +1,6 @@
-from multilingual_speech_emotion_recognition.dataset.dataset import _SpeechEmotionDataset
-from multilingual_speech_emotion_recognition.utils.dataset_loader import DataLoader
-from multilingual_speech_emotion_recognition.models.pretrained_speech_encoder import PretrainedSpeechEncoder
+from kuralnet.dataset.dataset import _SpeechEmotionDataset
+from kuralnet.utils.dataset_loader import DataLoader
+from kuralnet.models.pretrained_speech_encoder import PretrainedSpeechEncoder
 from data.constant import DATASET
 import torch
 import torch.nn as nn

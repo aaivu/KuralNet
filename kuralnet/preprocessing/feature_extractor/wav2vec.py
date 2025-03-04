@@ -3,7 +3,7 @@ import numpy as np
 import torch
 from transformers import Wav2Vec2Model, Wav2Vec2Processor
 
-from multilingual_speech_emotion_recognition.utils.utils import class_renamer
+from kuralnet.utils.utils import class_renamer
 
 MODEL_NAME = "facebook/wav2vec2-base"
 

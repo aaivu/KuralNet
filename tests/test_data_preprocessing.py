@@ -1,6 +1,6 @@
 import numpy as np
 
-from multilingual_speech_emotion_recognition.preprocessing.feature_extractor.handcrafted_feature import (
+from kuralnet.preprocessing.feature_extractor.handcrafted_feature import (
     extract_chroma_stft, extract_melspectrogram, extract_mfcc, extract_rmse,
     extract_zcr, load_audio, preprocess_data)
 from tests.conftest import TEST_AUDIO

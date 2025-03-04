@@ -4,11 +4,11 @@ import librosa
 import pandas as pd
 import pytest
 
-from multilingual_speech_emotion_recognition.dataset.dataset import \
+from kuralnet.dataset.dataset import \
     _SpeechEmotionDataset
-from multilingual_speech_emotion_recognition.utils.dataset_loader import \
+from kuralnet.utils.dataset_loader import \
     get_dataloader
-from multilingual_speech_emotion_recognition.utils.utils import (_get_logger,
+from kuralnet.utils.utils import (_get_logger,
                                                                  load_audio,
                                                                  load_csv)
 from tests.conftest import TEST_AUDIO, TEST_CSV

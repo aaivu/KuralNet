@@ -2,18 +2,18 @@ import os
 
 import pandas as pd
 
-from multilingual_speech_emotion_recognition.preprocessing.feature_extractor.handcrafted_feature import (
+from kuralnet.preprocessing.feature_extractor.handcrafted_feature import (
     extract_chroma_stft, extract_melspectrogram, extract_mfcc, extract_rmse,
     extract_zcr)
-from multilingual_speech_emotion_recognition.preprocessing.feature_extractor.hubert import \
+from kuralnet.preprocessing.feature_extractor.hubert import \
     HuBERTFeatureExtractor
-from multilingual_speech_emotion_recognition.preprocessing.feature_extractor.wav2vec import \
+from kuralnet.preprocessing.feature_extractor.wav2vec import \
     Wav2Vec2FeatureExtractor
-from multilingual_speech_emotion_recognition.preprocessing.feature_extractor.wavlm import \
+from kuralnet.preprocessing.feature_extractor.wavlm import \
     WavLMModelFeatureExtractor
-from multilingual_speech_emotion_recognition.preprocessing.feature_extractor.whispher import \
+from kuralnet.preprocessing.feature_extractor.whispher import \
     WhisperFeatureExtractor
-from multilingual_speech_emotion_recognition.utils.utils import (_get_logger,
+from kuralnet.utils.utils import (_get_logger,
                                                                  load_audio,
                                                                  load_csv)
 
