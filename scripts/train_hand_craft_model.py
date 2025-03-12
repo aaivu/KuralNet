@@ -1,11 +1,13 @@
-from kuralnet.dataset.dataset import _SpeechEmotionDataset
+from kuralnet.dataset.dataset import SpeechEmotionDataset
 from kuralnet.utils.dataset_loader import DataLoader
-from kuralnet.models.pretrained_speech_encoder import PretrainedSpeechEncoder
+from kuralnet.model.handcrafted_feature_extractor import HandcraftedAcousticEncoder
 from data.constant import DATASET
 import torch
 import torch.nn as nn
 from sklearn.metrics import accuracy_score
 import matplotlib.pyplot as plt 
+from kuralnet.feature.feature_extractor import TraditionalFeatureExtractor
+import numpy as np
 
 TRAIN_SPLIT = 0.8
 BATCH_SIZE = 64
@@ -14,7 +16,7 @@ LEARNING_RATE = 0.001
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Using device: {device}")
     
-dataset = _SpeechEmotionDataset(
+dataset = SpeechEmotionDataset(
     dataset_name=DATASET.SUBESCO.value.name,
     language=DATASET.SUBESCO.value.language,
     dataset_path=DATASET.SUBESCO.value.feature_path)
@@ -29,8 +31,8 @@ val_loader = DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=False)
 
 
 num_classes = len(torch.unique(dataset.emotions))
-input_shape = (1, dataset.features.shape[1])
-model = PretrainedSpeechEncoder(input_shape, num_classes)
+input_dim = 155
+model = HandcraftedAcousticEncoder(input_dim, num_classes)
 
 criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=LEARNING_RATE)
@@ -42,16 +44,24 @@ patience_counter = 0
 train_losses = []
 val_losses = []
 
+traditionalFeatureExtractor = TraditionalFeatureExtractor()
+
+
 for epoch in range(NUM_EPOCHS):
     model.train()
     running_loss = 0.0
     for batch in train_loader:
         # Move batch to device
-        features = batch['features'].to(device)
+        audios = batch['audio'].to(device)
+        features = []
+        for i in range(audios.size(0)):
+            features.append(traditionalFeatureExtractor.extract_features(audios[i].cpu().numpy()))
+        
+        features = [torch.tensor(feature) if isinstance(feature, np.ndarray) else feature for feature in features]
+        features = torch.stack(features).unsqueeze(0)
+        features.to(device)
         labels = batch['emotion'].to(device)
-            
-        if len(features.shape) == 2:
-            features = features.unsqueeze(1)
+    
             
         optimizer.zero_grad()
         outputs = model(features)
@@ -73,8 +83,15 @@ for epoch in range(NUM_EPOCHS):
     with torch.no_grad():
         for batch in val_loader:
             # Move batch to device
-            features = batch['features'].to(device)
+            audios = batch['audio'].to(device)
+            features = []
+            for i in range(audios.size(0)):
+                features.append(traditionalFeatureExtractor.extract_features(audios[i]))
+            
+            features = torch.stack(features)
             labels = batch['emotion'].to(device)
+            print("features")
+            print(features.shape())
             
             if len(features.shape) == 2:
                 features = features.unsqueeze(1)

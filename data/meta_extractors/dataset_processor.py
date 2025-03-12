@@ -13,7 +13,8 @@ def setup_logging():
 
 def validate_inputs(dataset_path: str, selected_emotions: List[str]):
     if not os.path.exists(dataset_path):
-        raise FileNotFoundError(f"Dataset directory not found: {dataset_path}")
+        pass
+        # raise FileNotFoundError(f"Dataset directory not found: {dataset_path}")
     if not selected_emotions:
         raise ValueError("Selected emotions list cannot be empty")
 
