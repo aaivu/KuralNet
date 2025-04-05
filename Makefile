@@ -73,6 +73,9 @@ remove-dev:
 download_dataset:
 	. .venv/bin/activate && python -m data.download_ser_datasets
 
+download_missing_dataset:
+	. .venv/bin/activate && python -m data.download_missing_ser_datasets
+
 meta_extract:
 	. .venv/bin/activate && python -m data.meta_extractor
 
