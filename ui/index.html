@@ -1,0 +1,978 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KuralNet - Multilingual Speech Emotion Recognition</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'kural-blue': {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        }
+                    },
+                    fontFamily: {
+                        'sans': ['Inter', 'ui-sans-serif', 'system-ui']
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-blue-700 to-blue-900 text-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center">
+            <div class="flex items-center mb-4 md:mb-0">
+                <i class="fas fa-waveform text-3xl mr-3 text-blue-300"></i>
+                <div>
+                    <h1 class="text-2xl font-bold">Kural<span class="text-blue-300">Net</span></h1>
+                    <p class="text-sm text-blue-200">Advanced Speech Emotion Recognition</p>
+                </div>
+            </div>
+            
+            <nav>
+                <ul class="flex space-x-6">
+                    <li><a href="#home" class="hover:text-blue-300 transition-colors duration-300"><i class="fas fa-home mr-1"></i> Home</a></li>
+                    <li><a href="#demo" class="hover:text-blue-300 transition-colors duration-300"><i class="fas fa-microphone-alt mr-1"></i> Demo</a></li>
+                    <li><a href="#about" class="hover:text-blue-300 transition-colors duration-300"><i class="fas fa-info-circle mr-1"></i> About</a></li>
+                    <li><a href="#languages" class="hover:text-blue-300 transition-colors duration-300"><i class="fas fa-language mr-1"></i> Languages</a></li>
+                    <li><a href="#team" class="hover:text-blue-300 transition-colors duration-300"><i class="fas fa-users mr-1"></i> Team</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <!-- Hero Section -->
+    <section id="home" class="py-16 bg-gradient-to-b from-blue-900 to-blue-800 text-white">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-10 md:mb-0">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4">Detect emotions in speech with advanced AI</h2>
+                    <p class="text-xl text-blue-200 mb-8">KuralNet uses cutting-edge deep learning to accurately recognize emotions in spoken language across multiple languages.</p>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#demo" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition duration-300 flex items-center shadow-md">
+                            <i class="fas fa-play-circle mr-2"></i> Try Demo
+                        </a>
+                        <a href="https://github.com/kuralnet/speech-emotion-recognition" target="_blank" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-lg transition duration-300 flex items-center shadow-md">
+                            <i class="fab fa-github mr-2"></i> GitHub Repository
+                        </a>
+                    </div>
+                </div>
+                <div class="md:w-1/2 flex justify-center">
+                    <div class="relative w-full max-w-md">
+                        <div class="absolute inset-0 bg-blue-500 rounded-lg opacity-20 blur-xl"></div>
+                        <img src="https://img.icons8.com/fluency/240/null/audio-wave--v1.png" alt="Speech Analysis" class="relative z-10 mx-auto">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Model Architecture Section -->
+    <section id="about" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">Model Architecture</h2>
+            
+            <div class="flex flex-col md:flex-row gap-8">
+                <div class="md:w-1/2">
+                    <div class="bg-white rounded-xl shadow-md overflow-hidden h-full">
+                        <div class="px-6 py-4 bg-gradient-to-r from-blue-600 to-blue-800 text-white">
+                            <h3 class="text-xl font-semibold flex items-center">
+                                <i class="fas fa-brain mr-2"></i> Neural Network Architecture
+                            </h3>
+                        </div>
+                        <div class="p-6">
+                            <p class="mb-4 text-gray-700">KuralNet uses a hybrid architecture combining CNN and Transformer layers:</p>
+                            <ul class="space-y-3 text-gray-700">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                    <div>
+                                        <strong>Feature Extraction</strong>: Mel-spectrogram conversion with 128 frequency bins
+                                    </div>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                    <div>
+                                        <strong>CNN Layers</strong>: 4 convolutional blocks for spatial feature learning
+                                    </div>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                    <div>
+                                        <strong>Transformer</strong>: 6 transformer layers for temporal context
+                                    </div>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                    <div>
+                                        <strong>Attention Mechanism</strong>: Multi-head self-attention for capturing long-range dependencies
+                                    </div>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                    <div>
+                                        <strong>Classification Head</strong>: Dense layers with emotion confidence scoring
+                                    </div>
+                                </li>
+                            </ul>
+                            
+                            <div class="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-100">
+                                <h4 class="font-semibold text-blue-800 mb-2">Technical Specifications</h4>
+                                <ul class="grid grid-cols-2 gap-2 text-sm text-gray-700">
+                                    <li class="flex items-center">
+                                        <i class="fas fa-cog text-blue-500 mr-2"></i> 
+                                        <span><strong>Parameters:</strong> 128M</span>
+                                    </li>
+                                    <li class="flex items-center">
+                                        <i class="fas fa-database text-blue-500 mr-2"></i> 
+                                        <span><strong>Training Data:</strong> 10K hours</span>
+                                    </li>
+                                    <li class="flex items-center">
+                                        <i class="fas fa-microchip text-blue-500 mr-2"></i> 
+                                        <span><strong>Framework:</strong> PyTorch</span>
+                                    </li>
+                                    <li class="flex items-center">
+                                        <i class="fas fa-chart-line text-blue-500 mr-2"></i> 
+                                        <span><strong>Accuracy:</strong> 91.2%</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="md:w-1/2">
+                    <div class="bg-white rounded-xl shadow-md overflow-hidden h-full">
+                        <div class="px-6 py-4 bg-gradient-to-r from-blue-600 to-blue-800 text-white">
+                            <h3 class="text-xl font-semibold flex items-center">
+                                <i class="fas fa-code-branch mr-2"></i> Implementation Details
+                            </h3>
+                        </div>
+                        <div class="p-6">
+                            <div class="mb-6">
+                                <h4 class="text-lg font-semibold text-blue-800 mb-2">GitHub Repository</h4>
+                                <div class="bg-gray-800 rounded-lg p-4 flex items-center justify-between">
+                                    <span class="text-gray-200 font-mono text-sm">github.com/kuralnet/speech-emotion-recognition</span>
+                                    <a href="https://github.com/kuralnet/speech-emotion-recognition" target="_blank" class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors">
+                                        <i class="fas fa-external-link-alt"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <h4 class="text-lg font-semibold text-blue-800 mb-2">Key Features</h4>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                    <div class="flex items-start p-3 bg-gray-50 rounded-lg border border-gray-200">
+                                        <i class="fas fa-file-audio text-blue-500 text-lg mt-1 mr-3"></i>
+                                        <div>
+                                            <h5 class="font-semibold text-gray-800">Multi-format support</h5>
+                                            <p class="text-sm text-gray-600">Handles MP3, WAV, FLAC, etc.</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start p-3 bg-gray-50 rounded-lg border border-gray-200">
+                                        <i class="fas fa-clock text-blue-500 text-lg mt-1 mr-3"></i>
+                                        <div>
+                                            <h5 class="font-semibold text-gray-800">Real-time analysis</h5>
+                                            <p class="text-sm text-gray-600">Low-latency processing</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start p-3 bg-gray-50 rounded-lg border border-gray-200">
+                                        <i class="fas fa-globe text-blue-500 text-lg mt-1 mr-3"></i>
+                                        <div>
+                                            <h5 class="font-semibold text-gray-800">Multilingual</h5>
+                                            <p class="text-sm text-gray-600">Supports 10+ languages</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start p-3 bg-gray-50 rounded-lg border border-gray-200">
+                                        <i class="fas fa-rocket text-blue-500 text-lg mt-1 mr-3"></i>
+                                        <div>
+                                            <h5 class="font-semibold text-gray-800">Optimized Inference</h5>
+                                            <p class="text-sm text-gray-600">ONNX & TorchScript</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h4 class="text-lg font-semibold text-blue-800 mb-2">API Integration</h4>
+                                <div class="bg-gray-100 p-3 rounded-lg font-mono text-xs sm:text-sm overflow-x-auto">
+<pre>
+import requests
+
+API_URL = "https://api.kuralnet.ai/predict"
+API_KEY = "YOUR_API_KEY"
+
+def analyze_emotion(audio_file):
+    headers = {"Authorization": f"Bearer {API_KEY}"}
+    files = {"file": open(audio_file, "rb")}
+    
+    response = requests.post(API_URL, 
+                           headers=headers,
+                           files=files)
+    
+    return response.json()
+</pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Languages Section -->
+    <section id="languages" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-4 text-gray-800">Supported Languages</h2>
+            <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">
+                KuralNet is trained on diverse linguistic data to recognize emotions across multiple languages with high accuracy.
+            </p>
+            
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                <div class="px-6 py-4 bg-gradient-to-r from-blue-600 to-blue-800 text-white">
+                    <h3 class="text-xl font-semibold flex items-center">
+                        <i class="fas fa-language mr-2"></i> Language Support & Performance
+                    </h3>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-100">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Language
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Code
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Accuracy
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Score
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <span class="text-2xl mr-3">🇺🇸</span>
+                                        <span class="font-medium text-gray-900">English</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">EN</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                        <div class="bg-blue-600 h-2.5 rounded-full" style="width: 94.2%"></div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">94.2%</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <span class="text-2xl mr-3">🇪🇸</span>
+                                        <span class="font-medium text-gray-900">Spanish</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">ES</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                        <div class="bg-blue-600 h-2.5 rounded-full" style="width: 91.7%"></div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">91.7%</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <span class="text-2xl mr-3">🇫🇷</span>
+                                        <span class="font-medium text-gray-900">French</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">FR</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                        <div class="bg-blue-600 h-2.5 rounded-full" style="width: 90.5%"></div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">90.5%</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <span class="text-2xl mr-3">🇩🇪</span>
+                                        <span class="font-medium text-gray-900">German</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">DE</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                        <div class="bg-blue-600 h-2.5 rounded-full" style="width: 89.8%"></div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">89.8%</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <span class="text-2xl mr-3">🇨🇳</span>
+                                        <span class="font-medium text-gray-900">Mandarin</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">ZH</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                        <div class="bg-blue-600 h-2.5 rounded-full" style="width: 88.3%"></div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">88.3%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Demo Section -->
+    <section id="demo" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">Try KuralNet</h2>
+            
+            <div class="max-w-4xl mx-auto">
+                <div class="bg-white rounded-xl shadow-md overflow-hidden mb-8">
+                    <div class="px-6 py-4 bg-gradient-to-r from-blue-600 to-blue-800 text-white">
+                        <h3 class="text-xl font-semibold flex items-center">
+                            <i class="fas fa-microphone-alt mr-2"></i> Upload or Record Audio
+                        </h3>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-center text-gray-600 mb-6">Upload a WAV file or record audio to analyze emotions</p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="upload-box border-2 border-dashed border-gray-300 rounded-lg p-6 flex flex-col items-center justify-center hover:border-blue-500 hover:bg-blue-50 transition-colors duration-300 relative">
+                                <div class="text-4xl text-blue-500 mb-4">
+                                    <i class="fas fa-file-audio"></i>
+                                </div>
+                                <h4 class="text-lg font-semibold text-gray-800 mb-2">Upload Audio</h4>
+                                <p class="text-gray-600 text-sm text-center mb-4">Upload a WAV file (other formats will be converted)</p>
+                                <input type="file" id="audio-file" class="hidden" accept="audio/*">
+                                <button id="upload-btn" class="touch-feedback bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition duration-300 flex items-center shadow-md">
+                                    <i class="fas fa-upload mr-2"></i> Choose File
+                                </button>
+                            </div>
+                            
+                            <div class="record-box border-2 border-dashed border-gray-300 rounded-lg p-6 flex flex-col items-center justify-center hover:border-red-400 hover:bg-red-50 transition-colors duration-300 relative">
+                                <div class="absolute top-3 right-3 w-3 h-3 bg-red-500 rounded-full hidden" id="rec-indicator"></div>
+                                <div class="text-4xl text-red-500 mb-4">
+                                    <i class="fas fa-microphone"></i>
+                                </div>
+                                <h4 class="text-lg font-semibold text-gray-800 mb-2">Record Audio</h4>
+                                <p class="text-gray-600 text-sm text-center mb-4">Record audio directly using your microphone</p>
+                                <button id="record-btn" class="touch-feedback bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded-lg transition duration-300 flex items-center shadow-md">
+                                    <i class="fas fa-circle mr-2"></i> Start Recording
+                                </button>
+                                <button id="stop-btn" class="touch-feedback bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg transition duration-300 flex items-center shadow-md hidden">
+                                    <i class="fas fa-stop-circle mr-2"></i> Stop Recording
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                
+            <div class="loading hidden">
+                    <div class="flex flex-col items-center py-12">
+                <!-- Skeleton loader animation -->
+                <div class="w-full max-w-3xl mx-auto">
+                    <!-- Skeleton for dominant emotion -->
+                    <div class="flex items-center p-4 bg-gray-100 rounded-lg mb-6 animate-pulse">
+                        <div class="w-16 h-16 rounded-full bg-gray-300 mr-6"></div>
+                        <div class="flex-1">
+                            <div class="h-6 bg-gray-300 rounded w-1/3 mb-2"></div>
+                            <div class="h-4 bg-gray-300 rounded w-3/4"></div>
+                        </div>
+                <div id="mobile-message" class="hidden">
+                    <div class="flex flex-col items-center py-6 bg-blue-50 rounded-lg mb-6 border border-blue-100">
+                        <div class="text-blue-500 mb-2">
+                            <i class="fas fa-mobile-alt text-2xl"></i>
+                        </div>
+                        <p class="text-gray-700 text-center mb-2">Mobile device detected</p>
+                        <p class="text-gray-600 text-center text-sm px-4">For the best experience, rotate your device to landscape mode.</p>
+                    </div>
+                </div>
+
+                    </div>
+                    
+                    <!-- Skeleton for waveform -->
+                    <div class="h-48 bg-gray-100 rounded-lg mb-4 animate-pulse overflow-hidden relative">
+                        <div class="absolute inset-0 flex space-x-1">
+                            <!-- Skeleton wave lines -->
+                            <div class="flex-1 flex items-center justify-center">
+                                <div class="w-full flex items-end space-x-1 h-full px-2">
+                                    <div class="w-1 bg-gray-300 h-1/4"></div>
+                                    <div class="w-1 bg-gray-300 h-2/3"></div>
+                                    <div class="w-1 bg-gray-300 h-1/3"></div>
+                                    <div class="w-1 bg-gray-300 h-3/4"></div>
+                                    <div class="w-1 bg-gray-300 h-1/2"></div>
+                                    <div class="w-1 bg-gray-300 h-3/4"></div>
+                                    <div class="w-1 bg-gray-300 h-1/4"></div>
+                                    <!-- Repeat these elements to fill the width -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Skeleton for playback controls -->
+                    <div class="flex items-center space-x-4 mb-4">
+                        <div class="w-10 h-10 rounded-full bg-gray-300"></div>
+                        <div class="h-2 bg-gray-300 rounded-full flex-1"></div>
+                        <div class="w-16 h-4 rounded bg-gray-300"></div>
+                    </div>
+                    
+                    <!-- Skeleton for tab panel -->
+                    <div class="bg-gray-100 rounded-lg overflow-hidden mb-4">
+                        <div class="flex border-b border-gray-200">
+                            <div class="w-32 h-10 bg-gray-300 m-2 rounded"></div>
+                            <div class="w-32 h-10 bg-gray-200 m-2 rounded"></div>
+                        </div>
+                        <div class="p-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+                                <div class="h-48 rounded-lg bg-gray-200"></div>
+                                <div class="space-y-4">
+                                    <div class="h-6 bg-gray-300 rounded w-full"></div>
+                                    <div class="h-6 bg-gray-300 rounded w-full"></div>
+                                    <div class="h-6 bg-gray-300 rounded w-full"></div>
+                                    <div class="h-6 bg-gray-300 rounded w-full"></div>
+                                    <div class="h-6 bg-gray-300 rounded w-full"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center text-gray-700 mt-4">Processing audio...</div>
+                </div>
+            </div>
+                </div>
+    
+                
+                
+            <div id="visualization-section" class="hidden">
+                    <div class="bg-white rounded-xl shadow-md overflow-hidden mb-8">
+                        <div class="px-6 py-4 bg-gradient-to-r from-blue-600 to-blue-800 text-white">
+                            <h3 class="text-xl font-semibold flex items-center">
+                                <i class="fas fa-chart-pie mr-2"></i> Audio Emotion Analysis
+                            </h3>
+                        </div>
+                        <div class="p-6">
+                <!-- Dominant emotion display -->
+                <div class="flex items-center p-4 bg-gray-50 rounded-lg mb-6">
+                    <div id="dominant-icon" class="text-5xl mr-6">
+                        <i class="fas fa-meh text-gray-500"></i>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="text-xl font-semibold text-gray-800 mb-1">Dominant Emotion: <span id="dominant-emotion-name" class="text-blue-600">Neutral</span></h4>
+                        <p class="text-gray-600">The most prevalent emotion detected in this audio is <strong id="dominant-emotion-desc">neutral</strong>, which indicates a balanced emotional state.</p>
+                    </div>
+                </div>
+                
+                <!-- Waveform visualization with time markers -->
+                <div class="relative h-48 bg-gray-100 rounded-lg mb-4 overflow-hidden">
+                    <div id="waveform" class="relative h-full w-full">
+                        <!-- Dynamic waveform will be generated here -->
+                    </div>
+                    
+                    <!-- Time markers that adjust to uploaded audio length -->
+                    <div id="time-markers" class="absolute bottom-1 left-0 right-0 px-4 flex justify-between text-xs text-white">
+                        <!-- Time markers will be dynamically generated based on audio length -->
+                    </div>
+                </div>
+                
+                <!-- Playback controls -->
+                <div class="flex items-center space-x-4 mb-2">
+                    <button id="play-btn" class="touch-feedback w-10 h-10 flex items-center justify-center bg-blue-600 text-white rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <i class="fas fa-play"></i>
+                    </button>
+                    <div id="timeline-slider" class="relative flex-1 h-2 bg-gray-200 rounded-full cursor-pointer">
+                        <div id="timeline-progress" class="absolute h-full bg-blue-600 rounded-full w-0"></div>
+                        <div id="timeline-handle" class="absolute w-4 h-4 bg-blue-600 rounded-full top-1/2 transform -translate-y-1/2 -translate-x-1/2 left-0 cursor-grab shadow-md"></div>
+                    </div>
+                    <div id="time-display" class="text-sm font-medium text-gray-700 min-w-[80px] text-center">0:00 / 0:00</div>
+                </div>
+                
+                <!-- Time markers for reference -->
+                <div id="time-labels" class="flex justify-between text-xs text-gray-500 px-14 mb-6">
+                    <!-- Time labels will be dynamically generated -->
+                </div>
+                
+                <!-- Analysis tabs -->
+                <div class="bg-gray-100 rounded-lg overflow-hidden mb-6">
+                    <div class="flex border-b border-gray-200">
+                        <button class="tab py-3 px-6 text-center bg-white text-blue-600 border-b-2 border-blue-500 font-medium" data-tab="segment">
+                            <i class="fas fa-wave-square mr-2"></i> Current Segment
+                        </button>
+                        <button class="tab py-3 px-6 text-center bg-gray-50 text-gray-700 border-b-2 border-transparent font-medium" data-tab="overall">
+                            <i class="fas fa-chart-pie mr-2"></i> Overall Analysis
+                        </button>
+                    </div>
+                    
+                    <!-- Segment analysis tab -->
+                    <div id="segment-tab" class="tab-content p-6">
+                        <div class="bg-white p-4 rounded-lg shadow-sm">
+                            <h4 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                                <i class="fas fa-clock text-blue-500 mr-2"></i>
+                                Segment: <span id="current-segment-time" class="ml-2 text-blue-600">0:00 - 0:15</span>
+                            </h4>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+                                <!-- Donut chart -->
+                                <div class="h-64 flex items-center justify-center relative">
+                                    <div id="segment-donut-chart" class="w-full h-full relative">
+                                        <!-- SVG will be added here dynamically -->
+                                    </div>
+                                    <div class="absolute inset-0 m-auto w-24 h-24 bg-white rounded-full flex flex-col items-center justify-center shadow-sm">
+                                        <div class="text-sm font-medium text-gray-600">Dominant</div>
+                                        <div id="segment-dominant" class="text-xl font-bold text-blue-600">Neutral</div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Emotion percentages -->
+                                <div class="space-y-4">
+                                    <div>
+                                        <div class="flex items-center justify-between mb-1">
+                                            <div class="flex items-center">
+                                                <span class="w-3 h-3 bg-red-500 rounded-full mr-2"></span>
+                                                <span class="font-medium text-gray-700">Angry</span>
+                                            </div>
+                                            <span class="text-gray-700 text-sm font-medium angry-percentage">15%</span>
+                                        </div>
+                                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                            <div class="angry-progress bg-red-500 h-2.5 rounded-full" style="width: 15%"></div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div>
+                                        <div class="flex items-center justify-between mb-1">
+                                            <div class="flex items-center">
+                                                <span class="w-3 h-3 bg-indigo-500 rounded-full mr-2"></span>
+                                                <span class="font-medium text-gray-700">Sad</span>
+                                            </div>
+                                            <span class="text-gray-700 text-sm font-medium sad-percentage">30%</span>
+                                        </div>
+                                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                            <div class="sad-progress bg-indigo-500 h-2.5 rounded-full" style="width: 30%"></div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div>
+                                        <div class="flex items-center justify-between mb-1">
+                                            <div class="flex items-center">
+                                                <span class="w-3 h-3 bg-purple-500 rounded-full mr-2"></span>
+                                                <span class="font-medium text-gray-700">Fear</span>
+                                            </div>
+                                            <span class="text-gray-700 text-sm font-medium fear-percentage">10%</span>
+                                        </div>
+                                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                            <div class="fear-progress bg-purple-500 h-2.5 rounded-full" style="width: 10%"></div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div>
+                                        <div class="flex items-center justify-between mb-1">
+                                            <div class="flex items-center">
+                                                <span class="w-3 h-3 bg-green-500 rounded-full mr-2"></span>
+                                                <span class="font-medium text-gray-700">Happy</span>
+                                            </div>
+                                            <span class="text-gray-700 text-sm font-medium happy-percentage">5%</span>
+                                        </div>
+                                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                            <div class="happy-progress bg-green-500 h-2.5 rounded-full" style="width: 5%"></div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div>
+                                        <div class="flex items-center justify-between mb-1">
+                                            <div class="flex items-center">
+                                                <span class="w-3 h-3 bg-gray-500 rounded-full mr-2"></span>
+                                                <span class="font-medium text-gray-700">Neutral</span>
+                                            </div>
+                                            <span class="text-gray-700 text-sm font-medium neutral-percentage">40%</span>
+                                        </div>
+                                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                            <div class="neutral-progress bg-gray-500 h-2.5 rounded-full" style="width: 40%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Segment specific insights -->
+                            <div class="bg-blue-50 border border-blue-100 rounded-lg p-4">
+                                <div class="flex items-start">
+                                    <div class="text-blue-500 mr-3">
+                                        <i class="fas fa-lightbulb text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="font-semibold text-blue-800 mb-1">Segment Insights</h5>
+                                        <p id="segment-insights" class="text-blue-700 text-sm">
+                                            This segment shows a predominantly neutral tone with moderate sadness. The low level of happiness suggests a serious or subdued emotional state.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Overall analysis tab -->
+                    <div id="overall-tab" class="tab-content hidden p-6">
+                        <div class="bg-white p-4 rounded-lg shadow-sm">
+                            <h4 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                                <i class="fas fa-chart-bar text-blue-500 mr-2"></i>
+                                Complete Audio Analysis
+                            </h4>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+                                <!-- Overall donut chart -->
+                                <div class="h-64 flex items-center justify-center relative">
+                                    <div id="overall-donut-chart" class="w-full h-full relative">
+                                        <!-- SVG will be added here dynamically -->
+                                    </div>
+                                    <div class="absolute inset-0 m-auto w-24 h-24 bg-white rounded-full flex flex-col items-center justify-center shadow-sm">
+                                        <div class="text-sm font-medium text-gray-600">Overall</div>
+                                        <div id="overall-dominant" class="text-xl font-bold text-blue-600">Neutral</div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Overall emotion percentages -->
+                                <div class="space-y-4">
+                                    <div>
+                                        <div class="flex items-center justify-between mb-1">
+                                            <div class="flex items-center">
+                                                <span class="w-3 h-3 bg-red-500 rounded-full mr-2"></span>
+                                                <span class="font-medium text-gray-700">Angry</span>
+                                            </div>
+                                            <span class="text-gray-700 text-sm font-medium">25%</span>
+                                        </div>
+                                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                            <div class="bg-red-500 h-2.5 rounded-full" style="width: 25%"></div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div>
+                                        <div class="flex items-center justify-between mb-1">
+                                            <div class="flex items-center">
+                                                <span class="w-3 h-3 bg-indigo-500 rounded-full mr-2"></span>
+                                                <span class="font-medium text-gray-700">Sad</span>
+                                            </div>
+                                            <span class="text-gray-700 text-sm font-medium">20%</span>
+                                        </div>
+                                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                            <div class="bg-indigo-500 h-2.5 rounded-full" style="width: 20%"></div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div>
+                                        <div class="flex items-center justify-between mb-1">
+                                            <div class="flex items-center">
+                                                <span class="w-3 h-3 bg-purple-500 rounded-full mr-2"></span>
+                                                <span class="font-medium text-gray-700">Fear</span>
+                                            </div>
+                                            <span class="text-gray-700 text-sm font-medium">10%</span>
+                                        </div>
+                                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                            <div class="bg-purple-500 h-2.5 rounded-full" style="width: 10%"></div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div>
+                                        <div class="flex items-center justify-between mb-1">
+                                            <div class="flex items-center">
+                                                <span class="w-3 h-3 bg-green-500 rounded-full mr-2"></span>
+                                                <span class="font-medium text-gray-700">Happy</span>
+                                            </div>
+                                            <span class="text-gray-700 text-sm font-medium">15%</span>
+                                        </div>
+                                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                            <div class="bg-green-500 h-2.5 rounded-full" style="width: 15%"></div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div>
+                                        <div class="flex items-center justify-between mb-1">
+                                            <div class="flex items-center">
+                                                <span class="w-3 h-3 bg-gray-500 rounded-full mr-2"></span>
+                                                <span class="font-medium text-gray-700">Neutral</span>
+                                            </div>
+                                            <span class="text-gray-700 text-sm font-medium">30%</span>
+                                        </div>
+                                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                            <div class="bg-gray-500 h-2.5 rounded-full" style="width: 30%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Emotion flow chart -->
+                            <div class="mb-4">
+                                <h5 class="font-semibold text-gray-800 mb-2">Emotion Flow</h5>
+                                <div class="bg-gray-50 p-4 rounded-lg h-32 relative overflow-hidden">
+                                    <div id="emotion-flow-chart" class="w-full h-full">
+                                        <!-- Line chart will be rendered here -->
+                                        <div class="absolute inset-0 flex items-center justify-center text-gray-400">
+                                            <span class="text-sm">Emotion flow chart will appear here</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Overall insights -->
+                            <div class="bg-blue-50 border border-blue-100 rounded-lg p-4">
+                                <div class="flex items-start">
+                                    <div class="text-blue-500 mr-3">
+                                        <i class="fas fa-info-circle text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="font-semibold text-blue-800 mb-1">Analysis Summary</h5>
+                                        <p id="overall-insights" class="text-blue-700 text-sm">
+                                            This audio contains a mixture of emotions with neutral being the most dominant overall. 
+                                            There are notable segments of anger (0:30-0:45) and happiness (1:15-1:30). 
+                                            The model has identified these emotions with a confidence level of 91.2%.
+                                        </p>
+                                    </div>
+                                </div>
+                <div class="mt-6 flex flex-wrap gap-3">
+                    <button id="export-json" class="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300 shadow-sm">
+                        <i class="fas fa-file-code mr-2"></i> Export JSON
+                    </button>
+                    <button id="export-csv" class="flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition duration-300 shadow-sm">
+                        <i class="fas fa-file-csv mr-2"></i> Export CSV
+                    </button>
+                    <button id="export-image" class="flex items-center px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition duration-300 shadow-sm">
+                        <i class="fas fa-file-image mr-2"></i> Export Chart
+                    </button>
+                    <div id="export-status" class="text-sm text-gray-600 hidden ml-2 flex items-center">
+                        <i class="fas fa-check-circle text-green-500 mr-1"></i> 
+                        <span id="export-message">Export successful!</span>
+                    </div>
+                </div>
+    
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                                </div>
+                            </div>
+    
+                            
+                            <div class="flex items-center space-x-4 mb-2">
+                                <button id="play-btn" class="touch-feedback w-10 h-10 flex items-center justify-center bg-blue-600 text-white rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <i class="fas fa-play"></i>
+                                </button>
+                                <div id="timeline-slider" class="relative flex-1 h-2 bg-gray-200 rounded-full cursor-pointer">
+                                    <div id="timeline-progress" class="absolute h-full bg-blue-600 rounded-full w-0"></div>
+                                    <div id="timeline-handle" class="absolute w-4 h-4 bg-blue-600 rounded-full top-1/2 transform -translate-y-1/2 -translate-x-1/2 left-0 cursor-grab shadow-md"></div>
+                                </div>
+                                <div id="time-display" class="text-sm font-medium text-gray-700 min-w-[80px] text-center">0:00 / 2:00</div>
+                            </div>
+                            
+                            <div class="flex justify-between text-xs text-gray-500 px-14">
+                                <span>0:00</span>
+                                <span>0:15</span>
+                                <span>0:30</span>
+                                <span>0:45</span>
+                                <span>1:00</span>
+                                <span>1:15</span>
+                                <span>1:30</span>
+                                <span>1:45</span>
+                                <span>2:00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Team Section -->
+    <section id="team" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-4 text-gray-800">Our Team</h2>
+            <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">
+                Meet the talented researchers and engineers behind KuralNet's speech emotion recognition technology.
+            </p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Contributor Card 1 -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:shadow-lg hover:-translate-y-1">
+                    <div class="p-4 flex items-center border-b border-gray-200">
+                        <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="Dr. Maya Patel" class="w-16 h-16 rounded-full mr-4 object-cover">
+                        <div>
+                            <h3 class="text-lg font-semibold">Dr. Maya Patel</h3>
+                            <p class="text-blue-600">Lead Researcher</p>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <p class="text-gray-700">Specializing in audio processing and emotion recognition algorithms</p>
+                    </div>
+                    <div class="p-3 border-t border-gray-200 flex justify-center">
+                        <a href="#" class="text-blue-600 hover:text-blue-800 mx-1"><i class="fab fa-github"></i></a>
+                        <a href="#" class="text-blue-600 hover:text-blue-800 mx-1"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Contributor Card 2 -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:shadow-lg hover:-translate-y-1">
+                    <div class="p-4 flex items-center border-b border-gray-200">
+                        <img src="https://randomuser.me/api/portraits/men/44.jpg" alt="Alex Chen" class="w-16 h-16 rounded-full mr-4 object-cover">
+                        <div>
+                            <h3 class="text-lg font-semibold">Alex Chen</h3>
+                            <p class="text-blue-600">Machine Learning Engineer</p>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <p class="text-gray-700">Expert in PyTorch and audio feature extraction</p>
+                    </div>
+                    <div class="p-3 border-t border-gray-200 flex justify-center">
+                        <a href="#" class="text-blue-600 hover:text-blue-800 mx-1"><i class="fab fa-github"></i></a>
+                        <a href="#" class="text-blue-600 hover:text-blue-800 mx-1"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Contributor Card 3 -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:shadow-lg hover:-translate-y-1">
+                    <div class="p-4 flex items-center border-b border-gray-200">
+                        <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Sofia Rodriguez" class="w-16 h-16 rounded-full mr-4 object-cover">
+                        <div>
+                            <h3 class="text-lg font-semibold">Sofia Rodriguez</h3>
+                            <p class="text-blue-600">UI/UX Designer</p>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <p class="text-gray-700">Creating intuitive interfaces for complex AI applications</p>
+                    </div>
+                    <div class="p-3 border-t border-gray-200 flex justify-center">
+                        <a href="#" class="text-blue-600 hover:text-blue-800 mx-1"><i class="fab fa-github"></i></a>
+                        <a href="#" class="text-blue-600 hover:text-blue-800 mx-1"><i class="fas fa-globe"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Contributor Card 4 -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:shadow-lg hover:-translate-y-1">
+                    <div class="p-4 flex items-center border-b border-gray-200">
+                        <img src="https://randomuser.me/api/portraits/men/22.jpg" alt="Jamal Thompson" class="w-16 h-16 rounded-full mr-4 object-cover">
+                        <div>
+                            <h3 class="text-lg font-semibold">Jamal Thompson</h3>
+                            <p class="text-blue-600">Full Stack Developer</p>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <p class="text-gray-700">Bridging the gap between ML models and user-friendly applications</p>
+                    </div>
+                    <div class="p-3 border-t border-gray-200 flex justify-center">
+                        <a href="#" class="text-blue-600 hover:text-blue-800 mx-1"><i class="fab fa-github"></i></a>
+                        <a href="#" class="text-blue-600 hover:text-blue-800 mx-1"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-waveform text-2xl mr-3 text-blue-400"></i>
+                        <h3 class="text-xl font-bold">Kural<span class="text-blue-400">Net</span></h3>
+                    </div>
+                    <p class="text-gray-400 mb-4">
+                        Advanced Speech Emotion Recognition powered by cutting-edge deep learning technology.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="fab fa-github text-lg"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="fab fa-twitter text-lg"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="fab fa-linkedin text-lg"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#home" class="text-gray-400 hover:text-white transition-colors">Home</a></li>
+                        <li><a href="#demo" class="text-gray-400 hover:text-white transition-colors">Demo</a></li>
+                        <li><a href="#about" class="text-gray-400 hover:text-white transition-colors">About</a></li>
+                        <li><a href="#languages" class="text-gray-400 hover:text-white transition-colors">Languages</a></li>
+                        <li><a href="#team" class="text-gray-400 hover:text-white transition-colors">Team</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Resources</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Documentation</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">API Reference</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Research Paper</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Demo Samples</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Contact</h4>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <i class="fas fa-envelope text-blue-400 mt-1 mr-3"></i>
+                            <span>contact@kuralnet.ai</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt text-blue-400 mt-1 mr-3"></i>
+                            <span>123 AI Street, San Francisco, CA 94107</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-phone text-blue-400 mt-1 mr-3"></i>
+                            <span>+1 (555) 123-4567</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="mt-8 pt-8 border-t border-gray-800 text-sm text-gray-500 text-center">
+                <p>&copy; 2025 KuralNet. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
