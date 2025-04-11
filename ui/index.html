@@ -820,86 +820,94 @@ def analyze_emotion(audio_file):
     <!-- Team Section -->
     <section id="team" class="py-16 bg-gray-50">
         <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-center mb-4 text-gray-800">Our Team</h2>
-            <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">
-                Meet the talented researchers and engineers behind KuralNet's speech emotion recognition technology.
-            </p>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- Contributor Card 1 -->
-                <div class="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:shadow-lg hover:-translate-y-1">
-                    <div class="p-4 flex items-center border-b border-gray-200">
-                        <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="Dr. Maya Patel" class="w-16 h-16 rounded-full mr-4 object-cover">
-                        <div>
-                            <h3 class="text-lg font-semibold">Dr. Maya Patel</h3>
-                            <p class="text-blue-600">Lead Researcher</p>
-                        </div>
-                    </div>
-                    <div class="p-4">
-                        <p class="text-gray-700">Specializing in audio processing and emotion recognition algorithms</p>
-                    </div>
-                    <div class="p-3 border-t border-gray-200 flex justify-center">
-                        <a href="#" class="text-blue-600 hover:text-blue-800 mx-1"><i class="fab fa-github"></i></a>
-                        <a href="#" class="text-blue-600 hover:text-blue-800 mx-1"><i class="fab fa-linkedin"></i></a>
-                    </div>
+          <h2 class="text-3xl font-bold text-center mb-4 text-gray-800">Our Team</h2>
+          <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">
+            Meet the talented researchers and engineers behind KuralNet's speech emotion recognition technology.
+          </p>
+      
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      
+            <!-- Luxshan -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:shadow-lg hover:-translate-y-1">
+              <div class="p-4 flex items-center border-b border-gray-200">
+                <img src="data:image/jpeg;base64,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" alt="Luxshan Thavarasa" class="w-16 h-16 rounded-full mr-4 object-cover">
+                <div>
+                  <h3 class="text-lg font-semibold">Luxshan Thavarasa</h3>
+                  <p class="text-blue-600">Researcher</p>
                 </div>
-                
-                <!-- Contributor Card 2 -->
-                <div class="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:shadow-lg hover:-translate-y-1">
-                    <div class="p-4 flex items-center border-b border-gray-200">
-                        <img src="https://randomuser.me/api/portraits/men/44.jpg" alt="Alex Chen" class="w-16 h-16 rounded-full mr-4 object-cover">
-                        <div>
-                            <h3 class="text-lg font-semibold">Alex Chen</h3>
-                            <p class="text-blue-600">Machine Learning Engineer</p>
-                        </div>
-                    </div>
-                    <div class="p-4">
-                        <p class="text-gray-700">Expert in PyTorch and audio feature extraction</p>
-                    </div>
-                    <div class="p-3 border-t border-gray-200 flex justify-center">
-                        <a href="#" class="text-blue-600 hover:text-blue-800 mx-1"><i class="fab fa-github"></i></a>
-                        <a href="#" class="text-blue-600 hover:text-blue-800 mx-1"><i class="fab fa-linkedin"></i></a>
-                    </div>
-                </div>
-                
-                <!-- Contributor Card 3 -->
-                <div class="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:shadow-lg hover:-translate-y-1">
-                    <div class="p-4 flex items-center border-b border-gray-200">
-                        <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Sofia Rodriguez" class="w-16 h-16 rounded-full mr-4 object-cover">
-                        <div>
-                            <h3 class="text-lg font-semibold">Sofia Rodriguez</h3>
-                            <p class="text-blue-600">UI/UX Designer</p>
-                        </div>
-                    </div>
-                    <div class="p-4">
-                        <p class="text-gray-700">Creating intuitive interfaces for complex AI applications</p>
-                    </div>
-                    <div class="p-3 border-t border-gray-200 flex justify-center">
-                        <a href="#" class="text-blue-600 hover:text-blue-800 mx-1"><i class="fab fa-github"></i></a>
-                        <a href="#" class="text-blue-600 hover:text-blue-800 mx-1"><i class="fas fa-globe"></i></a>
-                    </div>
-                </div>
-                
-                <!-- Contributor Card 4 -->
-                <div class="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:shadow-lg hover:-translate-y-1">
-                    <div class="p-4 flex items-center border-b border-gray-200">
-                        <img src="https://randomuser.me/api/portraits/men/22.jpg" alt="Jamal Thompson" class="w-16 h-16 rounded-full mr-4 object-cover">
-                        <div>
-                            <h3 class="text-lg font-semibold">Jamal Thompson</h3>
-                            <p class="text-blue-600">Full Stack Developer</p>
-                        </div>
-                    </div>
-                    <div class="p-4">
-                        <p class="text-gray-700">Bridging the gap between ML models and user-friendly applications</p>
-                    </div>
-                    <div class="p-3 border-t border-gray-200 flex justify-center">
-                        <a href="#" class="text-blue-600 hover:text-blue-800 mx-1"><i class="fab fa-github"></i></a>
-                        <a href="#" class="text-blue-600 hover:text-blue-800 mx-1"><i class="fab fa-twitter"></i></a>
-                    </div>
-                </div>
+              </div>
+              <div class="p-4">
+                <p class="text-gray-700">Focused on SER for low-resource languages. Bridging deep learning with full-stack development.</p>
+                <p class="text-sm text-gray-500 mt-2">luxshanlux2000@gmail.com</p>
+              </div>
+              <div class="p-3 border-t border-gray-200 flex justify-center space-x-2">
+                <a href="https://github.com/Luxshan2000" class="text-blue-600 hover:text-blue-800"><i class="fab fa-github"></i></a>
+                <a href="https://www.linkedin.com/in/lux-thavarasa" class="text-blue-600 hover:text-blue-800"><i class="fab fa-linkedin"></i></a>
+                <a href="https://scholar.google.com/citations?user=Do87138AAAAJ&hl=en" class="text-blue-600 hover:text-blue-800"><i class="fas fa-graduation-cap"></i></a>
+              </div>
             </div>
+      
+            <!-- Jubeerathan -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:shadow-lg hover:-translate-y-1">
+              <div class="p-4 flex items-center border-b border-gray-200">
+                <img src="data:image/jpeg;base64,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" alt="Jubeerathan Thevakumar" class="w-16 h-16 rounded-full mr-4 object-cover">
+                <div>
+                  <h3 class="text-lg font-semibold">Jubeerathan Thevakumar</h3>
+                  <p class="text-blue-600">Researcher</p>
+                </div>
+              </div>
+              <div class="p-4">
+                <p class="text-gray-700">Works on optimizing SER models. Skilled in backend engineering and inference systems.</p>
+                <p class="text-sm text-gray-500 mt-2">jubeerathant@gmail.com</p>
+              </div>
+              <div class="p-3 border-t border-gray-200 flex justify-center space-x-2">
+                <a href="https://github.com/Jubeerathan" class="text-blue-600 hover:text-blue-800"><i class="fab fa-github"></i></a>
+                <a href="#" class="text-blue-600 hover:text-blue-800"><i class="fab fa-linkedin"></i></a>
+              </div>
+            </div>
+      
+            <!-- Thanikan -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:shadow-lg hover:-translate-y-1">
+              <div class="p-4 flex items-center border-b border-gray-200">
+                <img src="data:image/jpeg;base64,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" alt="Thanikan Sivatheepan" class="w-16 h-16 rounded-full mr-4 object-cover">
+                <div>
+                  <h3 class="text-lg font-semibold">Thanikan Sivatheepan</h3>
+                  <p class="text-blue-600">Researcher</p>
+                </div>
+              </div>
+              <div class="p-4">
+                <p class="text-gray-700">Handles preprocessing pipelines. Designs dashboards for SER data visualization.</p>
+                <p class="text-sm text-gray-500 mt-2">thanikansiv@gmail.com</p>
+              </div>
+              <div class="p-3 border-t border-gray-200 flex justify-center space-x-2">
+                <a href="https://github.com/thanikan" class="text-blue-600 hover:text-blue-800"><i class="fab fa-github"></i></a>
+                <a href="#" class="text-blue-600 hover:text-blue-800"><i class="fab fa-linkedin"></i></a>
+              </div>
+            </div>
+      
+            <!-- Dr. Uthayasanker -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:shadow-lg hover:-translate-y-1">
+              <div class="p-4 flex items-center border-b border-gray-200">
+                <img src="https://uom.lk/sites/default/files/center/datasearch/images/dr.uthayasanker.jpg" alt="Dr. Uthayasanker Thayasivam" class="w-16 h-16 rounded-full mr-4 object-cover">
+                <div>
+                  <h3 class="text-lg font-semibold">Dr. Uthayasanker Thayasivam</h3>
+                  <p class="text-blue-600">Supervisor</p>
+                </div>
+              </div>
+              <div class="p-4">
+                <p class="text-gray-700">Senior lecturer at UoM. Guides our research in ML, NLP, and system scalability.</p>
+                <p class="text-sm text-gray-500 mt-2">uthayasanker@cse.mrt.ac.lk</p>
+              </div>
+              <div class="p-3 border-t border-gray-200 flex justify-center space-x-2">
+                <a href="https://scholar.google.com/citations?user=RkHq0e4AAAAJ&hl=en" class="text-blue-600 hover:text-blue-800"><i class="fas fa-graduation-cap"></i></a>
+                <a href="https://www.linkedin.com/in/uthayasanker" class="text-blue-600 hover:text-blue-800"><i class="fab fa-linkedin"></i></a>
+                <a href="https://cse.mrt.ac.lk/web/staff/academic/uthayasanker" class="text-blue-600 hover:text-blue-800"><i class="fas fa-university"></i></a>
+              </div>
+            </div>
+      
+          </div>
         </div>
-    </section>
+      </section>         
     
     <!-- Footer -->
     <footer class="bg-gray-900 text-white py-12">
@@ -952,15 +960,11 @@ def analyze_emotion(audio_file):
                     <ul class="space-y-2">
                         <li class="flex items-start">
                             <i class="fas fa-envelope text-blue-400 mt-1 mr-3"></i>
-                            <span>contact@kuralnet.ai</span>
+                            <span>rtuthaya@cse.mrt.ac.lk</span>
                         </li>
                         <li class="flex items-start">
                             <i class="fas fa-map-marker-alt text-blue-400 mt-1 mr-3"></i>
-                            <span>123 AI Street, San Francisco, CA 94107</span>
-                        </li>
-                        <li class="flex items-start">
-                            <i class="fas fa-phone text-blue-400 mt-1 mr-3"></i>
-                            <span>+1 (555) 123-4567</span>
+                            <span>Bandaranayake Mawatha, Moratuwa 10400, Sri Lanka</span>
                         </li>
                     </ul>
                 </div>
