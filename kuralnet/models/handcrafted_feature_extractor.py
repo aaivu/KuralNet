@@ -32,7 +32,7 @@ class HandcraftedAcousticEncoder(nn.Module):
         self.conv8 = nn.Conv1d(
             in_channels=256, out_channels=256, kernel_size=8, padding="same"
         )
-        self.pool = nn.MaxPool1d(kernel_size=2, stride=2)
+        self.pool = nn.MaxPool1d(kernel_size=2, stride=1)
         self.dropout = nn.Dropout(0.3)
         self.global_avg_pool = nn.AdaptiveAvgPool1d(1)
         self.fc1 = nn.Linear(256, 128)
