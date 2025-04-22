@@ -1,6 +1,6 @@
 from kuralnet.dataset.dataset import _SpeechEmotionDataset
 from kuralnet.utils.dataset_loader import DataLoader
-from kuralnet.models.pretrained_speech_encoder import PretrainedSpeechEncoder
+from kuralnet.models.handcrafted_feature_extractor import HandcraftedAcousticEncoder
 from data.constant import DATASET
 import torch
 import torch.nn as nn
@@ -30,7 +30,7 @@ val_loader = DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=False)
 
 num_classes = len(torch.unique(dataset.emotions))
 input_shape = (1, dataset.features.shape[1])
-model = PretrainedSpeechEncoder(input_shape, num_classes)
+model = HandcraftedAcousticEncoder(input_shape, num_classes)
 
 criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=LEARNING_RATE)
