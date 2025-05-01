@@ -35,7 +35,6 @@ class TraditionalFeatureExtractor:
         return mel_spectrogram
 
     @staticmethod
-    @staticmethod
     def extract_chroma_stft(audio: np.ndarray, sr: int = SAMPLING_RATE):
         stft = np.abs(librosa.stft(audio))
         chroma_stft = np.mean(
