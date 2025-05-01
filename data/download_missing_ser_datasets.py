@@ -19,7 +19,7 @@ def download_and_extract(name: str, dataset: str):
     if os.path.exists(f"SER_Datasets/{name}"):
         logger.info(f"{name} dataset already exists. Skipping download.")
         return
-    
+
     logger.info(f"Downloading {name} dataset...")
 
     kaggle.api.dataset_download_files(
@@ -40,7 +40,9 @@ def download_missing_datasets():
     """Download only datasets that don't already exist in the SER_Datasets directory in parallel."""
     os.makedirs("SER_Datasets", exist_ok=True)
     logger.info("Checking for missing datasets to download")
-    existing_count = sum(1 for name in datasets if os.path.exists(f"SER_Datasets/{name}"))
+    existing_count = sum(
+        1 for name in datasets if os.path.exists(f"SER_Datasets/{name}")
+    )
     downloaded_count = len(datasets) - existing_count
 
     with concurrent.futures.ThreadPoolExecutor() as executor:
@@ -50,7 +52,9 @@ def download_missing_datasets():
         ]
         concurrent.futures.wait(futures)
 
-    logger.info(f"Completed downloading {downloaded_count} of {len(datasets)} missing datasets.")
+    logger.info(
+        f"Completed downloading {downloaded_count} of {len(datasets)} missing datasets."
+    )
 
 
 if __name__ == "__main__":

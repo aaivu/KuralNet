@@ -1,11 +1,11 @@
+import numpy as np
 import torch
 import torch.nn as nn
-import numpy as np
-from transformers import WhisperProcessor, WhisperModel
-
+from transformers import WhisperModel, WhisperProcessor
 
 MODEL_NAME = "openai/whisper-small"
 SAMPLING_RATE = 16000
+
 
 class BaseFeatureExtractor(nn.Module):
     def __init__(self, model_name: str, processor, model, device: str = None):
@@ -22,7 +22,7 @@ class BaseFeatureExtractor(nn.Module):
 
     def extract_features(
         self, audio: np.ndarray, sr: int = SAMPLING_RATE
-    ) -> np.ndarray: # TODO: Update to handle batch inputs
+    ) -> np.ndarray:  # TODO: Update to handle batch inputs
         """
         Extract features from the model.
         """
@@ -51,10 +51,7 @@ class BaseFeatureExtractor(nn.Module):
 
 
 class WhisperFeatureExtractor(BaseFeatureExtractor):
-    def __init__(
-        self, model_name: str = MODEL_NAME, device: str = None
-    ):
+    def __init__(self, model_name: str = MODEL_NAME, device: str = None):
         processor = WhisperProcessor
         model = WhisperModel
         super().__init__(model_name, processor, model, device)
-        

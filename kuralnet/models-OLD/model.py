@@ -1,11 +1,9 @@
 from torch import nn
 
-from kuralnet.models.fusion_model import \
-    FusionModel
+from kuralnet.models.fusion_model import FusionModel
 from kuralnet.models.handcrafted_feature_extractor import \
     HandcraftedAcousticEncoder
-from kuralnet.models.pretrained_speech_encoder import \
-    PretrainedSpeechEncoder
+from kuralnet.models.pretrained_speech_encoder import PretrainedSpeechEncoder
 
 
 class KuralNet(nn.Module):
