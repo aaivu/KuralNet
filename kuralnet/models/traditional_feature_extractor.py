@@ -27,12 +27,14 @@ class TraditionalFeatureExtractor:
         )
         return mfcc
 
+    @staticmethod
     def extract_melspectrogram(audio: np.ndarray, sr: int = SAMPLING_RATE):
         mel_spectrogram = np.mean(
             librosa.feature.melspectrogram(y=audio, sr=sr).T, axis=0
         )
         return mel_spectrogram
 
+    @staticmethod
     def extract_chroma_stft(audio: np.ndarray, sr: int = SAMPLING_RATE):
         stft = np.abs(librosa.stft(audio))
         chroma_stft = np.mean(
