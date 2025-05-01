@@ -40,7 +40,7 @@ def download_and_extract(name: str, dataset: str):
 
 def download_datasets():
     """Download all datasets in parallel."""
-    os.makedirs("datasets", exist_ok=True)
+    os.makedirs("ser_datasets", exist_ok=True)
     logger.info("Start downloading datasets")
 
     with concurrent.futures.ThreadPoolExecutor() as executor:
