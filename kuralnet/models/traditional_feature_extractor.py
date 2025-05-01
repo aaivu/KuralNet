@@ -43,6 +43,7 @@ class TraditionalFeatureExtractor:
         )
         return chroma_stft
 
+    @staticmethod
     def extract_rmse(audio: np.ndarray, _sr: int = SAMPLING_RATE):
         rmse = np.mean(librosa.feature.rms(y=audio).T, axis=0)
         return rmse
