@@ -44,6 +44,7 @@ class TraditionalFeatureExtractor:
         rmse = np.mean(librosa.feature.rms(y=audio).T, axis=0)
         return rmse
 
+    @staticmethod
     def extract_zcr(audio: np.ndarray, _sr: int = SAMPLING_RATE):
         zcr = np.mean(librosa.feature.zero_crossing_rate(y=audio).T, axis=0)
         return zcr
