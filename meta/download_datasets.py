@@ -4,8 +4,8 @@ import zipfile
 
 import kaggle
 
-from src.utils.constant import DATASET
-from src.utils.utils import get_logger
+from kuralnet.utils.constant import DATASET
+from kuralnet.utils.utils import get_logger
 
 # Note: To Run This Script Please Download Kaggle API Key as kaggle.json and put it under ~/.kaggle/
 
