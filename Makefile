@@ -39,7 +39,7 @@ format-check:
 	. .venv/bin/activate && black --check --line-length 79 kuralnet/ data/ && isort --check kuralnet/ data/
 
 format:
-	. .venv/bin/activate && black --line-length 79 kuralnet/ data/ && isort kuralnet/ data/
+	. .venv/bin/activate && black --line-length 79 kuralnet/ && isort kuralnet/
 
 test:
 	. .venv/bin/activate && pytest .
