@@ -76,9 +76,8 @@ download_dataset:
 meta_extract:
 	. .venv/bin/activate && python -m meta.meta_extractor
 
-feature_extract:
-	. .venv/bin/activate && python -m kuralnet.preprocessing.extractor
-
+train:
+	. .venv/bin/activate && python -m scripts.run_training --config configs/train_config.yaml
 
 clear:
 	@echo "Cleaning up..."

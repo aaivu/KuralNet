@@ -6,11 +6,11 @@ from kuralnet.models.fusion import AttentionFusion
 from kuralnet.models.pretrained_feature_extractor import (
     WhisperFeatureExtractor,
 )
-from kuralnet.models.pretrained_processor import WhisperProcessor
+from kuralnet.models.pretrained_processor import WhisperLayersProcessor
 from kuralnet.models.traditional_feature_extractor import (
     TraditionalFeatureExtractor,
 )
-from kuralnet.models.tradtional_processor import TraditionalProcessor
+from kuralnet.models.tradtional_processor import TraditionalLayersProcessor
 
 FEATURE_DIM = 128
 FUSION_DIM = 128
@@ -33,8 +33,8 @@ class KuralNet(nn.Module):
 
         super(KuralNet, self).__init__()
         self.whisper_feature_extractor = WhisperFeatureExtractor()
-        self.whisper_processor = WhisperProcessor(output_dim=feature_dim)
-        self.trad_processor = TraditionalProcessor(output_dim=feature_dim)
+        self.whisper_processor = WhisperLayersProcessor(output_dim=feature_dim)
+        self.trad_processor = TraditionalLayersProcessor(output_dim=feature_dim)
         self.fusion = AttentionFusion(
             feature_dim=feature_dim, fusion_dim=fusion_dim, num_heads=num_heads
         )
@@ -42,19 +42,7 @@ class KuralNet(nn.Module):
             in_dim=fusion_dim, num_classes=num_classes
         )
 
-    def forward(self, audio: np.ndarray):
-        whisper_feats = (
-            self.whisper_feature_extractor.extract_features(audio)
-            .reshape(-1, 1)
-            .T
-        )
-        trad_feats = (
-            TraditionalFeatureExtractor()
-            .extract_features(audio)
-            .reshape(-1, 1)
-            .T
-        )
-        # TODO: Need to update the feature extractors codes to handle batch inputs
+    def forward(self, whisper_feats,trad_feats):
 
         out_w = self.whisper_processor(whisper_feats)  # (batch, feature_dim)
         out_t = self.trad_processor(trad_feats)  # (batch, feature_dim)

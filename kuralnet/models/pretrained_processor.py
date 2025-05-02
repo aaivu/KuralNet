@@ -4,14 +4,14 @@ import torch.nn as nn
 
 
 # For Layers after extracting features from Whispher
-class WhisperProcessor(nn.Module):
+class WhisperLayersProcessor(nn.Module):
     """
     CNN+MLP block for Whisper embeddings.
     Input: (batch_size, 768) tensor of Whisper features.
     """
 
     def __init__(self, output_dim=128):
-        super(WhisperProcessor, self).__init__()
+        super(WhisperLayersProcessor, self).__init__()
         # Convolutional layers (act on 768-dim as a 1D sequence)
         self.conv = nn.Sequential(
             nn.Conv1d(

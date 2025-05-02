@@ -4,14 +4,14 @@ import torch.nn as nn
 
 
 # For Layers after extracting Traditional Features
-class TraditionalProcessor(nn.Module):
+class TraditionalLayersProcessor(nn.Module):
     """
     CNN+MLP block for traditional audio features.
     Input: (batch_size, 155) tensor of handcrafted features.
     """
 
     def __init__(self, output_dim=128):
-        super(TraditionalProcessor, self).__init__()
+        super(TraditionalLayersProcessor, self).__init__()
         # Convolutional layers
         self.conv = nn.Sequential(
             nn.Conv1d(

@@ -1,12 +1,11 @@
 dataset:
   path:
-    - "/kaggle/input/ser-emouerj/emoUERJ"
-    - "/kaggle/input/another-dataset/path"
+    - "meta_csvs/en_RAVDESS.csv"
 
 training:
   batch_size: 16
   num_epochs: 50
-  patience: 10
+  patience: 15
 
 optimizer:
   type: "Adam"
@@ -16,4 +15,4 @@ loss:
   type: "CrossEntropyLoss"
 
 model:
-  name: "FullEmotionClassifier"
+  name: "KuralNet"
