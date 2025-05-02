@@ -18,3 +18,4 @@ transformers~=4.48.3
 yaml
 tqdm
 kaggle
+openpyxl

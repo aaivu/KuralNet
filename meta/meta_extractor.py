@@ -10,4 +10,4 @@ def execute_extractors(extractors_dir):
 
 
 if __name__ == "__main__":
-    execute_extractors("src/scripts/meta_extractors")
+    execute_extractors("meta/meta_extractors")
