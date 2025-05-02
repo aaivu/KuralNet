@@ -1,8 +1,9 @@
 import logging
 
-from src.scripts.meta_extractors.dataset_processor import process_dataset
-from src.utils.constant import DATASET, EMOTION, SELECTED_EMOTIONS
-from src.utils.utils import get_wav_files
+from meta.meta_extractors.dataset_processor import process_dataset
+from kuralnet.utils.constant import DATASET, EMOTION, SELECTED_EMOTIONS
+
+from kuralnet.utils.utils import get_wav_files
 
 SWAHILI_DATASET = DATASET.SWAHILI_DATASET.value
 EMOTION_MAP = {

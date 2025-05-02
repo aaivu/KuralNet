@@ -4,7 +4,9 @@ from kuralnet.dataset.emotion_mapping import emotion_encoder
 
 
 class EmotionDataset(Dataset):
-    def __init__(self, whisper_features, traditional_features, labels):
+    def __init__(
+        self, whisper_features, traditional_features, labels, emotion_map=None
+    ):
         self.emotion_to_idx = emotion_encoder
 
         self.whisper_features = torch.tensor(
@@ -14,7 +16,8 @@ class EmotionDataset(Dataset):
             traditional_features, dtype=torch.float32
         )
         self.labels = torch.tensor(
-            [self.emotion_to_idx(label) for label in labels], dtype=torch.long
+            [self.emotion_to_idx(label, emotion_map) for label in labels],
+            dtype=torch.long,
         )
 
     def __len__(self):

@@ -3,8 +3,8 @@ import os
 
 import pandas as pd
 
-from src.scripts.meta_extractors.dataset_processor import process_dataset
-from src.utils.constant import DATASET, EMOTION, SELECTED_EMOTIONS
+from meta.meta_extractors.dataset_processor import process_dataset
+from kuralnet.utils.constant import DATASET, EMOTION, SELECTED_EMOTIONS
 
 ANAD = DATASET.ANAD.value
 EMOTION_MAP = {

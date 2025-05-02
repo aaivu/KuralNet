@@ -74,7 +74,7 @@ download_dataset:
 	. .venv/bin/activate && python -m meta.download_datasets
 
 meta_extract:
-	. .venv/bin/activate && python -m data.meta_extractor
+	. .venv/bin/activate && python -m meta.meta_extractor
 
 feature_extract:
 	. .venv/bin/activate && python -m kuralnet.preprocessing.extractor

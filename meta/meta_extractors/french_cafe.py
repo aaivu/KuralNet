@@ -3,8 +3,8 @@ import os
 from pathlib import Path
 from typing import Dict, List
 
-from src.scripts.meta_extractors.dataset_processor import process_dataset
-from src.utils.constant import DATASET, EMOTION, SELECTED_EMOTIONS
+from meta.meta_extractors.dataset_processor import process_dataset
+from kuralnet.utils.constant import DATASET, EMOTION, SELECTED_EMOTIONS
 
 CAFE = DATASET.CAFE.value
 EMOTION_MAP = {

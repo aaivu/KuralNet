@@ -1,8 +1,7 @@
 import logging
 import os
-
-from src.scripts.meta_extractors.dataset_processor import process_dataset
-from src.utils.constant import DATASET, EMOTION, SELECTED_EMOTIONS
+from meta.meta_extractors.dataset_processor import process_dataset
+from kuralnet.utils.constant import DATASET, EMOTION, SELECTED_EMOTIONS
 
 TELUGU_DATASET = DATASET.TELUGU_DATASET.value
 EMOTION_MAP = {

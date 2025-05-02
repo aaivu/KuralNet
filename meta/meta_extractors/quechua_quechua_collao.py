@@ -3,9 +3,10 @@ import os
 
 import pandas as pd
 
-from src.scripts.meta_extractors.dataset_processor import process_dataset
-from src.utils.constant import DATASET, EMOTION, SELECTED_EMOTIONS
-from src.utils.utils import stratified_sampling
+from meta.meta_extractors.dataset_processor import process_dataset
+from kuralnet.utils.constant import DATASET, EMOTION, SELECTED_EMOTIONS
+
+from kuralnet.utils.utils import stratified_sampling
 
 QUECHUA_COLLAO = DATASET.QUECHUA_COLLAO.value
 EMOTION_MAP = {

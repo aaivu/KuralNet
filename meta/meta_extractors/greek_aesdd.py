@@ -1,8 +1,8 @@
 import logging
 import os
 
-from src.scripts.meta_extractors.dataset_processor import process_dataset
-from src.utils.constant import DATASET, EMOTION, SELECTED_EMOTIONS
+from meta.meta_extractors.dataset_processor import process_dataset
+from kuralnet.utils.constant import DATASET, EMOTION, SELECTED_EMOTIONS
 
 AESDD = DATASET.AESDD.value
 EMOTION_MAP = {
