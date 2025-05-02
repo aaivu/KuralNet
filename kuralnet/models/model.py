@@ -3,11 +3,13 @@ import torch.nn as nn
 
 from kuralnet.models.classification_head import ClassificationHead
 from kuralnet.models.fusion import AttentionFusion
-from kuralnet.models.pretrained_feature_extractor import \
-    WhisperFeatureExtractor
+from kuralnet.models.pretrained_feature_extractor import (
+    WhisperFeatureExtractor,
+)
 from kuralnet.models.pretrained_processor import WhisperProcessor
-from kuralnet.models.traditional_feature_extractor import \
-    TraditionalFeatureExtractor
+from kuralnet.models.traditional_feature_extractor import (
+    TraditionalFeatureExtractor,
+)
 from kuralnet.models.tradtional_processor import TraditionalProcessor
 
 FEATURE_DIM = 128
