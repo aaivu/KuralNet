@@ -1,0 +1,982 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KuralNet - Multilingual Speech Emotion Recognition</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'kural-blue': {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        }
+                    },
+                    fontFamily: {
+                        'sans': ['Inter', 'ui-sans-serif', 'system-ui']
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-blue-700 to-blue-900 text-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center">
+            <div class="flex items-center mb-4 md:mb-0">
+                <i class="fas fa-waveform text-3xl mr-3 text-blue-300"></i>
+                <div>
+                    <h1 class="text-2xl font-bold">Kural<span class="text-blue-300">Net</span></h1>
+                    <p class="text-sm text-blue-200">Advanced Speech Emotion Recognition</p>
+                </div>
+            </div>
+            
+            <nav>
+                <ul class="flex space-x-6">
+                    <li><a href="#home" class="hover:text-blue-300 transition-colors duration-300"><i class="fas fa-home mr-1"></i> Home</a></li>
+                    <li><a href="#demo" class="hover:text-blue-300 transition-colors duration-300"><i class="fas fa-microphone-alt mr-1"></i> Demo</a></li>
+                    <li><a href="#about" class="hover:text-blue-300 transition-colors duration-300"><i class="fas fa-info-circle mr-1"></i> About</a></li>
+                    <li><a href="#languages" class="hover:text-blue-300 transition-colors duration-300"><i class="fas fa-language mr-1"></i> Languages</a></li>
+                    <li><a href="#team" class="hover:text-blue-300 transition-colors duration-300"><i class="fas fa-users mr-1"></i> Team</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <!-- Hero Section -->
+    <section id="home" class="py-16 bg-gradient-to-b from-blue-900 to-blue-800 text-white">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-10 md:mb-0">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4">Detect emotions in speech with advanced AI</h2>
+                    <p class="text-xl text-blue-200 mb-8">KuralNet uses cutting-edge deep learning to accurately recognize emotions in spoken language across multiple languages.</p>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#demo" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition duration-300 flex items-center shadow-md">
+                            <i class="fas fa-play-circle mr-2"></i> Try Demo
+                        </a>
+                        <a href="https://github.com/kuralnet/speech-emotion-recognition" target="_blank" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-lg transition duration-300 flex items-center shadow-md">
+                            <i class="fab fa-github mr-2"></i> GitHub Repository
+                        </a>
+                    </div>
+                </div>
+                <div class="md:w-1/2 flex justify-center">
+                    <div class="relative w-full max-w-md">
+                        <div class="absolute inset-0 bg-blue-500 rounded-lg opacity-20 blur-xl"></div>
+                        <img src="https://img.icons8.com/fluency/240/null/audio-wave--v1.png" alt="Speech Analysis" class="relative z-10 mx-auto">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Model Architecture Section -->
+    <section id="about" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">Model Architecture</h2>
+            
+            <div class="flex flex-col md:flex-row gap-8">
+                <div class="md:w-1/2">
+                    <div class="bg-white rounded-xl shadow-md overflow-hidden h-full">
+                        <div class="px-6 py-4 bg-gradient-to-r from-blue-600 to-blue-800 text-white">
+                            <h3 class="text-xl font-semibold flex items-center">
+                                <i class="fas fa-brain mr-2"></i> Neural Network Architecture
+                            </h3>
+                        </div>
+                        <div class="p-6">
+                            <p class="mb-4 text-gray-700">KuralNet uses a hybrid architecture combining CNN and Transformer layers:</p>
+                            <ul class="space-y-3 text-gray-700">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                    <div>
+                                        <strong>Feature Extraction</strong>: Mel-spectrogram conversion with 128 frequency bins
+                                    </div>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                    <div>
+                                        <strong>CNN Layers</strong>: 4 convolutional blocks for spatial feature learning
+                                    </div>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                    <div>
+                                        <strong>Transformer</strong>: 6 transformer layers for temporal context
+                                    </div>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                    <div>
+                                        <strong>Attention Mechanism</strong>: Multi-head self-attention for capturing long-range dependencies
+                                    </div>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                    <div>
+                                        <strong>Classification Head</strong>: Dense layers with emotion confidence scoring
+                                    </div>
+                                </li>
+                            </ul>
+                            
+                            <div class="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-100">
+                                <h4 class="font-semibold text-blue-800 mb-2">Technical Specifications</h4>
+                                <ul class="grid grid-cols-2 gap-2 text-sm text-gray-700">
+                                    <li class="flex items-center">
+                                        <i class="fas fa-cog text-blue-500 mr-2"></i> 
+                                        <span><strong>Parameters:</strong> 128M</span>
+                                    </li>
+                                    <li class="flex items-center">
+                                        <i class="fas fa-database text-blue-500 mr-2"></i> 
+                                        <span><strong>Training Data:</strong> 10K hours</span>
+                                    </li>
+                                    <li class="flex items-center">
+                                        <i class="fas fa-microchip text-blue-500 mr-2"></i> 
+                                        <span><strong>Framework:</strong> PyTorch</span>
+                                    </li>
+                                    <li class="flex items-center">
+                                        <i class="fas fa-chart-line text-blue-500 mr-2"></i> 
+                                        <span><strong>Accuracy:</strong> 91.2%</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="md:w-1/2">
+                    <div class="bg-white rounded-xl shadow-md overflow-hidden h-full">
+                        <div class="px-6 py-4 bg-gradient-to-r from-blue-600 to-blue-800 text-white">
+                            <h3 class="text-xl font-semibold flex items-center">
+                                <i class="fas fa-code-branch mr-2"></i> Implementation Details
+                            </h3>
+                        </div>
+                        <div class="p-6">
+                            <div class="mb-6">
+                                <h4 class="text-lg font-semibold text-blue-800 mb-2">GitHub Repository</h4>
+                                <div class="bg-gray-800 rounded-lg p-4 flex items-center justify-between">
+                                    <span class="text-gray-200 font-mono text-sm">github.com/kuralnet/speech-emotion-recognition</span>
+                                    <a href="https://github.com/kuralnet/speech-emotion-recognition" target="_blank" class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors">
+                                        <i class="fas fa-external-link-alt"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <h4 class="text-lg font-semibold text-blue-800 mb-2">Key Features</h4>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                    <div class="flex items-start p-3 bg-gray-50 rounded-lg border border-gray-200">
+                                        <i class="fas fa-file-audio text-blue-500 text-lg mt-1 mr-3"></i>
+                                        <div>
+                                            <h5 class="font-semibold text-gray-800">Multi-format support</h5>
+                                            <p class="text-sm text-gray-600">Handles MP3, WAV, FLAC, etc.</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start p-3 bg-gray-50 rounded-lg border border-gray-200">
+                                        <i class="fas fa-clock text-blue-500 text-lg mt-1 mr-3"></i>
+                                        <div>
+                                            <h5 class="font-semibold text-gray-800">Real-time analysis</h5>
+                                            <p class="text-sm text-gray-600">Low-latency processing</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start p-3 bg-gray-50 rounded-lg border border-gray-200">
+                                        <i class="fas fa-globe text-blue-500 text-lg mt-1 mr-3"></i>
+                                        <div>
+                                            <h5 class="font-semibold text-gray-800">Multilingual</h5>
+                                            <p class="text-sm text-gray-600">Supports 10+ languages</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start p-3 bg-gray-50 rounded-lg border border-gray-200">
+                                        <i class="fas fa-rocket text-blue-500 text-lg mt-1 mr-3"></i>
+                                        <div>
+                                            <h5 class="font-semibold text-gray-800">Optimized Inference</h5>
+                                            <p class="text-sm text-gray-600">ONNX & TorchScript</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h4 class="text-lg font-semibold text-blue-800 mb-2">API Integration</h4>
+                                <div class="bg-gray-100 p-3 rounded-lg font-mono text-xs sm:text-sm overflow-x-auto">
+<pre>
+import requests
+
+API_URL = "https://api.kuralnet.ai/predict"
+API_KEY = "YOUR_API_KEY"
+
+def analyze_emotion(audio_file):
+    headers = {"Authorization": f"Bearer {API_KEY}"}
+    files = {"file": open(audio_file, "rb")}
+    
+    response = requests.post(API_URL, 
+                           headers=headers,
+                           files=files)
+    
+    return response.json()
+</pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Languages Section -->
+    <section id="languages" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-4 text-gray-800">Supported Languages</h2>
+            <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">
+                KuralNet is trained on diverse linguistic data to recognize emotions across multiple languages with high accuracy.
+            </p>
+            
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                <div class="px-6 py-4 bg-gradient-to-r from-blue-600 to-blue-800 text-white">
+                    <h3 class="text-xl font-semibold flex items-center">
+                        <i class="fas fa-language mr-2"></i> Language Support & Performance
+                    </h3>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-100">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Language
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Code
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Accuracy
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Score
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <span class="text-2xl mr-3">🇺🇸</span>
+                                        <span class="font-medium text-gray-900">English</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">EN</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                        <div class="bg-blue-600 h-2.5 rounded-full" style="width: 94.2%"></div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">94.2%</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <span class="text-2xl mr-3">🇪🇸</span>
+                                        <span class="font-medium text-gray-900">Spanish</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">ES</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                        <div class="bg-blue-600 h-2.5 rounded-full" style="width: 91.7%"></div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">91.7%</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <span class="text-2xl mr-3">🇫🇷</span>
+                                        <span class="font-medium text-gray-900">French</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">FR</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                        <div class="bg-blue-600 h-2.5 rounded-full" style="width: 90.5%"></div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">90.5%</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <span class="text-2xl mr-3">🇩🇪</span>
+                                        <span class="font-medium text-gray-900">German</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">DE</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                        <div class="bg-blue-600 h-2.5 rounded-full" style="width: 89.8%"></div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">89.8%</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <span class="text-2xl mr-3">🇨🇳</span>
+                                        <span class="font-medium text-gray-900">Mandarin</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">ZH</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                        <div class="bg-blue-600 h-2.5 rounded-full" style="width: 88.3%"></div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">88.3%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Demo Section -->
+    <section id="demo" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">Try KuralNet</h2>
+            
+            <div class="max-w-4xl mx-auto">
+                <div class="bg-white rounded-xl shadow-md overflow-hidden mb-8">
+                    <div class="px-6 py-4 bg-gradient-to-r from-blue-600 to-blue-800 text-white">
+                        <h3 class="text-xl font-semibold flex items-center">
+                            <i class="fas fa-microphone-alt mr-2"></i> Upload or Record Audio
+                        </h3>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-center text-gray-600 mb-6">Upload a WAV file or record audio to analyze emotions</p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="upload-box border-2 border-dashed border-gray-300 rounded-lg p-6 flex flex-col items-center justify-center hover:border-blue-500 hover:bg-blue-50 transition-colors duration-300 relative">
+                                <div class="text-4xl text-blue-500 mb-4">
+                                    <i class="fas fa-file-audio"></i>
+                                </div>
+                                <h4 class="text-lg font-semibold text-gray-800 mb-2">Upload Audio</h4>
+                                <p class="text-gray-600 text-sm text-center mb-4">Upload a WAV file (other formats will be converted)</p>
+                                <input type="file" id="audio-file" class="hidden" accept="audio/*">
+                                <button id="upload-btn" class="touch-feedback bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition duration-300 flex items-center shadow-md">
+                                    <i class="fas fa-upload mr-2"></i> Choose File
+                                </button>
+                            </div>
+                            
+                            <div class="record-box border-2 border-dashed border-gray-300 rounded-lg p-6 flex flex-col items-center justify-center hover:border-red-400 hover:bg-red-50 transition-colors duration-300 relative">
+                                <div class="absolute top-3 right-3 w-3 h-3 bg-red-500 rounded-full hidden" id="rec-indicator"></div>
+                                <div class="text-4xl text-red-500 mb-4">
+                                    <i class="fas fa-microphone"></i>
+                                </div>
+                                <h4 class="text-lg font-semibold text-gray-800 mb-2">Record Audio</h4>
+                                <p class="text-gray-600 text-sm text-center mb-4">Record audio directly using your microphone</p>
+                                <button id="record-btn" class="touch-feedback bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded-lg transition duration-300 flex items-center shadow-md">
+                                    <i class="fas fa-circle mr-2"></i> Start Recording
+                                </button>
+                                <button id="stop-btn" class="touch-feedback bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg transition duration-300 flex items-center shadow-md hidden">
+                                    <i class="fas fa-stop-circle mr-2"></i> Stop Recording
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                
+            <div class="loading hidden">
+                    <div class="flex flex-col items-center py-12">
+                <!-- Skeleton loader animation -->
+                <div class="w-full max-w-3xl mx-auto">
+                    <!-- Skeleton for dominant emotion -->
+                    <div class="flex items-center p-4 bg-gray-100 rounded-lg mb-6 animate-pulse">
+                        <div class="w-16 h-16 rounded-full bg-gray-300 mr-6"></div>
+                        <div class="flex-1">
+                            <div class="h-6 bg-gray-300 rounded w-1/3 mb-2"></div>
+                            <div class="h-4 bg-gray-300 rounded w-3/4"></div>
+                        </div>
+                <div id="mobile-message" class="hidden">
+                    <div class="flex flex-col items-center py-6 bg-blue-50 rounded-lg mb-6 border border-blue-100">
+                        <div class="text-blue-500 mb-2">
+                            <i class="fas fa-mobile-alt text-2xl"></i>
+                        </div>
+                        <p class="text-gray-700 text-center mb-2">Mobile device detected</p>
+                        <p class="text-gray-600 text-center text-sm px-4">For the best experience, rotate your device to landscape mode.</p>
+                    </div>
+                </div>
+
+                    </div>
+                    
+                    <!-- Skeleton for waveform -->
+                    <div class="h-48 bg-gray-100 rounded-lg mb-4 animate-pulse overflow-hidden relative">
+                        <div class="absolute inset-0 flex space-x-1">
+                            <!-- Skeleton wave lines -->
+                            <div class="flex-1 flex items-center justify-center">
+                                <div class="w-full flex items-end space-x-1 h-full px-2">
+                                    <div class="w-1 bg-gray-300 h-1/4"></div>
+                                    <div class="w-1 bg-gray-300 h-2/3"></div>
+                                    <div class="w-1 bg-gray-300 h-1/3"></div>
+                                    <div class="w-1 bg-gray-300 h-3/4"></div>
+                                    <div class="w-1 bg-gray-300 h-1/2"></div>
+                                    <div class="w-1 bg-gray-300 h-3/4"></div>
+                                    <div class="w-1 bg-gray-300 h-1/4"></div>
+                                    <!-- Repeat these elements to fill the width -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Skeleton for playback controls -->
+                    <div class="flex items-center space-x-4 mb-4">
+                        <div class="w-10 h-10 rounded-full bg-gray-300"></div>
+                        <div class="h-2 bg-gray-300 rounded-full flex-1"></div>
+                        <div class="w-16 h-4 rounded bg-gray-300"></div>
+                    </div>
+                    
+                    <!-- Skeleton for tab panel -->
+                    <div class="bg-gray-100 rounded-lg overflow-hidden mb-4">
+                        <div class="flex border-b border-gray-200">
+                            <div class="w-32 h-10 bg-gray-300 m-2 rounded"></div>
+                            <div class="w-32 h-10 bg-gray-200 m-2 rounded"></div>
+                        </div>
+                        <div class="p-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+                                <div class="h-48 rounded-lg bg-gray-200"></div>
+                                <div class="space-y-4">
+                                    <div class="h-6 bg-gray-300 rounded w-full"></div>
+                                    <div class="h-6 bg-gray-300 rounded w-full"></div>
+                                    <div class="h-6 bg-gray-300 rounded w-full"></div>
+                                    <div class="h-6 bg-gray-300 rounded w-full"></div>
+                                    <div class="h-6 bg-gray-300 rounded w-full"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center text-gray-700 mt-4">Processing audio...</div>
+                </div>
+            </div>
+                </div>
+    
+                
+                
+            <div id="visualization-section" class="hidden">
+                    <div class="bg-white rounded-xl shadow-md overflow-hidden mb-8">
+                        <div class="px-6 py-4 bg-gradient-to-r from-blue-600 to-blue-800 text-white">
+                            <h3 class="text-xl font-semibold flex items-center">
+                                <i class="fas fa-chart-pie mr-2"></i> Audio Emotion Analysis
+                            </h3>
+                        </div>
+                        <div class="p-6">
+                <!-- Dominant emotion display -->
+                <div class="flex items-center p-4 bg-gray-50 rounded-lg mb-6">
+                    <div id="dominant-icon" class="text-5xl mr-6">
+                        <i class="fas fa-meh text-gray-500"></i>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="text-xl font-semibold text-gray-800 mb-1">Dominant Emotion: <span id="dominant-emotion-name" class="text-blue-600">Neutral</span></h4>
+                        <p class="text-gray-600">The most prevalent emotion detected in this audio is <strong id="dominant-emotion-desc">neutral</strong>, which indicates a balanced emotional state.</p>
+                    </div>
+                </div>
+                
+                <!-- Waveform visualization with time markers -->
+                <div class="relative h-48 bg-gray-100 rounded-lg mb-4 overflow-hidden">
+                    <div id="waveform" class="relative h-full w-full">
+                        <!-- Dynamic waveform will be generated here -->
+                    </div>
+                    
+                    <!-- Time markers that adjust to uploaded audio length -->
+                    <div id="time-markers" class="absolute bottom-1 left-0 right-0 px-4 flex justify-between text-xs text-white">
+                        <!-- Time markers will be dynamically generated based on audio length -->
+                    </div>
+                </div>
+                
+                <!-- Playback controls -->
+                <div class="flex items-center space-x-4 mb-2">
+                    <button id="play-btn" class="touch-feedback w-10 h-10 flex items-center justify-center bg-blue-600 text-white rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <i class="fas fa-play"></i>
+                    </button>
+                    <div id="timeline-slider" class="relative flex-1 h-2 bg-gray-200 rounded-full cursor-pointer">
+                        <div id="timeline-progress" class="absolute h-full bg-blue-600 rounded-full w-0"></div>
+                        <div id="timeline-handle" class="absolute w-4 h-4 bg-blue-600 rounded-full top-1/2 transform -translate-y-1/2 -translate-x-1/2 left-0 cursor-grab shadow-md"></div>
+                    </div>
+                    <div id="time-display" class="text-sm font-medium text-gray-700 min-w-[80px] text-center">0:00 / 0:00</div>
+                </div>
+                
+                <!-- Time markers for reference -->
+                <div id="time-labels" class="flex justify-between text-xs text-gray-500 px-14 mb-6">
+                    <!-- Time labels will be dynamically generated -->
+                </div>
+                
+                <!-- Analysis tabs -->
+                <div class="bg-gray-100 rounded-lg overflow-hidden mb-6">
+                    <div class="flex border-b border-gray-200">
+                        <button class="tab py-3 px-6 text-center bg-white text-blue-600 border-b-2 border-blue-500 font-medium" data-tab="segment">
+                            <i class="fas fa-wave-square mr-2"></i> Current Segment
+                        </button>
+                        <button class="tab py-3 px-6 text-center bg-gray-50 text-gray-700 border-b-2 border-transparent font-medium" data-tab="overall">
+                            <i class="fas fa-chart-pie mr-2"></i> Overall Analysis
+                        </button>
+                    </div>
+                    
+                    <!-- Segment analysis tab -->
+                    <div id="segment-tab" class="tab-content p-6">
+                        <div class="bg-white p-4 rounded-lg shadow-sm">
+                            <h4 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                                <i class="fas fa-clock text-blue-500 mr-2"></i>
+                                Segment: <span id="current-segment-time" class="ml-2 text-blue-600">0:00 - 0:15</span>
+                            </h4>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+                                <!-- Donut chart -->
+                                <div class="h-64 flex items-center justify-center relative">
+                                    <div id="segment-donut-chart" class="w-full h-full relative">
+                                        <!-- SVG will be added here dynamically -->
+                                    </div>
+                                    <div class="absolute inset-0 m-auto w-24 h-24 bg-white rounded-full flex flex-col items-center justify-center shadow-sm">
+                                        <div class="text-sm font-medium text-gray-600">Dominant</div>
+                                        <div id="segment-dominant" class="text-xl font-bold text-blue-600">Neutral</div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Emotion percentages -->
+                                <div class="space-y-4">
+                                    <div>
+                                        <div class="flex items-center justify-between mb-1">
+                                            <div class="flex items-center">
+                                                <span class="w-3 h-3 bg-red-500 rounded-full mr-2"></span>
+                                                <span class="font-medium text-gray-700">Angry</span>
+                                            </div>
+                                            <span class="text-gray-700 text-sm font-medium angry-percentage">15%</span>
+                                        </div>
+                                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                            <div class="angry-progress bg-red-500 h-2.5 rounded-full" style="width: 15%"></div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div>
+                                        <div class="flex items-center justify-between mb-1">
+                                            <div class="flex items-center">
+                                                <span class="w-3 h-3 bg-indigo-500 rounded-full mr-2"></span>
+                                                <span class="font-medium text-gray-700">Sad</span>
+                                            </div>
+                                            <span class="text-gray-700 text-sm font-medium sad-percentage">30%</span>
+                                        </div>
+                                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                            <div class="sad-progress bg-indigo-500 h-2.5 rounded-full" style="width: 30%"></div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div>
+                                        <div class="flex items-center justify-between mb-1">
+                                            <div class="flex items-center">
+                                                <span class="w-3 h-3 bg-purple-500 rounded-full mr-2"></span>
+                                                <span class="font-medium text-gray-700">Fear</span>
+                                            </div>
+                                            <span class="text-gray-700 text-sm font-medium fear-percentage">10%</span>
+                                        </div>
+                                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                            <div class="fear-progress bg-purple-500 h-2.5 rounded-full" style="width: 10%"></div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div>
+                                        <div class="flex items-center justify-between mb-1">
+                                            <div class="flex items-center">
+                                                <span class="w-3 h-3 bg-green-500 rounded-full mr-2"></span>
+                                                <span class="font-medium text-gray-700">Happy</span>
+                                            </div>
+                                            <span class="text-gray-700 text-sm font-medium happy-percentage">5%</span>
+                                        </div>
+                                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                            <div class="happy-progress bg-green-500 h-2.5 rounded-full" style="width: 5%"></div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div>
+                                        <div class="flex items-center justify-between mb-1">
+                                            <div class="flex items-center">
+                                                <span class="w-3 h-3 bg-gray-500 rounded-full mr-2"></span>
+                                                <span class="font-medium text-gray-700">Neutral</span>
+                                            </div>
+                                            <span class="text-gray-700 text-sm font-medium neutral-percentage">40%</span>
+                                        </div>
+                                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                            <div class="neutral-progress bg-gray-500 h-2.5 rounded-full" style="width: 40%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Segment specific insights -->
+                            <div class="bg-blue-50 border border-blue-100 rounded-lg p-4">
+                                <div class="flex items-start">
+                                    <div class="text-blue-500 mr-3">
+                                        <i class="fas fa-lightbulb text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="font-semibold text-blue-800 mb-1">Segment Insights</h5>
+                                        <p id="segment-insights" class="text-blue-700 text-sm">
+                                            This segment shows a predominantly neutral tone with moderate sadness. The low level of happiness suggests a serious or subdued emotional state.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Overall analysis tab -->
+                    <div id="overall-tab" class="tab-content hidden p-6">
+                        <div class="bg-white p-4 rounded-lg shadow-sm">
+                            <h4 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                                <i class="fas fa-chart-bar text-blue-500 mr-2"></i>
+                                Complete Audio Analysis
+                            </h4>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+                                <!-- Overall donut chart -->
+                                <div class="h-64 flex items-center justify-center relative">
+                                    <div id="overall-donut-chart" class="w-full h-full relative">
+                                        <!-- SVG will be added here dynamically -->
+                                    </div>
+                                    <div class="absolute inset-0 m-auto w-24 h-24 bg-white rounded-full flex flex-col items-center justify-center shadow-sm">
+                                        <div class="text-sm font-medium text-gray-600">Overall</div>
+                                        <div id="overall-dominant" class="text-xl font-bold text-blue-600">Neutral</div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Overall emotion percentages -->
+                                <div class="space-y-4">
+                                    <div>
+                                        <div class="flex items-center justify-between mb-1">
+                                            <div class="flex items-center">
+                                                <span class="w-3 h-3 bg-red-500 rounded-full mr-2"></span>
+                                                <span class="font-medium text-gray-700">Angry</span>
+                                            </div>
+                                            <span class="text-gray-700 text-sm font-medium">25%</span>
+                                        </div>
+                                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                            <div class="bg-red-500 h-2.5 rounded-full" style="width: 25%"></div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div>
+                                        <div class="flex items-center justify-between mb-1">
+                                            <div class="flex items-center">
+                                                <span class="w-3 h-3 bg-indigo-500 rounded-full mr-2"></span>
+                                                <span class="font-medium text-gray-700">Sad</span>
+                                            </div>
+                                            <span class="text-gray-700 text-sm font-medium">20%</span>
+                                        </div>
+                                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                            <div class="bg-indigo-500 h-2.5 rounded-full" style="width: 20%"></div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div>
+                                        <div class="flex items-center justify-between mb-1">
+                                            <div class="flex items-center">
+                                                <span class="w-3 h-3 bg-purple-500 rounded-full mr-2"></span>
+                                                <span class="font-medium text-gray-700">Fear</span>
+                                            </div>
+                                            <span class="text-gray-700 text-sm font-medium">10%</span>
+                                        </div>
+                                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                            <div class="bg-purple-500 h-2.5 rounded-full" style="width: 10%"></div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div>
+                                        <div class="flex items-center justify-between mb-1">
+                                            <div class="flex items-center">
+                                                <span class="w-3 h-3 bg-green-500 rounded-full mr-2"></span>
+                                                <span class="font-medium text-gray-700">Happy</span>
+                                            </div>
+                                            <span class="text-gray-700 text-sm font-medium">15%</span>
+                                        </div>
+                                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                            <div class="bg-green-500 h-2.5 rounded-full" style="width: 15%"></div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div>
+                                        <div class="flex items-center justify-between mb-1">
+                                            <div class="flex items-center">
+                                                <span class="w-3 h-3 bg-gray-500 rounded-full mr-2"></span>
+                                                <span class="font-medium text-gray-700">Neutral</span>
+                                            </div>
+                                            <span class="text-gray-700 text-sm font-medium">30%</span>
+                                        </div>
+                                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                            <div class="bg-gray-500 h-2.5 rounded-full" style="width: 30%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Emotion flow chart -->
+                            <div class="mb-4">
+                                <h5 class="font-semibold text-gray-800 mb-2">Emotion Flow</h5>
+                                <div class="bg-gray-50 p-4 rounded-lg h-32 relative overflow-hidden">
+                                    <div id="emotion-flow-chart" class="w-full h-full">
+                                        <!-- Line chart will be rendered here -->
+                                        <div class="absolute inset-0 flex items-center justify-center text-gray-400">
+                                            <span class="text-sm">Emotion flow chart will appear here</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Overall insights -->
+                            <div class="bg-blue-50 border border-blue-100 rounded-lg p-4">
+                                <div class="flex items-start">
+                                    <div class="text-blue-500 mr-3">
+                                        <i class="fas fa-info-circle text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="font-semibold text-blue-800 mb-1">Analysis Summary</h5>
+                                        <p id="overall-insights" class="text-blue-700 text-sm">
+                                            This audio contains a mixture of emotions with neutral being the most dominant overall. 
+                                            There are notable segments of anger (0:30-0:45) and happiness (1:15-1:30). 
+                                            The model has identified these emotions with a confidence level of 91.2%.
+                                        </p>
+                                    </div>
+                                </div>
+                <div class="mt-6 flex flex-wrap gap-3">
+                    <button id="export-json" class="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300 shadow-sm">
+                        <i class="fas fa-file-code mr-2"></i> Export JSON
+                    </button>
+                    <button id="export-csv" class="flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition duration-300 shadow-sm">
+                        <i class="fas fa-file-csv mr-2"></i> Export CSV
+                    </button>
+                    <button id="export-image" class="flex items-center px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition duration-300 shadow-sm">
+                        <i class="fas fa-file-image mr-2"></i> Export Chart
+                    </button>
+                    <div id="export-status" class="text-sm text-gray-600 hidden ml-2 flex items-center">
+                        <i class="fas fa-check-circle text-green-500 mr-1"></i> 
+                        <span id="export-message">Export successful!</span>
+                    </div>
+                </div>
+    
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                                </div>
+                            </div>
+    
+                            
+                            <div class="flex items-center space-x-4 mb-2">
+                                <button id="play-btn" class="touch-feedback w-10 h-10 flex items-center justify-center bg-blue-600 text-white rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <i class="fas fa-play"></i>
+                                </button>
+                                <div id="timeline-slider" class="relative flex-1 h-2 bg-gray-200 rounded-full cursor-pointer">
+                                    <div id="timeline-progress" class="absolute h-full bg-blue-600 rounded-full w-0"></div>
+                                    <div id="timeline-handle" class="absolute w-4 h-4 bg-blue-600 rounded-full top-1/2 transform -translate-y-1/2 -translate-x-1/2 left-0 cursor-grab shadow-md"></div>
+                                </div>
+                                <div id="time-display" class="text-sm font-medium text-gray-700 min-w-[80px] text-center">0:00 / 2:00</div>
+                            </div>
+                            
+                            <div class="flex justify-between text-xs text-gray-500 px-14">
+                                <span>0:00</span>
+                                <span>0:15</span>
+                                <span>0:30</span>
+                                <span>0:45</span>
+                                <span>1:00</span>
+                                <span>1:15</span>
+                                <span>1:30</span>
+                                <span>1:45</span>
+                                <span>2:00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Team Section -->
+    <section id="team" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+          <h2 class="text-3xl font-bold text-center mb-4 text-gray-800">Our Team</h2>
+          <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">
+            Meet the talented researchers and engineers behind KuralNet's speech emotion recognition technology.
+          </p>
+      
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      
+            <!-- Luxshan -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:shadow-lg hover:-translate-y-1">
+              <div class="p-4 flex items-center border-b border-gray-200">
+                <img src="data:image/jpeg;base64,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" alt="Luxshan Thavarasa" class="w-16 h-16 rounded-full mr-4 object-cover">
+                <div>
+                  <h3 class="text-lg font-semibold">Luxshan Thavarasa</h3>
+                  <p class="text-blue-600">Researcher</p>
+                </div>
+              </div>
+              <div class="p-4">
+                <p class="text-gray-700">Focused on SER for low-resource languages. Bridging deep learning with full-stack development.</p>
+                <p class="text-sm text-gray-500 mt-2">luxshanlux2000@gmail.com</p>
+              </div>
+              <div class="p-3 border-t border-gray-200 flex justify-center space-x-2">
+                <a href="https://github.com/Luxshan2000" class="text-blue-600 hover:text-blue-800"><i class="fab fa-github"></i></a>
+                <a href="https://www.linkedin.com/in/lux-thavarasa" class="text-blue-600 hover:text-blue-800"><i class="fab fa-linkedin"></i></a>
+                <a href="https://scholar.google.com/citations?user=Do87138AAAAJ&hl=en" class="text-blue-600 hover:text-blue-800"><i class="fas fa-graduation-cap"></i></a>
+              </div>
+            </div>
+      
+            <!-- Jubeerathan -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:shadow-lg hover:-translate-y-1">
+              <div class="p-4 flex items-center border-b border-gray-200">
+                <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdHx8kKDQsJCYxJx8fLT0tMTU3Ojo6Iys/RD84QzQ5OjcBCgoKDQwNGg8PGjclHyU3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3N//AABEIALwAyAMBIgACEQEDEQH/xAAbAAABBQEBAAAAAAAAAAAAAAAFAQIDBAYAB//EAD8QAAEEAQMCBAMECQIEBwAAAAEAAgMRBAUSITFBBhMiUTJhcYGRobEHFCMzQmLB0eE08BWisvEWJCY1UnKS/8QAGQEAAwEBAQAAAAAAAAAAAAAAAQIDAAQF/8QAIxEAAgMAAgICAwEBAAAAAAAAAAECAxESITFBBCITMlEjFP/aAAwDAQACEQMRAD8Ay+p6Zj+Q4AAmvZY6GCaLP8hjnbfktxJvfu3cqpp+ntdnb65Xl03dtM9C2sGyYUzWbqKY5pERvstlm4rG47vospkgN3Nu+VrFj6DU9RmMw1LyomgXav5uGXmwOUOfBLGu6uUXE57ItSLJ2kUFJh6aJiC8kBDxI5juUYwM5rGclaexj0LHHLsO4ulwxw0WhD8uNkcvoP3J7tXHl/EK9rVD9fa+SyAuWH5N1l5qOdBXAxWy/vHWotW01jmHa0KODUGt6UFPLmskZy60HKakFRjxwl8NiOLFMb63Aql4oEUj2FvxDqQqU+S+FxdG6r9kPmzHSOt5JK6K6ny5kJT+vEa9m0USqrlJJLv7KJdBFnBTNUQClagzI2ngKM7nu9yttqQrEd9FlvAUX/lw73Ws1XjHcB7LxfkPbGelT+hg8P8A9wl+qKvQvC/10v1RV6qyaLkH7pTYf+oaoIP3Smwv3zSkY6NHf7ILk0VsaFyQfDDvzKBI5JRvQscvaJXDkrHQxzDLjjlYQ7dRXoulxBmO2+tLqpqW6Rtm8INVFQuHyWAyXFuS4drXoepbSxwKw2oQVO5w5TWtaCkrAA9QopcZjm2GhSgV1TnEBnCgm0+jpzrszOfF5b+iqBxA4RHUqLuqoWF6tT2PZ5lv7dCeo91O3Hmc3dTq6pMZgkkY09CeVtYcaEYo9I20nfRNNmG8x7SearslGTIBVq1qUbBlO2KmY/VQv80MQeTLWLDJmuLbIAHVW8nw/lRxea0bmqTw49seSGS8NcRZK9GljiONQqqXLZZOMui0YRcezx90bmuIIojilwiRHXGth1OVreRfCHbj7rpTbWksQ7ZXQpAfY0mWUU8PYzcrUGNeAWt7FCb4x1miteHoPgjHMeAwmwaR7WBWO6vZSaLjMihaG8cJmtECFwvsvAnPlPketGPGOGBwv9bL9UVkQvBF5ste6KyBdjOZFuD90p8L9+0KGAfslPhg+fdcKbHQbe8MZyUqFapkOji3AH6Lkg2sTK0t5yjIyOq6cK1HK+EbHtN+61keMx7eQEN1TCaGFwXoyi14ORT3ozebI6QUOqz2XC9ps9FpDQebCH6hG0sNLlt1rS1fTM69ipZk4hZyiUndZ3W3Hpa1C5SLXSyOgzJm8199kxrL6lMCe216yWHlN6Sx014riuiNY2VkSQ+W08V1QaNhc/hHNPLYWO3BoIFWVpGXQ44EYeJHubIT8Qa7or2PCyNm1kLWVzy0EocZN8bnxyeXIDzfSlZwMsjHa5219uri+EOzFqR7R6Qx24+zV0WbI24Z8ij28z0kfVDzqhMrmvJ29iOVRyJDNkOLWOfzW4E3aV8fYVpZztNizJZHRzFkvX9py0/aEFy8KbEeWzM79RyD9CrrpJmPcPUwj4nV1U8WSZYxG4hzSKLSOFk8NgDAKJ6Dkfqucx56FNnxG1ugvj4m9dv+FY0zT3zzDg7QksknFpjxTT6PTdM1RpibRHT3VPW9SHlO5UGm4TmR1fKq61iuEbieQvBUf9MPU5fQF6O4vyHu9zyjUoQXQ2VI4dOUbmXfM5YlzGbuYAi+FiDbdcoZggBjbKLw5LI21YtRnvovDPYzMwvNFVwuV/Hkjl7grlN6imJhnAlDmCyEzU3MMLhYWAxfGMEMYEjjYVPP8bNlDmMY4n3XrPtHmewrlvDJXAEIZlTbmcFBP+NGU27qpBm+aKHC5pRKp9ivKCarjOkbaNVu7qOWMOZyLUa58JHU484GLewsNEcq3i4cuRXltu1JqUe2bgd1sfCOFEYo3Fo6dwvT/L9Uzz3XksM/i6PlMdulipvflaLSPB786IT5cuxkoDgxo6BaqTFj8pzWhoJ4HHRGtPiYImNafSBQXNddL0WpqT8mSk8AwzM8uKZzRVW4K/ofgWHT45Gyzmcv7ngLYtjAPB+5Txs+dJoTcvLGlXFeEYQ+A44pnOblVH2YI+fvT8rw1hsxi2NpaQPiAWuynj5oZM/hwd06Kdk8Y9dazTxzVMJkeTI2Pe4DqelobIHxvutoW+1zCZI5+1jd5/iPT5LIuwpA71cMvr/ZWhLUc844UYpjHLHILBvn5hbjQ4WOZ5jRVrEuhuYEDgEWvXtB0CsGAyNLHloJB+iT5EXKPQanjIceg8NDVcytOjnhcHDt7IlDpDGv8w3fsm6jG+AEN6ELhrpa7kdLmYFmCMTLdxxasTBTTb/PcH1dqzj4f6xV+6qIVopC1nFJY2STPPqKMv0hjIiWiuFSib5LqNWhZ9I6BfZjo3S4gvqO65PnePK6jlcuePyYyW4O6n6Z5TuPuu3EpQy0+l65x6MAKlilezuUnC61sMmFMPJ8w0eqvuaC2+KQTDd+3bzQJq16BouHjTxgOY1wruFxXVvdR202dYzzvV49rtxWr0bKgwNKORNuLGNumCzytPnaFpzonbsaM8d2rGaw9uC58MPpa4baB7K0HySTOez9tDGo5MzomDmEO9W3eN1V8rVDEfqePUmHmOMLXer1B4/An2RLRMV+pZeS+bc9hja5jnEkAO6fgisGhzQQTtgiYRJyRd73C6r7ynXFSyQUpcU0OwfF0EmMakaZ28GMcuuvZCMrxNrcktQOjjbfAcyytDnaK3TNCiETWzZ8HrMz+r3nrz7cpuoeHjJEySKMh3xU3ryhFLl0O+XEiwdZzI/Lbqezc4CiRtv2+9WXZMeQXBgIcOrUL1rFyJdFfimSd0ziIhuaSCXOoUD0q+ytYvh/GxYxtZtd3LHOb+RU74xHocylrOIH47pBQc3kiljp3lzi2S9zegK3mp4fl4kgjklaC3kE7vxKwmdBmSyhuNjPnN07y2GwhRIF8deEOBAMrOhx27T5sgDl7BFqEcMTQ5wBHC848IaBqMWtMl1DHfBE2NzvUR19vl1WwnfjsnHqFt/hJ6q85a+iEIYuw1HqrXGgeOylcBO26QaOWIgE1fbikXhe0R3VhRlP+loxBObo8Ln+YSh808Wnjg/aneJPEEenjbVu7crzvUdWyM17nONDsAVowcuxZSUTZZfiuJjXNDwFm8nxA58m5gJCz7n2bJTS5WdSfkjzfo0B8QOfHTgQVyz1rkn/AC1r0H8sh26uibuSFIPougmO3LrSBhS7CthhzTXRFtM1nLw3UyU7fYoPz7JbQa0O54NfL4oyZo6BF/RZrOyZMmVzpOqjjlKQxlxs8pYxxhctPRP0fMDtI3SPebldt9ZFCqrqjsmrY+l6nCyd73F7TtL3OcBX1Ky/grI8rT5Gk2I3k19ef7qfJzMbWHsLpCCw8hrSa+1crTczrg8h0aWHXtM1WSbHOQ1r/hINgH6Ijpr5pGAOyS+Lo1zS2z94WUxxpkZ2STwyRddsjeFoYc/FLWRw1x0DeU+cWNu9MKS4MEjmvlkkl8s2xry0NBqroDlRZLQ032UDswsNAmlVzM3cw8qNk+RSEVEoatIzyZORyKVBk50vCi8thDpgD5jG2fmfsUOoSmQ7OyN6YCImSzMLtgqNgF7geqReDPG9ZHlYGNjY0mbiPeHtx3F0pPLuDyftXnsuRI9+90ji67u1rfGGqNhw/wDh8PpdJXmAG9o7A/MrF2umuOLTmtlrxFyDUcmKQF0jnAe5taWLxG1uL+85pYspjzXARnWpeRI2OJ2t6hJn5Zkd0HQIYSpJj61AVeMcRFvWLaauXJgHLly5YxP5YKWgOySwElpsF0clJTLXWjgB4ISOh9k0J4chgdHMZXVSbqTd9pHc9EMCHvC+X5eY+HtK2+fcLbMfLhwtdgwgtHVoC8sglfDIyZjtpYbC9D0TxTinGj8xwbIBy0nuueyLT1HTVJZhosSWfKhvIjDAf4XX+SZJpmCy5YIhHKObbx+CjZ4hwZIxtkaSfcqjn63jMtrJAXHrypSkyyawsuyrd5Y+1R5LgyK3EfNBjrOPG7ceqE6hrpltsYNFRcWU5Im1TN8tji3l3YKvieJdUhwhjsmprRQO3kIbPuMPmvJ+SgjcHK9UdWnPZNolfI6Rxc8lzj1J6lNSLlfCDenFQyupSOKq5D66JktMVpDZtRpXG+qRMkIIuXUlWAIlXLlgj1yRcqCCrly4LaYUJQmp7Gvd8LSfosYVPYVKzDmd1btH8ylbisb1JJ+SzQNKtHdVX8lpPD+jNy9I1DMe0OMJYwce/J/ohPltZ8Ipeh/o0hZLomdFIA4On2uv22iv6pHDUMpJMwksLonnbZrpaiL5PcLUazpLsTNkgeCObY7s4KhHpu42bpc0pZ5OqMdAgjmf3VvFwHufucEYZgBvQD7VZZAWs5XPKbZdQSBmRpjsvAyfJNGCEy17gVf4WVnscr0/S8HydC1PPmG2N2PIyO/4hVud9O33ry6Ihvb6Lrqg4wOSyScy0uXAg9FxRARvNKhO71UrspptodIbfyniBjEqUNTg1MINXEJ1JCEAjVyWly2mFC5IEqoITQY8k4OwXXU+yuRaZxcknH8qlwhsgA7kWVYDqZQ9ymURGyNmJjx/wbh/Mpba34QB9Aoy5Mc5NguiyPLuhSNamgHdVKbjp+KYwxy336LXAs1CI9LY+vvCwdWtv+i0gajmRn+OIH7j/lDA6bPXNEZqmK6M02ZvMb/Y+x+SwZhlglfjzxuZKw05p916nlZeJhRebmTsgZXBc7r9ndAtQx8TXXNfiRlrxwJv/l8iPb5rlvp5LUdNFvF4zHNYiuj6Kc0+dkWzEafi6GT5N/ujen+GiXGTJfHIxpILYnXZ+vZaAQNjAdKBYFNaB6Wj2Uafj+2Vt+QvETH+PMkYfht8TGiNsxEbGDsO/wCX4ryINtzQF6B+lLP83Jgw7ry2lxA7X/2WGij5ul38esOHe9I4xtdSm8vf04XPZRsdEoQcExlJopZbHsZ8Jr3VDbfq/BaIEEchRyYUDzdbfokcM8DKaArWFO2FX34Zj+H1fRRGPaaPVSeryOVdiaWq35fyTSxDQ4VSFylcxctoCsE+Nu4gdyaTFawWW/eejQrk9L0RG/aOE4PoEH3VaV5ZMD9tpxdbiD3FqiQjJbXVaZacCiA6Rm5m0kj2opYRMNwkc1w6tIHP2rm1bSnhYxIFpvAuTPi6pM/HjEkhx3gAmhfHVZkFafwDX/iKEdixw+vH+FgDn5OfNqckesuMkx9bQ7pR9vbv9yKsDYITI70jvt4/2Vd/SDjMidh54prg/wApxPHBHH5LLa7mufHFFA71uA/i68reEOmW8LxO/Rskt0mBnqdbomtoSfWl6Xp2pQ6tjNlitjgPXE48sd7H3WS8H+FDDEMnMFzOAPI+Eey1E+Fjadi5GU0Fjo2OeHNPsOiGGbxHkfi/KGZ4hzXtNtbIWD6BCY/T1T5nF8rnuN7jaiJKIqGSZDPMETWuc7vt7fVKlokFzAPmfdIsHRwcnh3zUQXWtgCQykNJJ+SpteZCS4c2uzJCxtNP1KotmPlOk7AqNq1FK2XyR7prnN90P/WT7qN05XLjLl97m+65DHSn3XJ8YCUIlhtDcbngk2h8bNxA7q6/0PDXfA4V9q6UiA6VzXNLTRc32UQkBeL9uFWyYHwu3xElQyT7mtdwC11lUQnkLBPUUbw8AjoQpUTHXVfJPaVE/hOaeiBidq0/gI/+pcUe4eP+UrLNWl8CO2+I8M/zO/6CsA2H6QMp0ceNjt7kvcPsof1WZcHvix52m/KfZ/37It42m8/V9vUMja38z/VVNKYHsDA0vLuaHf8AsEX4Giel6ZPHm4kORCf2cjQQEG8fZJxfDmV2dLUY+0/2tS+FJWwYT4Hna5j3bRXQIR+kZmRqWDj4uEwyHeXvHSqSpozW9HlblGSrGZjTYkvlZLDHIADRVblHyDCDKcQzY00Xnb/dSg+m1A79pkkDowfiVNfFLGF6JC+uvulJCqTykSbALIFk/kibCnmPfkTiBl13Ks5UTYMHZt9l2nxcGV9guKdnvD4yGndXUeymx0C7rqo3SJZSoSoqJUUuXKMrk+A0N4rfXfyUryyeJ0YeN7elJMUC7pQ6hG2MiSO2uHcJ4kmTNmBjuRpsdaQ/KZGQ50TgQRyL6K1FI57WuPWlW1CFmzeG04nmk4EixpstwgE8hXwUF0wnlF4zawB7uVzO3yK5c34nD5ogJmrQeDXbfEOGf5jX/wCSs+Ee8GceIML/AO5/IrGNF4hp+pZLrv10fsFfcmaFIWZjTdG+fcpNW5zcq+ae4/XkpujAGR7q9QaeUsn0USNt4eMckcsheTLu5FcBvH4rM67qMrv1l4eW7XnkeyO+HXFmn5Tm8EEm/s/wsTm26KSyTb+UOPRt7BHiPfI7GmcT+0j5vvRQYuDQSegR/wASAfq+AfZrx+KzEhJpvZzxaMekK+2JjgsYS+g5x3EeyfbexJXE0bTHcogEll2gk8ABC4Z95keSACevyU+qyOEPHF9ULi/aPbG74fkgMXzmTZJEWKz5WrGxmMxsbnXJ8TyrIjZiYtQtAsde6Cb3S5IDzdu5SvwZf0SblxA45URVjMaBM4DpYVc90iKixsMr9jRykRLS2NovrlIqqptEnNH/2Q==" alt="Jubeerathan Thevakumar" class="w-16 h-16 rounded-full mr-4 object-cover">
+                <div>
+                  <h3 class="text-lg font-semibold">Jubeerathan Thevakumar</h3>
+                  <p class="text-blue-600">Researcher</p>
+                </div>
+              </div>
+              <div class="p-4">
+                <p class="text-gray-700">Works on optimizing SER models. Skilled in backend engineering and inference systems.</p>
+                <p class="text-sm text-gray-500 mt-2">jubeerathant@gmail.com</p>
+              </div>
+              <div class="p-3 border-t border-gray-200 flex justify-center space-x-2">
+                <a href="https://github.com/Jubeerathan" class="text-blue-600 hover:text-blue-800"><i class="fab fa-github"></i></a>
+                <a href="#" class="text-blue-600 hover:text-blue-800"><i class="fab fa-linkedin"></i></a>
+              </div>
+            </div>
+      
+            <!-- Thanikan -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:shadow-lg hover:-translate-y-1">
+              <div class="p-4 flex items-center border-b border-gray-200">
+                <img src="data:image/jpeg;base64,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" alt="Thanikan Sivatheepan" class="w-16 h-16 rounded-full mr-4 object-cover">
+                <div>
+                  <h3 class="text-lg font-semibold">Thanikan Sivatheepan</h3>
+                  <p class="text-blue-600">Researcher</p>
+                </div>
+              </div>
+              <div class="p-4">
+                <p class="text-gray-700">Handles preprocessing pipelines. Designs dashboards for SER data visualization.</p>
+                <p class="text-sm text-gray-500 mt-2">thanikansiv@gmail.com</p>
+              </div>
+              <div class="p-3 border-t border-gray-200 flex justify-center space-x-2">
+                <a href="https://github.com/thanikan" class="text-blue-600 hover:text-blue-800"><i class="fab fa-github"></i></a>
+                <a href="#" class="text-blue-600 hover:text-blue-800"><i class="fab fa-linkedin"></i></a>
+              </div>
+            </div>
+      
+            <!-- Dr. Uthayasanker -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:shadow-lg hover:-translate-y-1">
+              <div class="p-4 flex items-center border-b border-gray-200">
+                <img src="https://uom.lk/sites/default/files/center/datasearch/images/dr.uthayasanker.jpg" alt="Dr. Uthayasanker Thayasivam" class="w-16 h-16 rounded-full mr-4 object-cover">
+                <div>
+                  <h3 class="text-lg font-semibold">Dr. Uthayasanker Thayasivam</h3>
+                  <p class="text-blue-600">Supervisor</p>
+                </div>
+              </div>
+              <div class="p-4">
+                <p class="text-gray-700">Senior lecturer at UoM. Guides our research in ML, NLP, and system scalability.</p>
+                <p class="text-sm text-gray-500 mt-2">uthayasanker@cse.mrt.ac.lk</p>
+              </div>
+              <div class="p-3 border-t border-gray-200 flex justify-center space-x-2">
+                <a href="https://scholar.google.com/citations?user=RkHq0e4AAAAJ&hl=en" class="text-blue-600 hover:text-blue-800"><i class="fas fa-graduation-cap"></i></a>
+                <a href="https://www.linkedin.com/in/uthayasanker" class="text-blue-600 hover:text-blue-800"><i class="fab fa-linkedin"></i></a>
+                <a href="https://cse.mrt.ac.lk/web/staff/academic/uthayasanker" class="text-blue-600 hover:text-blue-800"><i class="fas fa-university"></i></a>
+              </div>
+            </div>
+      
+          </div>
+        </div>
+      </section>         
+    
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-waveform text-2xl mr-3 text-blue-400"></i>
+                        <h3 class="text-xl font-bold">Kural<span class="text-blue-400">Net</span></h3>
+                    </div>
+                    <p class="text-gray-400 mb-4">
+                        Advanced Speech Emotion Recognition powered by cutting-edge deep learning technology.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="fab fa-github text-lg"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="fab fa-twitter text-lg"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="fab fa-linkedin text-lg"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#home" class="text-gray-400 hover:text-white transition-colors">Home</a></li>
+                        <li><a href="#demo" class="text-gray-400 hover:text-white transition-colors">Demo</a></li>
+                        <li><a href="#about" class="text-gray-400 hover:text-white transition-colors">About</a></li>
+                        <li><a href="#languages" class="text-gray-400 hover:text-white transition-colors">Languages</a></li>
+                        <li><a href="#team" class="text-gray-400 hover:text-white transition-colors">Team</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Resources</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Documentation</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">API Reference</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Research Paper</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Demo Samples</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Contact</h4>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <i class="fas fa-envelope text-blue-400 mt-1 mr-3"></i>
+                            <span>rtuthaya@cse.mrt.ac.lk</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt text-blue-400 mt-1 mr-3"></i>
+                            <span>Bandaranayake Mawatha, Moratuwa 10400, Sri Lanka</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="mt-8 pt-8 border-t border-gray-800 text-sm text-gray-500 text-center">
+                <p>&copy; 2025 KuralNet. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
