@@ -1,7 +1,7 @@
 <div align="center">
     <h1>🔊 KuralNet: Multilingual Speech Emotion Recognition (SER) Model</h1>
     <p>Version 1.0 | Trained on 13 Languages & 14 Datasets</p>
-    <p>Multilingual Speech Emotion Recognition model primarily focused on <strong>Indian languages</strong>, designed to detect <strong>emotions</strong> from speech, enhancing <strong>call centers, sentiment analysis, and accessibility tools</strong>.</p>
+    <p>Multilingual Speech Emotion Recognition model primarily focused on <strong>South Indian languages</strong>, designed to detect <strong>emotions</strong> from speech, enhancing <strong>call centers, sentiment analysis, and accessibility tools</strong>.</p>
     <a href="LICENSE" style="text-decoration: none;"><img src="https://img.shields.io/github/license/your-repo/multilingual-ser" alt="License"></a>
     <a href="#" style="text-decoration: none;"><img src="https://img.shields.io/badge/version-1.0-blue" alt="Version"></a>
     <a href="https://arxiv.org/abs/xxxxx" style="text-decoration: none;"><img src="https://img.shields.io/badge/Research-Paper-red" alt="Paper"></a>
