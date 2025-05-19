@@ -24,30 +24,11 @@ This model aims to enhance user experiences by detecting emotions from speech ac
 
 ### Radar Chart by Language
 
-![Radar Chart by Language](/file?id=cac89ae8-5a5a-43d9-97f2-31435dd6eaab&name=emotion_recognition_radar.png)
-
-### Bar Chart for Easy Comparison
-
-![Bar Chart for Easy Comparison](/file?id=59ff8fdd-a140-4a62-a897-8f20fc4c3728&name=emotion_recognition_bar_chart.png)
+![Radar Chart by Language](https://github.com/aaivu/KuralNet/blob/main/assets/emotion_recognition_radar.png)
 
 ## 📊 Detailed Performance Table
 
-| DataFrame                                  | Accuracy |
-| ------------------------------------------ | -------- |
-| Kannada Emotional Speech (Kannada)         | 0.81     |
-| Telugu Emotion dataset(Telugu)             | 0.84     |
-| EmoTa (tamil)                              | 0.78     |
-| MAVES DB (Malayalam)                       | 0.73     |
-| CaFE (French)                              | 0.71     |
-| EMODB (German)                             | 0.97     |
-| EMOVO (Italian)                            | 0.66     |
-| ESD (chinese)                              | 0.94     |
-| IEMOCAP (English)                          | 0.67     |
-| RAVDESS (English)                          | 0.80     |
-| SUBESCO (Bangla)                           | 0.84     |
-| ASED (Amharic)                             | 0.84     |
-| Urdu Dataset (Urdu)                        | 0.70     |
-| MESD (Spanish)                             | 0.62     |
+![Bar Chart for Easy Comparison](https://github.com/aaivu/KuralNet/blob/main/assets/emotion_recognition_bar_chart.png)
 
 ## 📜 Citation
 
