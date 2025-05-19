@@ -90,4 +90,4 @@ If you are using this model or research findings, please cite the following pape
 
 ## 🙏 Acknowledgment
 
-I would like to thank Dr. Uthayasanker Thayasivam for his guidance as my supervisor, Braveenan Sritharan for his mentorship, and all the dataset owners for making their datasets available for us through open access or upon request. Your support has been invaluable.
+We would like to thank Dr. Uthayasanker Thayasivam for his guidance as my supervisor, Braveenan Sritharan for his mentorship, and all the dataset owners for making their datasets available for us through open access or upon request. Your support has been invaluable.
