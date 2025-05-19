@@ -20,6 +20,14 @@
 
 This model aims to enhance user experiences by detecting emotions from speech across multilingual datasets. The focus is to apply it in industries like customer service, where emotional tone plays a crucial role.
 
+## 🧠 Model Architecture
+Model uses a dual-branch approach: a Whisper branch for contextual embeddings and a traditional feature branch (MFCC, etc.) for acoustic details. An AttentionFusion module then dynamically combines these features using cross-attention. Finally, classification layers predict the emotion.
+
+In essence: Raw Audio -> (Whisper + Traditional Features) -> AttentionFusion -> Emotion Prediction.
+
+![Model](https://github.com/aaivu/KuralNet/blob/main/assets/final_model.JPG)
+
+
 ## 📈 Performance Overview
 
 ### Radar Chart by Language
