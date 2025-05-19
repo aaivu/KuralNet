@@ -1,353 +1,177 @@
-import json
 import os
-import random
-import warnings
-
-import matplotlib.pyplot as plt
+import argparse
+import yaml
+import torch
+import librosa
 import numpy as np
 import pandas as pd
-import seaborn as sns
-import sklearn
-import torch
-import torch.nn as nn
-import torch.optim as optim
-from sklearn.metrics import classification_report, confusion_matrix
-from torch.optim.lr_scheduler import ReduceLROnPlateau
+from tqdm import tqdm
+from torch import nn
+from torch.utils.data import Dataset, DataLoader
+from sklearn.model_selection import train_test_split
+from kuralnet.models.traditional_feature_extractor import TraditionalFeatureExtractor
+from kuralnet.models.pretrained_feature_extractor import WhisperFeatureExtractor
+from kuralnet.dataset.dataset import EmotionDataset
+from kuralnet.models.model import KuralNet
+import matplotlib.pyplot as plt
 
-from src.model.base_models import FeatureExtractorFactory
-from src.model.model import SERBenchmarkModel
-from src.utils.constant import BASE_MODEL, DATASET
-from src.utils.data_loader import get_dataloader
-from src.utils.dataset import SpeechEmotionDataset
-from src.utils.encoder import emotion_converter
-from src.utils.utils import get_logger
+def parse_args():
+    parser = argparse.ArgumentParser(description="Train emotion classification model")
+    parser.add_argument("--config", type=str, required=True, help="Path to YAML config file")
+    return parser.parse_args()
 
-warnings.filterwarnings("ignore")
+def plot_training_progress(train_losses, val_losses, train_accs, val_accs, save_path='training_progress.png'):
+    """
+    Plots training and validation loss and accuracy over epochs.
 
-logger = get_logger(__name__)
+    Parameters:
+    - train_losses: List or array of training loss values
+    - val_losses: List or array of validation loss values
+    - train_accs: List or array of training accuracy values
+    - val_accs: List or array of validation accuracy values
+    - save_path: File path to save the resulting plot image (default: 'training_progress.png')
+    """
+    plt.figure(figsize=(12, 5))
 
-
-# Apply Seed
-SEED = 42
-random.seed(SEED)
-np.random.seed(SEED)
-pd.options.mode.chained_assignment = None
-torch.manual_seed(SEED)
-torch.cuda.manual_seed(SEED)
-torch.cuda.manual_seed_all(SEED)
-torch.backends.cudnn.deterministic = True
-torch.backends.cudnn.benchmark = False
-sklearn.utils.check_random_state(SEED)
-os.environ["PYTHONHASHSEED"] = str(SEED)
-
-
-# Hyperparameters
-BATCH_SIZE = int(os.getenv("BATCH_SIZE", 32))
-LEARNING_RATE = float(os.getenv("LEARNING_RATE", 0.001))
-EPOCHS = int(os.getenv("EPOCHS", 30))
-EARLY_STOPPING_PATIENCE = int(os.getenv("EARLY_STOPPING_PATIENCE", 5))
-
-os.makedirs("./finetuned_models", exist_ok=True)
-os.makedirs("./ui/public/train_val_test_logs", exist_ok=True)
-
-
-def plot_loss(train_losses, val_losses, path: str):
-    plt.figure(figsize=(10, 5))
-    plt.plot(train_losses, label="Train Loss")
-    plt.plot(val_losses, label="Validation Loss")
-    plt.xlabel("Epoch")
-    plt.ylabel("Loss")
+    # Plot training & validation loss
+    plt.subplot(1, 2, 1)
+    plt.plot(train_losses, label='Train Loss')
+    plt.plot(val_losses, label='Validation Loss')
+    plt.title('Loss over Epochs')
+    plt.xlabel('Epoch')
+    plt.ylabel('Loss')
     plt.legend()
-    parts = path.split("_", 3)
-    if len(parts) >= 3:
-        plt.title(
-            f"Training and Validation Loss of {parts[0]} - {parts[1]} ({parts[2]})"
-        )
-    else:
-        plt.title("Training and Validation Loss")
-    plt.savefig(
-        f"./ui/public/train_val_test_logs/{path}/{path}_loss_curve.png"
-    )
+
+    # Plot training & validation accuracy
+    plt.subplot(1, 2, 2)
+    plt.plot(train_accs, label='Train Accuracy')
+    plt.plot(val_accs, label='Validation Accuracy')
+    plt.title('Accuracy over Epochs')
+    plt.xlabel('Epoch')
+    plt.ylabel('Accuracy')
+    plt.legend()
+
+    plt.tight_layout()
+    plt.savefig(save_path)
     plt.close()
 
-
-def plot_confusion_matrix(
-    y_true, y_pred, phase, path, classes, EMOTION_MAPPING
-):
-
-    y_true = [
-        emotion_converter(y, mode="decode", EMOTION_MAPPING=EMOTION_MAPPING)
-        for y in y_true
-    ]
-    y_pred = [
-        emotion_converter(y, mode="decode", EMOTION_MAPPING=EMOTION_MAPPING)
-        for y in y_pred
-    ]
-
-    cm = confusion_matrix(y_true, y_pred)
-    plt.figure(figsize=(8, 6))
-    sns.heatmap(
-        cm,
-        annot=True,
-        fmt="d",
-        cmap="Blues",
-        xticklabels=classes,
-        yticklabels=classes,
-    )
-    plt.xlabel("Predicted Label")
-    plt.ylabel("True Label")
-    parts = path.split("_", 3)
-    if len(parts) >= 3:
-        plt.title(
-            f"{phase} Confusion Matrix of {parts[0]} - {parts[1]} ({parts[2]})"
-        )
-    else:
-        plt.title(f"{phase} Confusion Matrix")
-    plt.savefig(
-        f"./ui/public/train_val_test_logs/{path}/{path}_{phase}_confusion_matrix.png"
-    )
-    plt.close()
+def load_and_split_from_path(path):
+    df = pd.read_csv(path)
+    train, temp = train_test_split(df, test_size=0.3, stratify=df['emotion'], random_state=42)
+    val, test = train_test_split(temp, test_size=0.5, stratify=temp['emotion'], random_state=42)
+    return train, val, test
 
 
-def print_classification_report(y_true, y_pred, phase, path, EMOTION_MAPPING):
-    y_true = [
-        emotion_converter(y, mode="decode", EMOTION_MAPPING=EMOTION_MAPPING)
-        for y in y_true
-    ]
-    y_pred = [
-        emotion_converter(y, mode="decode", EMOTION_MAPPING=EMOTION_MAPPING)
-        for y in y_pred
-    ]
-
-    report = classification_report(y_true, y_pred)
-    with open(
-        f"./ui/public/train_val_test_logs/{path}/{path}_{phase}_classification_report.txt",
-        "w",
-    ) as f:
-        f.write(report)
+def load_full_dataset(paths):
+    train_parts, val_parts, test_parts = [], [], []
+    for path in paths:
+        train, val, test = load_and_split_from_path(path)
+        train_parts.append(train)
+        val_parts.append(val)
+        test_parts.append(test)
+    return pd.concat(train_parts), pd.concat(val_parts), pd.concat(test_parts)
 
 
-def train(
-    model,
-    dataloaders,
-    criterion,
-    optimizer,
-    scheduler,
-    device,
-    base_path,
-    ac_labels,
-    EMOTION_MAPPING,
-):
-    logger.info("Finetuning Started...")
+def extract_features(data_df):
+    file_paths = data_df["audio_path"]
+    labels = data_df["emotion"].tolist()
+    whisper_features, traditional_features = [], []
+    whisper_feature_extractor = WhisperFeatureExtractor()
+    
+    for file_path in tqdm(file_paths, desc="Extracting features"):
+        audio, sr = librosa.load(file_path, sr=16000)
+        whisper_features.append(whisper_feature_extractor.extract_features(audio))
+        traditional_features.append(TraditionalFeatureExtractor.extract_features(audio))
 
-    os.makedirs(f"./finetuned_models/{base_path}", exist_ok=True)
-    os.makedirs(f"./ui/public/train_val_test_logs/{base_path}", exist_ok=True)
+    return np.array(whisper_features), np.array(traditional_features), np.array(labels)
 
-    model_path = os.path.join(
-        "./finetuned_models", base_path, f"{base_path}.pth"
-    )
-    emotion_map_path = os.path.join(
-        "./finetuned_models", base_path, f"{base_path}.json"
-    )
-    logger.info(f"Save {emotion_map_path}...")
+def train_epoch(model, loader, criterion, optimizer, device):
+    model.train()
+    total_loss, correct = 0, 0
+    for w, t, y in loader:
+        w, t, y = w.to(device), t.to(device), y.to(device)
+        optimizer.zero_grad()
+        out = model(w, t)
+        loss = criterion(out, y)
+        loss.backward()
+        optimizer.step()
+        total_loss += loss.item() * y.size(0)
+        correct += (out.argmax(1) == y).sum().item()
+    return total_loss / len(loader.dataset), correct / len(loader.dataset)
 
-    with open(emotion_map_path, "w") as f:
-        json.dump(EMOTION_MAPPING, f)
 
-    best_loss = float("inf")
-    patience_counter = 0
-    train_losses, val_losses = [], []
-    y_true_val, y_pred_val = [], []
-    y_true_test, y_pred_test = [], []
+def validate(model, loader, criterion, device):
+    model.eval()
+    total_loss, correct = 0, 0
+    with torch.no_grad():
+        for w, t, y in loader:
+            w, t, y = w.to(device), t.to(device), y.to(device)
+            out = model(w, t)
+            loss = criterion(out, y)
+            total_loss += loss.item() * y.size(0)
+            correct += (out.argmax(1) == y).sum().item()
+    return total_loss / len(loader.dataset), correct / len(loader.dataset)
 
-    for epoch in range(EPOCHS):
-        logger.info(f"Epoch {epoch+1}/{EPOCHS}")
 
-        for phase in ["train", "val", "test"]:
-            if phase not in dataloaders:
-                continue
+def main():
+    args = parse_args()
 
-            model.train() if phase == "train" else model.eval()
-            running_loss = 0.0
+    # Load config
+    print(os.getcwd())
+    with open(args.config, "r") as f:
+        config = yaml.safe_load(f)
 
-            for batch in dataloaders[phase]:
-                labels, audio = batch["audio"], batch["labels"]
-                audio, labels = audio.to(device), labels.to(device)
-                optimizer.zero_grad()
+    dataset_paths = config["dataset"]["path"]
 
-                with torch.set_grad_enabled(phase == "train"):
-                    outputs = model(audio)
-                    labels = labels.long()
-                    loss = criterion(outputs.float(), labels)
+    train_df, val_df, test_df = load_full_dataset(dataset_paths)
+    train_w, train_t, train_y = extract_features(train_df)
+    val_w, val_t, val_y = extract_features(val_df)
+    test_w, test_t, test_y = extract_features(test_df)
 
-                    if phase == "train":
-                        loss.backward()
-                        optimizer.step()
+    train_loader = DataLoader(EmotionDataset(train_w, train_t, train_y), batch_size=config["training"]["batch_size"], shuffle=True)
+    val_loader = DataLoader(EmotionDataset(val_w, val_t, val_y), batch_size=config["training"]["batch_size"])
+    test_loader = DataLoader(EmotionDataset(test_w, test_t, test_y), batch_size=config["training"]["batch_size"])
 
-                    if phase in ["val", "test"]:
-                        if phase == "val":
-                            y_true_val.extend(labels.cpu().numpy())
-                            y_pred_val.extend(
-                                torch.argmax(outputs, dim=1).cpu().numpy()
-                            )
-                        else:
-                            y_true_test.extend(labels.cpu().numpy())
-                            y_pred_test.extend(
-                                torch.argmax(outputs, dim=1).cpu().numpy()
-                            )
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    model = KuralNet().to(device)
 
-                running_loss += loss.item() * audio.size(0)
+    criterion = getattr(nn, config["loss"]["type"])()
+    optimizer_class = getattr(torch.optim, config["optimizer"]["type"])
+    optimizer = optimizer_class(model.parameters(), lr=config["optimizer"]["lr"])
 
-            epoch_loss = running_loss / len(dataloaders[phase].dataset)
-            logger.info(f"{phase} Loss: {epoch_loss:.4f}")
+    best_val_loss = float("inf")
+    best_state = None
+    patience = config["training"]["patience"]
+    num_epochs = config["training"]["num_epochs"]
+    counter = 0
+    tr_losses,tr_accs,val_losses,val_accs = [],[],[],[]
+    for epoch in range(num_epochs):
+        tr_loss, tr_acc = train_epoch(model, train_loader, criterion, optimizer, device)
+        val_loss, val_acc = validate(model, val_loader, criterion, device)
+        tr_losses.append(tr_loss)
+        tr_accs.append(tr_acc)
+        val_losses.append(val_losses)
+        val_accs.append(val_acc)
+        
+        print(f"[Epoch {epoch+1}] Train Loss: {tr_loss:.4f}, Acc: {tr_acc:.4f} | Val Loss: {val_loss:.4f}, Acc: {val_acc:.4f}")
+        if val_loss < best_val_loss:
+            best_val_loss = val_loss
+            best_state = model.state_dict()
+            counter = 0
+        else:
+            counter += 1
+            if counter >= patience:
+                print("Early stopping.")
+                break
 
-            if phase == "train":
-                train_losses.append(epoch_loss)
-            else:
-                if phase == "val":
-                    val_losses.append(epoch_loss)
-                    scheduler.step(epoch_loss)
-
-                    if epoch_loss < best_loss:
-                        best_loss = epoch_loss
-                        patience_counter = 0
-                        # logger.info("Saving best model...")
-                        # torch.save(model.state_dict(), model_path)
-                    else:
-                        patience_counter += 1
-                        if patience_counter >= EARLY_STOPPING_PATIENCE:
-                            logger.info("Early stopping triggered!")
-                            plot_loss(train_losses, val_losses, base_path)
-                            plot_confusion_matrix(
-                                y_true_val,
-                                y_pred_val,
-                                phase="val",
-                                path=base_path,
-                                classes=ac_labels,
-                                EMOTION_MAPPING=EMOTION_MAPPING,
-                            )
-                            print_classification_report(
-                                y_true_val,
-                                y_pred_val,
-                                phase="val",
-                                path=base_path,
-                                EMOTION_MAPPING=EMOTION_MAPPING,
-                            )
-                            plot_confusion_matrix(
-                                y_true_test,
-                                y_pred_test,
-                                phase="test",
-                                path=base_path,
-                                classes=ac_labels,
-                                EMOTION_MAPPING=EMOTION_MAPPING,
-                            )
-                            print_classification_report(
-                                y_true_test,
-                                y_pred_test,
-                                phase="test",
-                                path=base_path,
-                                EMOTION_MAPPING=EMOTION_MAPPING,
-                            )
-                            logger.info("Logs Saved...")
-                            return
-
-    logger.info("Finetuning Ended...")
-    plot_loss(train_losses, val_losses, path=base_path)
-    plot_confusion_matrix(
-        y_true_val,
-        y_pred_val,
-        phase="val",
-        path=base_path,
-        classes=ac_labels,
-        EMOTION_MAPPING=EMOTION_MAPPING,
-    )
-    print_classification_report(
-        y_true_val,
-        y_pred_val,
-        phase="val",
-        path=base_path,
-        EMOTION_MAPPING=EMOTION_MAPPING,
-    )
-    plot_confusion_matrix(
-        y_true_test,
-        y_pred_test,
-        phase="test",
-        path=base_path,
-        classes=ac_labels,
-        EMOTION_MAPPING=EMOTION_MAPPING,
-    )
-    print_classification_report(
-        y_true_test,
-        y_pred_test,
-        phase="test",
-        path=base_path,
-        EMOTION_MAPPING=EMOTION_MAPPING,
-    )
-    logger.info("Logs Saved...")
+    if best_state:
+        model.load_state_dict(best_state)
+        plot_training_progress(tr_losses,
+    val_losses,
+    tr_accs,
+    val_accs)
+        print("Best model loaded.")
 
 
 if __name__ == "__main__":
-    if torch.cuda.is_available():
-        print(f"Total CUDA devices: {torch.cuda.device_count()}")
-        for i in range(torch.cuda.device_count()):
-            print(f"Device {i}: {torch.cuda.get_device_name(i)}")
-    else:
-        print("CUDA is not available.")
-
-    device_id = 0
-    device = torch.device(
-        f"cuda:{device_id}" if torch.cuda.is_available() else "cpu"
-    )
-
-    # ----------Modify-------------#
-    CUR_DATASET = DATASET.KAZAKHEMOTIONALTTS
-    CUR_BASE_MODEL = BASE_MODEL.XLS_R_1B.value
-    # ----------End-------------#
-
-    logger.info(
-        f"Start finetuning {CUR_BASE_MODEL} with {CUR_DATASET.value.name}"
-    )
-    feature_extractor = FeatureExtractorFactory.get_extractor(
-        model_name=CUR_BASE_MODEL, device=device
-    )
-
-    dataset = SpeechEmotionDataset(
-        dataset_name=CUR_DATASET.value.name,
-        dataset_path=f"meta_csvs/{CUR_DATASET.value.language}_{CUR_DATASET.value.name}.csv",
-        language=CUR_DATASET.value.language,
-    )
-
-    logger.info(f"Emotion Map is Ready: {dataset.EMOTION_MAPPING}")
-
-    dataloaders = get_dataloader(
-        dataset, BATCH_SIZE, shuffle=True, val_split=True
-    )
-
-    num_of_classes = len(list(dataset.EMOTION_MAPPING.keys()))
-    ac_labels = dataset.EMOTION_MAPPING.keys()
-
-    base_model_name = feature_extractor.model_name.split("/")[1]
-
-    model = SERBenchmarkModel(
-        feature_extractor=feature_extractor,
-        num_classes=num_of_classes,
-        device=device,
-    ).to(device)
-
-    criterion = nn.CrossEntropyLoss()
-    optimizer = optim.Adam(model.parameters(), lr=LEARNING_RATE)
-    scheduler = ReduceLROnPlateau(
-        optimizer, mode="min", factor=0.5, patience=2
-    )
-
-    train(
-        model=model,
-        dataloaders=dataloaders,
-        criterion=criterion,
-        optimizer=optimizer,
-        scheduler=scheduler,
-        device=device,
-        base_path=f"{CUR_DATASET.value.language}_{CUR_DATASET.value.name}_{base_model_name}",
-        ac_labels=ac_labels,
-        EMOTION_MAPPING=dataset.EMOTION_MAPPING,
-    )
+    main()

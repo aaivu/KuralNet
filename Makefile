@@ -39,7 +39,7 @@ format-check:
 	. .venv/bin/activate && black --check --line-length 79 kuralnet/ data/ && isort --check kuralnet/ data/
 
 format:
-	. .venv/bin/activate && black --line-length 79 kuralnet/ data/ && isort kuralnet/ data/
+	. .venv/bin/activate && black --line-length 79 kuralnet/ && isort kuralnet/
 
 test:
 	. .venv/bin/activate && pytest .
@@ -71,17 +71,13 @@ remove-dev:
 	echo "$$package removed from dev-requirements.txt."
 
 download_dataset:
-	. .venv/bin/activate && python -m data.download_ser_datasets
-
-download_missing_dataset:
-	. .venv/bin/activate && python -m data.download_missing_ser_datasets
+	. .venv/bin/activate && python -m meta.download_datasets
 
 meta_extract:
-	. .venv/bin/activate && python -m data.meta_extractor
+	. .venv/bin/activate && python -m meta.meta_extractor
 
-feature_extract:
-	. .venv/bin/activate && python -m kuralnet.preprocessing.extractor
-
+train:
+	. .venv/bin/activate && python -m scripts.run_training --config configs/train_config.yaml
 
 clear:
 	@echo "Cleaning up..."

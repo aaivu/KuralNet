@@ -1,15 +1,18 @@
-train:
-  batch_size: 32
-  learning_rate: 0.001
-  epochs: 50
-  optimizer: "adam"
-  loss_function: "categorical_crossentropy"
-  validation_split: 0.2
-  shuffle: true
-  early_stopping:
-    enabled: true
-    patience: 5
-  checkpoint:
-    save_best_only: true
-    monitor: "val_loss"
-    mode: "min"
+dataset:
+  path:
+    - "meta_csvs/en_RAVDESS.csv"
+
+training:
+  batch_size: 16
+  num_epochs: 50
+  patience: 15
+
+optimizer:
+  type: "Adam"
+  lr: 0.001
+
+loss:
+  type: "CrossEntropyLoss"
+
+model:
+  name: "KuralNet"
