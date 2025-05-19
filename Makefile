@@ -79,6 +79,9 @@ meta_extract:
 train:
 	. .venv/bin/activate && python -m scripts.run_training --config configs/train_config.yaml
 
+run_be: 
+	cd be && . ../.venv/bin/activate && uvicorn server:app --reload --host 0.0.0.0 --port 8787
+
 clear:
 	@echo "Cleaning up..."
 	rm -rf __pycache__ .pytest_cache dist build *.egg-info
