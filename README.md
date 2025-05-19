@@ -28,7 +28,7 @@ This model aims to enhance user experiences by detecting emotions from speech ac
 
 ## 📊 Detailed Performance Table
 
-![Bar Chart for Easy Comparison](https://github.com/aaivu/KuralNet/blob/main/assets/emotion_recognition_bar_chart.png)
+![Detailed Table](https://github.com/aaivu/KuralNet/blob/main/assets/emotion_recognition_table.png)
 
 ## 📜 Citation
 
