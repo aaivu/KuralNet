@@ -18,4 +18,7 @@ transformers~=4.48.3
 yaml
 tqdm
 kaggle
-openpyxl
+openpyxlgdown
+transformers
+python_speech_features
+keras
