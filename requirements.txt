@@ -22,3 +22,4 @@ openpyxlgdown
 transformers
 python_speech_features
 keras
+tensorflow
