@@ -75,7 +75,7 @@
                         <a href="#demo" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition duration-300 flex items-center shadow-md">
                             <i class="fas fa-play-circle mr-2"></i> Try Demo
                         </a>
-                        <a href="https://github.com/kuralnet/speech-emotion-recognition" target="_blank" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-lg transition duration-300 flex items-center shadow-md">
+                        <a href="https://github.com/aaivu/KuralNet" target="_blank" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-lg transition duration-300 flex items-center shadow-md">
                             <i class="fab fa-github mr-2"></i> GitHub Repository
                         </a>
                     </div>
@@ -143,7 +143,7 @@
                                 <ul class="grid grid-cols-2 gap-2 text-sm text-gray-700">
                                     <li class="flex items-center">
                                         <i class="fas fa-cog text-blue-500 mr-2"></i> 
-                                        <span><strong>Parameters:</strong> 128M</span>
+                                        <span><strong>Parameters:</strong> 2.9M</span>
                                     </li>
                                     <li class="flex items-center">
                                         <i class="fas fa-database text-blue-500 mr-2"></i> 
@@ -155,7 +155,7 @@
                                     </li>
                                     <li class="flex items-center">
                                         <i class="fas fa-chart-line text-blue-500 mr-2"></i> 
-                                        <span><strong>Accuracy:</strong> 91.2%</span>
+                                        <span><strong>Hightest Accuracy:</strong> 97%</span>
                                     </li>
                                 </ul>
                             </div>
@@ -174,8 +174,8 @@
                             <div class="mb-6">
                                 <h4 class="text-lg font-semibold text-blue-800 mb-2">GitHub Repository</h4>
                                 <div class="bg-gray-800 rounded-lg p-4 flex items-center justify-between">
-                                    <span class="text-gray-200 font-mono text-sm">github.com/kuralnet/speech-emotion-recognition</span>
-                                    <a href="https://github.com/kuralnet/speech-emotion-recognition" target="_blank" class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors">
+                                    <span class="text-gray-200 font-mono text-sm">https://github.com/aaivu/KuralNet</span>
+                                    <a href="https://github.com/aaivu/KuralNet" target="_blank" class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors">
                                         <i class="fas fa-external-link-alt"></i>
                                     </a>
                                 </div>
@@ -202,14 +202,14 @@
                                         <i class="fas fa-globe text-blue-500 text-lg mt-1 mr-3"></i>
                                         <div>
                                             <h5 class="font-semibold text-gray-800">Multilingual</h5>
-                                            <p class="text-sm text-gray-600">Supports 10+ languages</p>
+                                            <p class="text-sm text-gray-600">Supports 13 languages</p>
                                         </div>
                                     </div>
                                     <div class="flex items-start p-3 bg-gray-50 rounded-lg border border-gray-200">
                                         <i class="fas fa-rocket text-blue-500 text-lg mt-1 mr-3"></i>
                                         <div>
                                             <h5 class="font-semibold text-gray-800">Optimized Inference</h5>
-                                            <p class="text-sm text-gray-600">ONNX & TorchScript</p>
+                                            <p class="text-sm text-gray-600">ONNX & FastAPI</p>
                                         </div>
                                     </div>
                                 </div>
@@ -279,6 +279,36 @@ def analyze_emotion(audio_file):
                             <tr class="hover:bg-gray-50">
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
+                                        <span class="text-2xl mr-3">🇪🇹</span>
+                                        <span class="font-medium text-gray-900">Amharic</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">AM</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                        <div class="bg-blue-600 h-2.5 rounded-full" style="width: 84%"></div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">84%</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <span class="text-2xl mr-3">🇧🇩</span>
+                                        <span class="font-medium text-gray-900">Bangla</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">BN</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                        <div class="bg-blue-600 h-2.5 rounded-full" style="width: 84%"></div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">84%</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
                                         <span class="text-2xl mr-3">🇺🇸</span>
                                         <span class="font-medium text-gray-900">English</span>
                                     </div>
@@ -286,25 +316,10 @@ def analyze_emotion(audio_file):
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">EN</td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="w-full bg-gray-200 rounded-full h-2.5">
-                                        <div class="bg-blue-600 h-2.5 rounded-full" style="width: 94.2%"></div>
+                                        <div class="bg-blue-600 h-2.5 rounded-full" style="width: 74%"></div>
                                     </div>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">94.2%</td>
-                            </tr>
-                            <tr class="hover:bg-gray-50">
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="flex items-center">
-                                        <span class="text-2xl mr-3">🇪🇸</span>
-                                        <span class="font-medium text-gray-900">Spanish</span>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">ES</td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="w-full bg-gray-200 rounded-full h-2.5">
-                                        <div class="bg-blue-600 h-2.5 rounded-full" style="width: 91.7%"></div>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">91.7%</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">74%</td>
                             </tr>
                             <tr class="hover:bg-gray-50">
                                 <td class="px-6 py-4 whitespace-nowrap">
@@ -316,10 +331,10 @@ def analyze_emotion(audio_file):
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">FR</td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="w-full bg-gray-200 rounded-full h-2.5">
-                                        <div class="bg-blue-600 h-2.5 rounded-full" style="width: 90.5%"></div>
+                                        <div class="bg-blue-600 h-2.5 rounded-full" style="width: 71%"></div>
                                     </div>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">90.5%</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">71%</td>
                             </tr>
                             <tr class="hover:bg-gray-50">
                                 <td class="px-6 py-4 whitespace-nowrap">
@@ -331,10 +346,55 @@ def analyze_emotion(audio_file):
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">DE</td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="w-full bg-gray-200 rounded-full h-2.5">
-                                        <div class="bg-blue-600 h-2.5 rounded-full" style="width: 89.8%"></div>
+                                        <div class="bg-blue-600 h-2.5 rounded-full" style="width: 97%"></div>
                                     </div>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">89.8%</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">97%</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <span class="text-2xl mr-3">🇮🇹</span>
+                                        <span class="font-medium text-gray-900">Italian</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">IT</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                        <div class="bg-blue-600 h-2.5 rounded-full" style="width: 66%"></div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">66%</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <span class="text-2xl mr-3">🇮🇳</span>
+                                        <span class="font-medium text-gray-900">Kannada</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">KN</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                        <div class="bg-blue-600 h-2.5 rounded-full" style="width: 81%"></div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">81%</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <span class="text-2xl mr-3">🇮🇳</span>
+                                        <span class="font-medium text-gray-900">Malayalam</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">ML</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                        <div class="bg-blue-600 h-2.5 rounded-full" style="width: 73%"></div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">73%</td>
                             </tr>
                             <tr class="hover:bg-gray-50">
                                 <td class="px-6 py-4 whitespace-nowrap">
@@ -346,10 +406,70 @@ def analyze_emotion(audio_file):
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">ZH</td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="w-full bg-gray-200 rounded-full h-2.5">
-                                        <div class="bg-blue-600 h-2.5 rounded-full" style="width: 88.3%"></div>
+                                        <div class="bg-blue-600 h-2.5 rounded-full" style="width: 94%"></div>
                                     </div>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">88.3%</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">94%</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <span class="text-2xl mr-3">🇪🇸</span>
+                                        <span class="font-medium text-gray-900">Spanish</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">ES</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                        <div class="bg-blue-600 h-2.5 rounded-full" style="width: 62%"></div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">62%</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <span class="text-2xl mr-3">🇮🇳</span>
+                                        <span class="font-medium text-gray-900">Tamil</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">TA</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                        <div class="bg-blue-600 h-2.5 rounded-full" style="width: 78%"></div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">78%</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <span class="text-2xl mr-3">🇮🇳</span>
+                                        <span class="font-medium text-gray-900">Telugu</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">TE</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                        <div class="bg-blue-600 h-2.5 rounded-full" style="width: 84%"></div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">84%</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <span class="text-2xl mr-3">🇵🇰</span>
+                                        <span class="font-medium text-gray-900">Urdu</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">UR</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                        <div class="bg-blue-600 h-2.5 rounded-full" style="width: 70%"></div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">70%</td>
                             </tr>
                         </tbody>
                     </table>
@@ -858,11 +978,12 @@ def analyze_emotion(audio_file):
               </div>
               <div class="p-4">
                 <p class="text-gray-700">Works on optimizing SER models. Skilled in backend engineering and inference systems.</p>
-                <p class="text-sm text-gray-500 mt-2">jubeerathant@gmail.com</p>
+                <p class="text-sm text-gray-500 mt-2">jubeerathan@gmail.com</p>
               </div>
               <div class="p-3 border-t border-gray-200 flex justify-center space-x-2">
                 <a href="https://github.com/Jubeerathan" class="text-blue-600 hover:text-blue-800"><i class="fab fa-github"></i></a>
-                <a href="#" class="text-blue-600 hover:text-blue-800"><i class="fab fa-linkedin"></i></a>
+                <a href="https://www.linkedin.com/in/jubeerathan-thevakumar-87b9b8255/" class="text-blue-600 hover:text-blue-800"><i class="fab fa-linkedin"></i></a>
+                <a href="https://scholar.google.com/citations?user=aNpQ4E0AAAAJ&hl=en&oi=sra" class="text-blue-600 hover:text-blue-800"><i class="fas fa-graduation-cap"></i></a>
               </div>
             </div>
       
@@ -880,8 +1001,9 @@ def analyze_emotion(audio_file):
                 <p class="text-sm text-gray-500 mt-2">thanikansiv@gmail.com</p>
               </div>
               <div class="p-3 border-t border-gray-200 flex justify-center space-x-2">
-                <a href="https://github.com/thanikan" class="text-blue-600 hover:text-blue-800"><i class="fab fa-github"></i></a>
-                <a href="#" class="text-blue-600 hover:text-blue-800"><i class="fab fa-linkedin"></i></a>
+                <a href="https://github.com/sthanikan2000" class="text-blue-600 hover:text-blue-800"><i class="fab fa-github"></i></a>
+                <a href="https://www.linkedin.com/in/sthanikan2000/" class="text-blue-600 hover:text-blue-800"><i class="fab fa-linkedin"></i></a>
+                <a href="https://scholar.google.com/citations?user=lVq3TRsAAAAJ&hl=en&oi=sra" class="text-blue-600 hover:text-blue-800"><i class="fas fa-graduation-cap"></i></a>
               </div>
             </div>
       
@@ -899,9 +1021,9 @@ def analyze_emotion(audio_file):
                 <p class="text-sm text-gray-500 mt-2">uthayasanker@cse.mrt.ac.lk</p>
               </div>
               <div class="p-3 border-t border-gray-200 flex justify-center space-x-2">
-                <a href="https://scholar.google.com/citations?user=RkHq0e4AAAAJ&hl=en" class="text-blue-600 hover:text-blue-800"><i class="fas fa-graduation-cap"></i></a>
-                <a href="https://www.linkedin.com/in/uthayasanker" class="text-blue-600 hover:text-blue-800"><i class="fab fa-linkedin"></i></a>
-                <a href="https://cse.mrt.ac.lk/web/staff/academic/uthayasanker" class="text-blue-600 hover:text-blue-800"><i class="fas fa-university"></i></a>
+                <a href="https://scholar.google.com/citations?user=N5tisn4AAAAJ&hl=en&oi=sra" class="text-blue-600 hover:text-blue-800"><i class="fas fa-graduation-cap"></i></a>
+                <a href="https://www.linkedin.com/in/rtuthaya/" class="text-blue-600 hover:text-blue-800"><i class="fab fa-linkedin"></i></a>
+                <a href="https://cse.mrt.ac.lk/people/academic-staff/dr-uthayasanker-thayasivam" class="text-blue-600 hover:text-blue-800"><i class="fas fa-university"></i></a>
               </div>
             </div>
       
