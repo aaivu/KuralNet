@@ -408,11 +408,13 @@ async def predict(file: Optional[UploadFile] = File(None),
         
         overall_emotion = max(emotion_counts, key=emotion_counts.get)
         
-        return {
-            "segments": segments,
-            "overallEmotion": overall_emotion,
-            "audioLength": audio_length
-        }
+        # return {
+        #     "segments": segments,
+        #     "overallEmotion": overall_emotion,
+        #     "audioLength": audio_length
+        # }
+        
+        return segments
     
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error processing audio: {str(e)}")
