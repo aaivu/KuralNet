@@ -1,23 +1,16 @@
+// KuralNet Speech Emotion Recognition UI JavaScript with API Integration
 
-// KuralNet Speech Emotion Recognition UI JavaScript with enhancements
+// API Configuration
+const API_ENDPOINT = 'http://0.0.0.0:8787/predict';
 
-// Sample data for visualization
-const dummySegments = [
-    { start: 0, end: 15, mainEmotion: 'neutral', emotions: { angry: 15, sad: 30, fear: 10, happy: 5, neutral: 40 } },
-    { start: 15, end: 30, mainEmotion: 'sad', emotions: { angry: 10, sad: 50, fear: 15, happy: 5, neutral: 20 } },
-    { start: 30, end: 45, mainEmotion: 'angry', emotions: { angry: 60, sad: 10, fear: 15, happy: 5, neutral: 10 } },
-    { start: 45, end: 75, mainEmotion: 'fear', emotions: { angry: 20, sad: 15, fear: 45, happy: 5, neutral: 15 } },
-    { start: 75, end: 90, mainEmotion: 'happy', emotions: { angry: 5, sad: 5, fear: 5, happy: 75, neutral: 10 } },
-    { start: 90, end: 120, mainEmotion: 'neutral', emotions: { angry: 5, sad: 10, fear: 5, happy: 10, neutral: 70 } }
-];
-
-// Overall emotion data
-const overallEmotions = {
-    angry: 25,
-    sad: 20,
-    fear: 10,
-    happy: 15,
-    neutral: 30
+// State variables
+let segments = [];
+let overallEmotions = {
+    angry: 0,
+    sad: 0,
+    fear: 0,
+    happy: 0,
+    neutral: 0
 };
 
 // Map emotion to icon class
@@ -49,8 +42,9 @@ const emotionInsights = {
 };
 
 // Audio duration variables
-let audioDuration = 120; // Default 2 minutes in seconds
+let audioDuration = 0;
 let currentSegmentIndex = 0;
+let audioBlob = null;
 
 // Initialize the UI
 document.addEventListener('DOMContentLoaded', function() {
@@ -67,30 +61,6 @@ document.addEventListener('DOMContentLoaded', function() {
     if (uploadBtn) {
         uploadBtn.addEventListener('click', () => {
             document.getElementById('audio-file').click();
-
-    // Add export button event listeners
-    const exportJsonBtn = document.getElementById('export-json');
-    if (exportJsonBtn) {
-        exportJsonBtn.addEventListener('click', exportToJSON);
-    }
-    
-    const exportCsvBtn = document.getElementById('export-csv');
-    if (exportCsvBtn) {
-        exportCsvBtn.addEventListener('click', exportToCSV);
-    }
-    
-    const exportImageBtn = document.getElementById('export-image');
-    if (exportImageBtn) {
-        exportImageBtn.addEventListener('click', exportChart);
-    }
-
-    // Set up mobile touch events
-    setupTouchEvents();
-    
-    // Adjust visualizations for mobile
-    adjustVisualizationsForMobile();
-
-
         });
     }
     
@@ -124,8 +94,27 @@ document.addEventListener('DOMContentLoaded', function() {
         timelineSlider.addEventListener('click', handleTimelineClick);
     }
     
-    // Set up segment click handlers
-    setupSegmentEvents();
+    // Export buttons
+    const exportJsonBtn = document.getElementById('export-json');
+    if (exportJsonBtn) {
+        exportJsonBtn.addEventListener('click', exportToJSON);
+    }
+    
+    const exportCsvBtn = document.getElementById('export-csv');
+    if (exportCsvBtn) {
+        exportCsvBtn.addEventListener('click', exportToCSV);
+    }
+    
+    const exportImageBtn = document.getElementById('export-image');
+    if (exportImageBtn) {
+        exportImageBtn.addEventListener('click', exportChart);
+    }
+
+    // Set up mobile touch events
+    setupTouchEvents();
+    
+    // Adjust visualizations for mobile
+    adjustVisualizationsForMobile();
 });
 
 // Navigation smooth scrolling
@@ -185,62 +174,55 @@ function setupTabs() {
     });
 }
 
-// Set up segment click events
-function setupSegmentEvents() {
-    const segmentElements = document.querySelectorAll('#waveform > div.absolute.h-full');
-    segmentElements.forEach((segment, index) => {
-        if (index < dummySegments.length) {
-            segment.addEventListener('click', () => {
-                currentSegmentIndex = index;
-                updateSegmentDetails(dummySegments[index]);
-                
-                // Switch to segment tab
-                const segmentTab = document.querySelector('[data-tab="segment"]');
-                if (segmentTab) {
-                    segmentTab.click();
-                }
-                
-                // Highlight the clicked segment
-                highlightSegment(segment);
-            });
-        }
-    });
-}
-
-// Highlight the selected segment
-function highlightSegment(segmentElement) {
-    // Remove highlight from all segments
-    const allSegments = document.querySelectorAll('#waveform > div.absolute.h-full');
-    allSegments.forEach(seg => {
-        seg.classList.remove('ring-2', 'ring-white', 'ring-opacity-70', 'z-10');
-    });
-    
-    // Add highlight to selected segment
-    segmentElement.classList.add('ring-2', 'ring-white', 'ring-opacity-70', 'z-10');
-}
-
-// File upload handler with enhanced audio duration detection
-function handleFileUpload(event) {
+// File upload handler
+async function handleFileUpload(event) {
     const file = event.target.files[0];
     if (file) {
+        // Validate file type
+        const validTypes = ['audio/wav', 'audio/mp3', 'audio/mpeg', 'audio/m4a', 'audio/ogg'];
+        if (!validTypes.includes(file.type)) {
+            showError('Please upload a valid audio file (WAV, MP3, M4A, or OGG)');
+            return;
+        }
+        
+        // Store the audio blob for playback
+        audioBlob = file;
+        
         // Show loading animation
         const loadingElement = document.querySelector('.loading');
         if (loadingElement) {
             loadingElement.classList.remove('hidden');
         }
         
-        // Simulate audio duration detection
-        // In a real implementation, you would use Web Audio API to get the actual duration
-        // For this demo, we'll randomly generate a duration between 30 seconds and 5 minutes
-        const minDuration = 30;
-        const maxDuration = 300;
-        audioDuration = Math.floor(Math.random() * (maxDuration - minDuration + 1)) + minDuration;
-        
-        // Generate segments based on the new duration
-        generateSegmentsFromDuration(audioDuration);
-        
-        // Simulate processing delay
-        setTimeout(() => {
+        try {
+            // Get audio duration
+            audioDuration = await getAudioDuration(file);
+            
+            // Send file to API for emotion prediction
+            const formData = new FormData();
+            formData.append('file', file);
+            
+            // const response = await fetch(API_ENDPOINT, {
+            //     method: 'POST',
+            //     body: formData
+            // });
+            
+            // if (!response.ok) {
+            //     throw new Error(`API error: ${response.status}`);
+            // }
+            
+            // const data = await response.json();
+            const data = [
+                { start: 0, end: 15, mainEmotion: 'neutral', emotions: { angry: 15, sad: 30, fear: 10, happy: 5, neutral: 40 } },
+                { start: 15, end: 30, mainEmotion: 'sad', emotions: { angry: 10, sad: 50, fear: 15, happy: 5, neutral: 20 } },
+                { start: 30, end: 45, mainEmotion: 'angry', emotions: { angry: 60, sad: 10, fear: 15, happy: 5, neutral: 10 } },
+                { start: 45, end: 75, mainEmotion: 'fear', emotions: { angry: 20, sad: 15, fear: 45, happy: 5, neutral: 15 } },
+                { start: 75, end: 90, mainEmotion: 'happy', emotions: { angry: 5, sad: 5, fear: 5, happy: 75, neutral: 10 } },
+                { start: 90, end: 120, mainEmotion: 'neutral', emotions: { angry: 5, sad: 10, fear: 5, happy: 10, neutral: 70 } }
+            ];            
+            // Process the API response
+            processAPIResponse(data);
+            
             // Hide loading and show visualization
             if (loadingElement) {
                 loadingElement.classList.add('hidden');
@@ -257,86 +239,78 @@ function handleFileUpload(event) {
                 uploadBtn.innerHTML = `<i class="fas fa-file-audio mr-2"></i>${file.name}`;
             }
             
-            // Generate the waveform based on the new duration
+            // Generate visualizations
             generateWaveform();
-            
-            // Generate time markers
             generateTimeMarkers(audioDuration);
-            
-            // Update time display
             updateTimeDisplay(0);
             
-            // Update segment details to the first segment
-            if (dummySegments.length > 0) {
-                updateSegmentDetails(dummySegments[0]);
+            if (segments.length > 0) {
+                updateSegmentDetails(segments[0]);
             }
             
-            // Generate emotion flow chart
-    generateEmotionFlowChart();
-
-    // Generate overall analysis
+            generateEmotionFlowChart();
             generateDonutChart('overall-donut-chart', overallEmotions);
-        }, 2000);
+            
+        } catch (error) {
+            console.error('Error processing audio:', error);
+            showError('Error processing audio file. Please try again.');
+            
+            if (loadingElement) {
+                loadingElement.classList.add('hidden');
+            }
+        }
     }
 }
 
-// Generate segments based on audio duration
-function generateSegmentsFromDuration(duration) {
-    // Clear existing segments
-    dummySegments.length = 0;
-    
-    // Determine how many segments to create based on duration
-    // Aim for approximately 15-30 second segments
-    const avgSegmentDuration = 20; // seconds
-    const numSegments = Math.max(3, Math.ceil(duration / avgSegmentDuration));
-    
-    // Generate segments
-    let startTime = 0;
-    const emotions = ['angry', 'sad', 'fear', 'happy', 'neutral'];
-    
-    for (let i = 0; i < numSegments; i++) {
-        // Determine segment duration (slight variation for realism)
-        const variationFactor = 0.7 + Math.random() * 0.6; // 0.7 to 1.3
-        const segmentDuration = Math.floor(avgSegmentDuration * variationFactor);
-        const endTime = Math.min(startTime + segmentDuration, duration);
-        
-        // Generate random emotion distributions for this segment
-        const emotionValues = {};
-        const emotionSum = 100;
-        let remainingSum = emotionSum;
-        
-        // Randomly select a dominant emotion for this segment
-        const dominantEmotion = emotions[Math.floor(Math.random() * emotions.length)];
-        const dominantValue = 40 + Math.floor(Math.random() * 40); // 40-80%
-        emotionValues[dominantEmotion] = dominantValue;
-        remainingSum -= dominantValue;
-        
-        // Distribute remaining percentage among other emotions
-        const otherEmotions = emotions.filter(e => e !== dominantEmotion);
-        for (let j = 0; j < otherEmotions.length - 1; j++) {
-            const emotion = otherEmotions[j];
-            const value = Math.floor(Math.random() * remainingSum * 0.8);
-            emotionValues[emotion] = value;
-            remainingSum -= value;
-        }
-        
-        // Assign the remainder to the last emotion
-        emotionValues[otherEmotions[otherEmotions.length - 1]] = remainingSum;
-        
-        // Create the segment
-        dummySegments.push({
-            start: startTime,
-            end: endTime,
-            mainEmotion: dominantEmotion,
-            emotions: emotionValues
+// Get audio duration using Web Audio API
+function getAudioDuration(file) {
+    return new Promise((resolve, reject) => {
+        const audio = new Audio();
+        audio.addEventListener('loadedmetadata', () => {
+            resolve(Math.floor(audio.duration));
         });
-        
-        // Update start time for next segment
-        startTime = endTime;
+        audio.addEventListener('error', reject);
+        audio.src = URL.createObjectURL(file);
+    });
+}
+
+// Process API response and convert to segments format
+function processAPIResponse(apiData) {
+    // Clear existing segments
+    segments = [];
+    
+    // Assuming the API returns data in a similar format to your dummy data
+    // Adjust this based on the actual API response structure
+    if (apiData.segments) {
+        segments = apiData.segments.map(segment => ({
+            start: segment.start,
+            end: segment.end,
+            mainEmotion: segment.mainEmotion || getDominantEmotion(segment.emotions),
+            emotions: segment.emotions
+        }));
     }
     
-    // Update overall emotions based on new segments
-    calculateOverallEmotions();
+    // Calculate overall emotions if not provided
+    if (apiData.overallEmotions) {
+        overallEmotions = apiData.overallEmotions;
+    } else {
+        calculateOverallEmotions();
+    }
+}
+
+// Get dominant emotion from emotion values
+function getDominantEmotion(emotions) {
+    let maxEmotion = 'neutral';
+    let maxValue = 0;
+    
+    for (const [emotion, value] of Object.entries(emotions)) {
+        if (value > maxValue) {
+            maxValue = value;
+            maxEmotion = emotion;
+        }
+    }
+    
+    return maxEmotion;
 }
 
 // Calculate overall emotions from segments
@@ -347,10 +321,10 @@ function calculateOverallEmotions() {
     }
     
     // Calculate total duration
-    const totalDuration = dummySegments.reduce((total, segment) => total + (segment.end - segment.start), 0);
+    const totalDuration = segments.reduce((total, segment) => total + (segment.end - segment.start), 0);
     
     // Calculate weighted average of emotions
-    dummySegments.forEach(segment => {
+    segments.forEach(segment => {
         const segmentDuration = segment.end - segment.start;
         const weight = segmentDuration / totalDuration;
         
@@ -382,6 +356,134 @@ function calculateOverallEmotions() {
             overallEmotions[largestEmotion] += diff;
         }
     }
+}
+
+// Recording functions
+let mediaRecorder;
+let recordedChunks = [];
+
+async function startRecording() {
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        mediaRecorder = new MediaRecorder(stream);
+        recordedChunks = [];
+        
+        mediaRecorder.ondataavailable = event => {
+            if (event.data.size > 0) {
+                recordedChunks.push(event.data);
+            }
+        };
+        
+        mediaRecorder.onstop = async () => {
+            const recordedBlob = new Blob(recordedChunks, { type: 'audio/webm' });
+            audioBlob = recordedBlob;
+            
+            // Process the recorded audio
+            await processRecordedAudio(recordedBlob);
+        };
+        
+        mediaRecorder.start();
+        
+        // Update UI
+        document.getElementById('record-btn').classList.add('hidden');
+        document.getElementById('stop-btn').classList.remove('hidden');
+        document.getElementById('rec-indicator').classList.remove('hidden');
+        
+        // Update record box style
+        const recordBox = document.querySelector('.record-box');
+        if (recordBox) {
+            recordBox.classList.add('border-red-400', 'bg-red-50');
+        }
+    } catch (error) {
+        console.error('Error starting recording:', error);
+        showError('Unable to access microphone. Please check permissions.');
+    }
+}
+
+function stopRecording() {
+    if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+        mediaRecorder.stop();
+        mediaRecorder.stream.getTracks().forEach(track => track.stop());
+    }
+    
+    // Update UI
+    document.getElementById('stop-btn').classList.add('hidden');
+    document.getElementById('record-btn').classList.remove('hidden');
+    document.getElementById('record-btn').innerHTML = '<i class="fas fa-microphone mr-2"></i> Record Again';
+    document.getElementById('rec-indicator').classList.add('hidden');
+    
+    // Reset record box style
+    const recordBox = document.querySelector('.record-box');
+    if (recordBox) {
+        recordBox.classList.remove('border-red-400', 'bg-red-50');
+    }
+}
+
+async function processRecordedAudio(blob) {
+    // Show loading
+    const loadingElement = document.querySelector('.loading');
+    if (loadingElement) {
+        loadingElement.classList.remove('hidden');
+    }
+    
+    try {
+        // Get audio duration
+        audioDuration = await getAudioDuration(blob);
+        
+        // Send to API
+        const formData = new FormData();
+        formData.append('file', blob, 'recording.webm');
+        
+        const response = await fetch(API_ENDPOINT, {
+            method: 'POST',
+            body: formData
+        });
+        
+        if (!response.ok) {
+            throw new Error(`API error: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        
+        // Process the API response
+        processAPIResponse(data);
+        
+        // Hide loading and show visualization
+        if (loadingElement) {
+            loadingElement.classList.add('hidden');
+        }
+        
+        const visualizationSection = document.getElementById('visualization-section');
+        if (visualizationSection) {
+            visualizationSection.classList.remove('hidden');
+        }
+        
+        // Generate visualizations
+        generateWaveform();
+        generateTimeMarkers(audioDuration);
+        updateTimeDisplay(0);
+        
+        if (segments.length > 0) {
+            updateSegmentDetails(segments[0]);
+        }
+        
+        generateEmotionFlowChart();
+        generateDonutChart('overall-donut-chart', overallEmotions);
+        
+    } catch (error) {
+        console.error('Error processing recording:', error);
+        showError('Error processing recording. Please try again.');
+        
+        if (loadingElement) {
+            loadingElement.classList.add('hidden');
+        }
+    }
+}
+
+// Show error message
+function showError(message) {
+    // You can implement a toast notification or alert here
+    alert(message);
 }
 
 // Generate dynamic time markers based on audio duration
@@ -440,77 +542,6 @@ function generateTimeMarkers(duration) {
     }
 }
 
-// Recording functions
-function startRecording() {
-    document.getElementById('record-btn').classList.add('hidden');
-    document.getElementById('stop-btn').classList.remove('hidden');
-    document.getElementById('rec-indicator').classList.remove('hidden');
-    
-    // Update record box style
-    const recordBox = document.querySelector('.record-box');
-    if (recordBox) {
-        recordBox.classList.add('border-red-400', 'bg-red-50');
-    }
-}
-
-function stopRecording() {
-    document.getElementById('stop-btn').classList.add('hidden');
-    document.getElementById('record-btn').classList.remove('hidden');
-    document.getElementById('record-btn').innerHTML = '<i class="fas fa-microphone mr-2"></i> Record Again';
-    document.getElementById('rec-indicator').classList.add('hidden');
-    
-    // Reset record box style
-    const recordBox = document.querySelector('.record-box');
-    if (recordBox) {
-        recordBox.classList.remove('border-red-400', 'bg-red-50');
-    }
-    
-    // Show loading
-    const loadingElement = document.querySelector('.loading');
-    if (loadingElement) {
-        loadingElement.classList.remove('hidden');
-    }
-    
-    // Simulate recording duration (between 5 seconds and 2 minutes)
-    audioDuration = Math.floor(Math.random() * 115) + 5;
-    
-    // Generate segments based on the new duration
-    generateSegmentsFromDuration(audioDuration);
-    
-    // Simulate processing
-    setTimeout(() => {
-        // Hide loading and show visualization
-        if (loadingElement) {
-            loadingElement.classList.add('hidden');
-        }
-        
-        const visualizationSection = document.getElementById('visualization-section');
-        if (visualizationSection) {
-            visualizationSection.classList.remove('hidden');
-        }
-        
-        // Generate the waveform based on the new duration
-        generateWaveform();
-        
-        // Generate time markers
-        generateTimeMarkers(audioDuration);
-        
-        // Update time display
-        updateTimeDisplay(0);
-        
-        // Update segment details to the first segment
-        if (dummySegments.length > 0) {
-            updateSegmentDetails(dummySegments[0]);
-        }
-        
-        // Generate emotion flow chart
-    generateEmotionFlowChart();
-
-    // Generate overall analysis
-        generateDonutChart('overall-donut-chart', overallEmotions);
-    }, 2000);
-}
-
 // Generate waveform with dynamic segments based on audio duration
 function generateWaveform() {
     const waveform = document.getElementById('waveform');
@@ -537,8 +568,8 @@ function generateWaveform() {
     
     waveform.appendChild(waveformLines);
     
-    // Add segments based on new dummySegments
-    dummySegments.forEach((segment, index) => {
+    // Add segments based on API data
+    segments.forEach((segment, index) => {
         const segmentElement = document.createElement('div');
         segmentElement.className = 'absolute h-full opacity-80 hover:opacity-100 cursor-pointer transition-opacity duration-300';
         
@@ -577,40 +608,72 @@ function generateWaveform() {
     });
     
     // Set initial segment details
-    if (dummySegments.length > 0) {
-        updateSegmentDetails(dummySegments[0]);
+    if (segments.length > 0) {
+        updateSegmentDetails(segments[0]);
     }
+}
+
+// Highlight the selected segment
+function highlightSegment(segmentElement) {
+    // Remove highlight from all segments
+    const allSegments = document.querySelectorAll('#waveform > div.absolute.h-full');
+    allSegments.forEach(seg => {
+        seg.classList.remove('ring-2', 'ring-white', 'ring-opacity-70', 'z-10');
+    });
+    
+    // Add highlight to selected segment
+    segmentElement.classList.add('ring-2', 'ring-white', 'ring-opacity-70', 'z-10');
 }
 
 // Playback controls
 let isPlaying = false;
 let playbackInterval;
 let currentPlaybackPercent = 0;
+let audioElement = null;
 
 function togglePlayback() {
     const playBtn = document.getElementById('play-btn');
+    
+    if (!audioBlob) {
+        showError('No audio loaded');
+        return;
+    }
     
     if (isPlaying) {
         // Pause playback
         isPlaying = false;
         playBtn.innerHTML = '<i class="fas fa-play"></i>';
         clearInterval(playbackInterval);
+        
+        if (audioElement) {
+            audioElement.pause();
+        }
     } else {
         // Start playback
         isPlaying = true;
         playBtn.innerHTML = '<i class="fas fa-pause"></i>';
         
-        // Simulate playback progress
-        playbackInterval = setInterval(() => {
-            currentPlaybackPercent += 0.005; // Increment by 0.5%
+        // Create audio element if not exists
+        if (!audioElement) {
+            audioElement = new Audio();
+            audioElement.src = URL.createObjectURL(audioBlob);
             
-            if (currentPlaybackPercent >= 1) {
-                // End of playback
+            audioElement.addEventListener('ended', () => {
+                isPlaying = false;
+                playBtn.innerHTML = '<i class="fas fa-play"></i>';
                 currentPlaybackPercent = 0;
-                togglePlayback();
+                updatePlaybackPosition(0);
+            });
+        }
+        
+        audioElement.play();
+        
+        // Update progress
+        playbackInterval = setInterval(() => {
+            if (audioElement && audioElement.duration) {
+                currentPlaybackPercent = audioElement.currentTime / audioElement.duration;
+                updatePlaybackPosition(currentPlaybackPercent);
             }
-            
-            updatePlaybackPosition(currentPlaybackPercent);
         }, 100);
     }
 }
@@ -623,6 +686,7 @@ function updatePlaybackPosition(percent) {
     if (timelineProgress) timelineProgress.style.width = `${percent * 100}%`;
     
     updateTimeDisplay(percent);
+    updateFlowChartPosition(percent);
     
     // Find current segment based on time
     const currentTime = Math.floor(percent * audioDuration);
@@ -630,8 +694,8 @@ function updatePlaybackPosition(percent) {
     let currentSegment = null;
     let segmentIndex = 0;
     
-    for (let i = 0; i < dummySegments.length; i++) {
-        const segment = dummySegments[i];
+    for (let i = 0; i < segments.length; i++) {
+        const segment = segments[i];
         if (currentTime >= segment.start && currentTime < segment.end) {
             currentSegment = segment;
             segmentIndex = i;
@@ -661,7 +725,11 @@ function handleTimelineClick(e) {
     // Update playback position
     currentPlaybackPercent = percent;
     updatePlaybackPosition(percent);
-    updateFlowChartPosition(percent);
+    
+    // Seek audio if available
+    if (audioElement && audioElement.duration) {
+        audioElement.currentTime = percent * audioElement.duration;
+    }
 }
 
 function updateTimeDisplay(percent) {
@@ -835,7 +903,6 @@ function generateDonutChart(containerId, emotions) {
     }
 }
 
-
 // Generate emotion flow chart
 function generateEmotionFlowChart() {
     const flowChartContainer = document.getElementById('emotion-flow-chart');
@@ -900,11 +967,10 @@ function generateEmotionFlowChart() {
         // Create path for this emotion
         const pathData = [];
         
-        dummySegments.forEach((segment, index) => {
+        segments.forEach((segment, index) => {
             const segmentStart = segment.start;
             const segmentEnd = segment.end;
-            const segmentDuration = segmentEnd - segmentStart;
-            const emotionValue = segment.emotions[emotion];
+            const emotionValue = segment.emotions[emotion] || 0;
             
             // Calculate coordinates
             const x1 = segmentStart * xScale;
@@ -932,17 +998,19 @@ function generateEmotionFlowChart() {
         svg.appendChild(path);
         
         // Add emotion label at the end
-        const lastSegment = dummySegments[dummySegments.length - 1];
-        const lastX = lastSegment.end * xScale + 10;
-        const lastY = 300 - (lastSegment.emotions[emotion] * 3);
-        
-        const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-        text.setAttribute('x', lastX);
-        text.setAttribute('y', lastY + 5);
-        text.setAttribute('font-size', '12');
-        text.setAttribute('fill', colorMap[emotion]);
-        text.textContent = capitalizeFirstLetter(emotion);
-        svg.appendChild(text);
+        if (segments.length > 0) {
+            const lastSegment = segments[segments.length - 1];
+            const lastX = lastSegment.end * xScale + 10;
+            const lastY = 300 - ((lastSegment.emotions[emotion] || 0) * 3);
+            
+            const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            text.setAttribute('x', lastX);
+            text.setAttribute('y', lastY + 5);
+            text.setAttribute('font-size', '12');
+            text.setAttribute('fill', colorMap[emotion]);
+            text.textContent = capitalizeFirstLetter(emotion);
+            svg.appendChild(text);
+        }
     });
     
     // Add time markers on x-axis
@@ -1011,7 +1079,6 @@ function updateFlowChartPosition(percent) {
     positionLine.style.display = 'block';
 }
 
-
 function formatTime(seconds) {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
@@ -1022,8 +1089,6 @@ function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-
-
 // Export functionality
 function exportToJSON() {
     // Create a data object with all analysis results
@@ -1031,8 +1096,8 @@ function exportToJSON() {
         fileName: document.getElementById('upload-btn').textContent || 'recorded_audio',
         duration: audioDuration,
         timestamp: new Date().toISOString(),
-        dominantEmotion: document.getElementById('dominant-emotion-name').textContent,
-        segments: dummySegments,
+        dominantEmotion: getOverallDominantEmotion(),
+        segments: segments,
         overallEmotions: overallEmotions
     };
     
@@ -1063,10 +1128,10 @@ function exportToCSV() {
     let csvContent = 'Segment Start,Segment End,Dominant Emotion,Angry %,Sad %,Fear %,Happy %,Neutral %\n';
     
     // Add segment data
-    dummySegments.forEach(segment => {
+    segments.forEach(segment => {
         csvContent += `${formatTime(segment.start)},${formatTime(segment.end)},${segment.mainEmotion},` + 
-                      `${segment.emotions.angry},${segment.emotions.sad},${segment.emotions.fear},` +
-                      `${segment.emotions.happy},${segment.emotions.neutral}\n`;
+                      `${segment.emotions.angry || 0},${segment.emotions.sad || 0},${segment.emotions.fear || 0},` +
+                      `${segment.emotions.happy || 0},${segment.emotions.neutral || 0}\n`;
     });
     
     // Add overall data
@@ -1171,7 +1236,6 @@ function getOverallDominantEmotion() {
     return dominantEmotion;
 }
 
-
 // Touch event handling for mobile devices
 function setupTouchEvents() {
     const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
@@ -1230,6 +1294,11 @@ function handleTimelineTouch(e) {
     // Update playback position
     currentPlaybackPercent = percent;
     updatePlaybackPosition(percent);
+    
+    // Seek audio if available
+    if (audioElement && audioElement.duration) {
+        audioElement.currentTime = percent * audioElement.duration;
+    }
 }
 
 // Adjust visualizations for mobile
@@ -1272,10 +1341,8 @@ function handleOrientationChange() {
     adjustVisualizationsForMobile();
     
     // Re-generate charts for new dimensions
-    if (document.getElementById('segment-donut-chart')) {
-        if (dummySegments.length > 0) {
-            generateDonutChart('segment-donut-chart', dummySegments[currentSegmentIndex].emotions);
-        }
+    if (document.getElementById('segment-donut-chart') && segments.length > 0) {
+        generateDonutChart('segment-donut-chart', segments[currentSegmentIndex].emotions);
     }
     
     if (document.getElementById('overall-donut-chart')) {
@@ -1299,7 +1366,6 @@ window.addEventListener('resize', function() {
     clearTimeout(resizeTimeout);
     resizeTimeout = setTimeout(handleOrientationChange, 300);
 });
-
 
 // Show mobile orientation message
 function showMobileMessage() {
