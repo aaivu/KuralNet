@@ -44,10 +44,10 @@ class EmotionSegment(BaseModel):
     mainEmotion: str
     emotions: EmotionScores
 
-class PredictionResponse(BaseModel):
-    segments: List[EmotionSegment]
-    overallEmotion: str
-    audioLength: float
+# class PredictionResponse(BaseModel):
+#     segments: List[EmotionSegment]
+#     # overallEmotion: str
+#     # audioLength: float
 
 # Resource management
 RESOURCES_DIR = os.path.join(os.path.dirname(__file__), 'Final_Model')
@@ -344,8 +344,20 @@ def predict_from_model(audio_chunk: np.ndarray, sr: int) -> Dict[str, Any]:
         "mainEmotion": main_emotion,
         "emotions": emotions
     }
+    
+# Define target sample rate as a constant
+TARGET_SR = 16000  
 
-@app.post("/predict", response_model=PredictionResponse)
+def load_and_resample_audio(audio_source, target_sr=TARGET_SR):
+    """Load audio from source and resample to target sample rate."""
+    # Load with original sample rate
+    original_audio_data, original_sr = librosa.load(audio_source, sr=None)
+    
+    # Resample to target sample rate
+    audio_data = librosa.resample(original_audio_data, orig_sr=original_sr, target_sr=target_sr)
+    return audio_data, target_sr
+
+@app.post("/predict")
 async def predict(file: Optional[UploadFile] = File(None), 
                  recorded_audio: Optional[str] = Form(None)):
     """
@@ -364,19 +376,27 @@ async def predict(file: Optional[UploadFile] = File(None),
     try:
         # Process uploaded file
         if file:
-            audio_data, sr = librosa.load(io.BytesIO(await file.read()), sr=None)
+            audio_data, sr = load_and_resample_audio(io.BytesIO(await file.read()))
         # Process recorded audio from frontend
         else:
             import base64
-            audio_bytes = base64.b64decode(recorded_audio.split(',')[1] if ',' in recorded_audio else recorded_audio)
             
-            # Save to temporary file and read with librosa
+            # Extract and decode base64 data
+            audio_string = recorded_audio.split(',')[1] if ',' in recorded_audio else recorded_audio
+            audio_bytes = base64.b64decode(audio_string)
+            
+            # Create temporary file
             with tempfile.NamedTemporaryFile(suffix='.wav', delete=False) as temp_file:
+                temp_path = temp_file.name
                 temp_file.write(audio_bytes)
-                temp_file_path = temp_file.name
-                
-            audio_data, sr = librosa.load(temp_file_path, sr=None)
-            os.unlink(temp_file_path)  # Clean up temp file
+            
+            try:
+                # Load and resample audio
+                audio_data, sr = load_and_resample_audio(temp_path)
+            finally:
+                # Clean up temporary file
+                if os.path.exists(temp_path):
+                    os.unlink(temp_path)
         
         # Get audio length in seconds
         audio_length = len(audio_data) / sr
@@ -388,7 +408,7 @@ async def predict(file: Optional[UploadFile] = File(None),
         segments = []
         for chunk in chunks:
             # Get predictions for this chunk
-            prediction = predict_from_model(chunk["audio"], sr=16000)
+            prediction = predict_from_model(chunk["audio"], sr=sr)
             
             # Create segment with start/end times and predictions
             segment = {
