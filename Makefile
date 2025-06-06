@@ -82,6 +82,8 @@ train:
 run_be: 
 	. .venv/bin/activate && python -m be.setup
 	cd be && . ../.venv/bin/activate && uvicorn server:app --reload --host 0.0.0.0 --port 8787
+run_ui:
+	cd ui && . ../.venv/bin/activate && python -m http.server
 
 predict:
 	. .venv/bin/activate && python -m be.predict_audio

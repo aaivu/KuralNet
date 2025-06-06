@@ -1,16 +1,16 @@
 // KuralNet Speech Emotion Recognition UI JavaScript with API Integration
 
 // API Configuration
-const API_ENDPOINT = 'http://0.0.0.0:8787/predict';
+const API_ENDPOINT = 'http://localhost:8787/predict';
 
 // State variables
 let segments = [];
 let overallEmotions = {
-    angry: 0,
-    sad: 0,
-    fear: 0,
-    happy: 0,
-    neutral: 0
+    angry: 20,
+    sad: 20,
+    fear: 20,
+    happy: 20,
+    neutral: 20
 };
 
 // Map emotion to icon class
@@ -212,6 +212,7 @@ async function handleFileUpload(event) {
             // }
             
             // const data = await response.json();
+            // console.log('API response:', data);
             const data = [
                 { start: 0, end: 15, mainEmotion: 'neutral', emotions: { angry: 15, sad: 30, fear: 10, happy: 5, neutral: 40 } },
                 { start: 15, end: 30, mainEmotion: 'sad', emotions: { angry: 10, sad: 50, fear: 15, happy: 5, neutral: 20 } },
@@ -221,6 +222,7 @@ async function handleFileUpload(event) {
                 { start: 90, end: 120, mainEmotion: 'neutral', emotions: { angry: 5, sad: 10, fear: 5, happy: 10, neutral: 70 } }
             ];            
             // Process the API response
+
             processAPIResponse(data);
             
             // Hide loading and show visualization
@@ -434,16 +436,25 @@ async function processRecordedAudio(blob) {
         const formData = new FormData();
         formData.append('file', blob, 'recording.webm');
         
-        const response = await fetch(API_ENDPOINT, {
-            method: 'POST',
-            body: formData
-        });
+        // const response = await fetch(API_ENDPOINT, {
+        //     method: 'POST',
+        //     body: formData
+        // });
         
-        if (!response.ok) {
-            throw new Error(`API error: ${response.status}`);
-        }
+        // if (!response.ok) {
+        //     throw new Error(`API error: ${response.status}`);
+        // }
         
-        const data = await response.json();
+        // const data = await response.json();
+
+        const data = [
+            { start: 0, end: 15, mainEmotion: 'neutral', emotions: { angry: 15, sad: 30, fear: 10, happy: 5, neutral: 40 } },
+            { start: 15, end: 30, mainEmotion: 'sad', emotions: { angry: 10, sad: 50, fear: 15, happy: 5, neutral: 20 } },
+            { start: 30, end: 45, mainEmotion: 'angry', emotions: { angry: 60, sad: 10, fear: 15, happy: 5, neutral: 10 } },
+            { start: 45, end: 75, mainEmotion: 'fear', emotions: { angry: 20, sad: 15, fear: 45, happy: 5, neutral: 15 } },
+            { start: 75, end: 90, mainEmotion: 'happy', emotions: { angry: 5, sad: 5, fear: 5, happy: 75, neutral: 10 } },
+            { start: 90, end: 120, mainEmotion: 'neutral', emotions: { angry: 5, sad: 10, fear: 5, happy: 10, neutral: 70 } }
+        ];
         
         // Process the API response
         processAPIResponse(data);
@@ -761,6 +772,7 @@ function updateSegmentDetails(segment) {
     }
     
     // Update segment donut chart
+    console.log("766:" , segment.emotions);
     generateDonutChart('segment-donut-chart', segment.emotions);
     
     // Update segment insights
@@ -819,6 +831,7 @@ function updateSegmentInsights(segment) {
 
 // Generate donut chart for emotion visualization
 function generateDonutChart(containerId, emotions) {
+    console.log('Generating donut chart for:', emotions);
     const container = document.getElementById(containerId);
     if (!container) return;
     
@@ -837,7 +850,17 @@ function generateDonutChart(containerId, emotions) {
     svg.setAttribute('viewBox', '0 0 42 42');
     
     // Calculate total for percentages
-    const total = Object.values(emotions).reduce((acc, val) => acc + val, 0);
+    let total = Object.values(emotions).reduce((acc, val) => acc + (isNaN(val) ? 0 : val), 0);
+    // If total is 0, set it to 100 to avoid division by zero
+    if (total === 0) {
+        total = 100;
+    }
+    
+    // Skip if total is 0 to avoid division by zero
+    if (total <= 0) {
+        console.warn('Cannot generate donut chart: total emotion values sum to 0');
+        return;
+    }
     
     // Track current angle for drawing segments
     let currentAngle = 0;
@@ -864,16 +887,20 @@ function generateDonutChart(containerId, emotions) {
         // Calculate start and end points
         const startAngle = currentAngle;
         const endAngle = currentAngle + angle;
-        
-        // Convert angles to radians
-        const startRad = (startAngle - 90) * Math.PI / 180;
-        const endRad = (endAngle - 90) * Math.PI / 180;
-        
+        // Convert to radians for Math.cos and Math.sin
+        const startRad = startAngle * (Math.PI / 180);
+        const endRad = endAngle * (Math.PI / 180);
         // Calculate path coordinates
         const x1 = 21 + 15 * Math.cos(startRad);
         const y1 = 21 + 15 * Math.sin(startRad);
         const x2 = 21 + 15 * Math.cos(endRad);
         const y2 = 21 + 15 * Math.sin(endRad);
+        
+        // Skip invalid coordinates
+        if (isNaN(x1) || isNaN(y1) || isNaN(x2) || isNaN(y2)) {
+            console.warn(`Skipping invalid segment with coordinates: x1=${x1}, y1=${y1}, x2=${x2}, y2=${y2}`);
+            continue;
+        }
         
         // Determine if the arc should be drawn as a large arc
         const largeArcFlag = angle > 180 ? 1 : 0;
@@ -1342,10 +1369,12 @@ function handleOrientationChange() {
     
     // Re-generate charts for new dimensions
     if (document.getElementById('segment-donut-chart') && segments.length > 0) {
+        console.log('1353 :', segments[currentSegmentIndex].emotions);
         generateDonutChart('segment-donut-chart', segments[currentSegmentIndex].emotions);
     }
     
     if (document.getElementById('overall-donut-chart')) {
+        console.log('1358 :', overallEmotions);
         generateDonutChart('overall-donut-chart', overallEmotions);
     }
     
